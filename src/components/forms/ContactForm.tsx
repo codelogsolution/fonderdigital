@@ -9,7 +9,7 @@ const inputBaseClasses =
   "h-11 w-full rounded-xl bg-surface-2/60 px-4 text-sm text-foreground placeholder:text-muted/60 transition-all duration-300 focus:outline-none";
 
 const inputIdleClasses =
-  "border border-border-subtle focus:border-primary/60 focus:shadow-[0_0_20px_rgba(2,132,199,0.18)]";
+  "border border-border-subtle focus:border-primary/60 focus:shadow-[0_0_20px_var(--primary-line)]";
 
 const inputErrorClasses =
   "border-2 border-rose-500 focus:border-rose-500 focus:shadow-[0_0_20px_rgba(225,29,72,0.18)]";
@@ -164,7 +164,7 @@ export default function ContactForm({ className }: { className?: string }) {
               initial={{ scale: 0, rotate: -30 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ delay: 0.2, type: "spring", stiffness: 220, damping: 14 }}
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary shadow-[0_0_32px_rgba(2,132,199,0.25)]"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary shadow-[0_0_32px_var(--primary-line)]"
             >
               <Check className="h-8 w-8" />
             </motion.span>
@@ -185,7 +185,7 @@ export default function ContactForm({ className }: { className?: string }) {
             transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             noValidate
-            className="flex flex-col gap-5 rounded-3xl border border-border-subtle bg-surface p-6 sm:p-8"
+            className="flex flex-col gap-5 rounded-[1.75rem] glass-premium ring-gradient p-6 sm:p-8"
           >
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
@@ -318,7 +318,7 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <button
               type="submit"
-              className="mt-2 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-8 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_32px_rgba(2,132,199,0.45)]"
+              className="mt-2 inline-flex h-12 appearance-none items-center justify-center gap-2 rounded-full bg-primary px-8 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_32px_var(--primary-glow)]"
             >
               Send Message <Send className="h-4 w-4" />
             </button>

@@ -1,375 +1,216 @@
 "use client";
-import {
-  AnimatePresence,
-  motion, useMotionValue, useReducedMotion, useSpring, useTransform,
-} from "framer-motion";
-import { ArrowRight, ChevronDown, Star } from "lucide-react";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, ChevronDown, Sparkles, Star } from "lucide-react";
 import Link from "next/link";
-import type { MouseEvent as ReactMouseEvent } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Button from "@/components/ui/Button";
 import SplitText from "@/components/motion/SplitText";
 import RotatingText from "@/components/motion/RotatingText";
+import HeroStage from "@/components/sections/hero/HeroStage";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { heroServices, heroSlides } from "@/config/site";
 
-const ease: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
+const EASE = [0.16, 1, 0.3, 1] as const;
 const heroWords = heroSlides.map((s) => s.word + ".");
-
-const REVEAL_SIZE = 720;
-const REVEAL_RADIUS = REVEAL_SIZE / 2;
-const SPOTLIGHT_SIZE = 560;
-
-const CURSOR_START_DELAY = 1500;
 
 export default function Hero() {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [cursorReady, setCursorReady] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const glowX = useSpring(useTransform(mx, [-0.5, 0.5], [-24, 24]), { stiffness: 50, damping: 20 });
-  const glowY = useSpring(useTransform(my, [-0.5, 0.5], [-16, 16]), { stiffness: 50, damping: 20 });
-  const spotX = useSpring(-600, { stiffness: 80, damping: 25 });
-  const spotY = useSpring(-600, { stiffness: 80, damping: 25 });
-
-  const gridX = useTransform(spotX, (value) => REVEAL_RADIUS - value);
-  const gridY = useTransform(spotY, (value) => REVEAL_RADIUS - value);
-  const frameRef = useRef<number | null>(null);
-  const pointerRef = useRef({ x: -600, y: -600, nx: 0, ny: 0 });
-  const sectionRef = useRef<HTMLElement>(null);
-
-  const flushPointer = useCallback(() => {
-    frameRef.current = null;
-    const { x, y, nx, ny } = pointerRef.current;
-
-    const rect = sectionRef.current?.getBoundingClientRect();
-    mx.set(nx);
-    my.set(ny);
-    spotX.set(x - (rect?.left ?? 0));
-    spotY.set(y - (rect?.top ?? 0));
-  }, [mx, my, spotX, spotY]);
-
-  const handleMouseMove = useCallback(
-    (event: ReactMouseEvent<HTMLElement>) => {
-      pointerRef.current = {
-        x: event.clientX,
-        y: event.clientY,
-        nx: event.clientX / window.innerWidth - 0.5,
-        ny: event.clientY / window.innerHeight - 0.5,
-      };
-      frameRef.current ??= requestAnimationFrame(flushPointer);
-    },
-    [flushPointer],
-  );
-
-  useEffect(
-    () => () => {
-      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    if (prefersReducedMotion) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const timer = setTimeout(() => setCursorReady(true), CURSOR_START_DELAY);
-    return () => clearTimeout(timer);
-  }, [prefersReducedMotion]);
-
+  const reduced = useReducedMotionSafe();
   const slide = heroSlides[activeSlide];
+
+  const fade = (delay: number) =>
+    reduced
+      ? { initial: { opacity: 0 }, animate: { opacity: 1 } }
+      : {
+        initial: { opacity: 0, y: 26 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.8, delay, ease: EASE },
+      };
+
   return (
+    /* The hero is a true full-screen unit: `min-h-[100svh]` + flex column
+         lets the rail settle against the bottom of the viewport so the service
+         pills and "Scroll to explore" are visible on arrival, instead of sitting
+         a scroll away. `svh` (not `vh`) keeps the rail in view when mobile
+         browser chrome expands and shrinks the visual viewport. */
     <section
-      ref={sectionRef}
       id="home"
-      onMouseMove={cursorReady ? handleMouseMove : undefined}
-      className="relative flex min-h-0 items-center overflow-hidden bg-background sm:min-h-screen"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-background"
     >
-      <div aria-hidden className="absolute inset-0 bg-grid [mask-image:radial-gradient(ellipse_70%_60%_at_50%_35%,black_40%,transparent_100%)]" />
-      <div aria-hidden className="pointer-events-none absolute left-0 top-0 hidden lg:block">
-        <div className="-translate-x-1/2 -translate-y-1/2">
-          <motion.div
-            style={{ x: spotX, y: spotY, width: REVEAL_SIZE, height: REVEAL_SIZE }}
-            className="grid-reveal-mask relative overflow-hidden will-change-transform"
-          >
-            <motion.div
-              style={{ x: gridX, y: gridY }}
-              className="bg-grid-accent h-full w-full will-change-transform"
-            />
-          </motion.div>
-        </div>
-      </div>
-      <motion.div aria-hidden style={{ x: glowX, y: glowY }} className="pointer-events-none absolute inset-0 will-change-transform">
-        <div className="absolute -top-52 left-1/2 h-[560px] w-[880px] -translate-x-1/2 rounded-full bg-primary/10 blur-[140px] animate-pulse-glow will-change-[transform,opacity]" />
-        <motion.div
-          animate={{ x: [0, 70, -45, 0], y: [0, -35, 28, 0] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -left-44 top-1/4 h-[460px] w-[460px] rounded-full bg-primary/[0.09] blur-[130px] will-change-transform"
+      {/* Atmosphere: one soft mesh wash plus a fine dot field, masked so they
+          fade before reaching the section edges. The top/bottom fades use the
+          page background token so they blend with the warm neutral — a literal
+          white here showed as a grey band against the new tint. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-mesh" />
+        <div
+          className="absolute inset-0 bg-dots opacity-25"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%)",
+          }}
         />
-        <motion.div
-          animate={{ x: [0, -60, 50, 0], y: [0, 40, -28, 0] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -right-36 top-1/3 hidden h-[420px] w-[420px] rounded-full bg-[#7c3aed]/[0.09] blur-[140px] will-change-transform lg:block"
-        />
-        <motion.div
-          animate={{ opacity: [0.45, 0.85, 0.45], y: [0, -14, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-[6%] h-60 w-[600px] -translate-x-1/2 rounded-full bg-[#38bdf8]/[0.1] blur-[110px] will-change-[transform,opacity]"
-        />
-        <motion.div
-          animate={{ x: [0, 35, -30, 0], y: [0, 24, -20, 0] }}
-          transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-8%] left-[22%] hidden h-[300px] w-[440px] rounded-full bg-[#0ea5e9]/[0.07] blur-[130px] will-change-transform lg:block"
-        />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-        <div className="absolute left-1/2 top-[12%] hidden h-40 w-[560px] -translate-x-1/2 rounded-full border border-primary/10 blur-[1px] sm:block" />
-        <div className="absolute left-1/2 top-[16%] hidden h-28 w-[420px] -translate-x-1/2 rounded-full border border-primary/[0.07] sm:block" />
-      </motion.div>
-      <div aria-hidden className="pointer-events-none absolute left-0 top-0 hidden lg:block">
-        <div className="-translate-x-1/2 -translate-y-1/2">
-          <motion.div
-            style={{ x: spotX, y: spotY, width: SPOTLIGHT_SIZE, height: SPOTLIGHT_SIZE }}
-            className="bg-spotlight will-change-transform"
-          />
-        </div>
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/75 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-7xl items-center gap-12 px-4 pb-8 pt-20 sm:px-6 sm:pb-14 sm:pt-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.85fr)] lg:gap-10 lg:px-8 lg:pb-16 lg:pt-32">
-        <div className="max-w-3xl lg:max-w-none">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1, ease }} className="flex flex-wrap items-center gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface/60 px-3 py-1 text-xs font-semibold text-primary sm:px-4 sm:py-1.5">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              FonderDigital • Marketing + Tech Agency
+      <div className="hero-grid mx-auto flex w-full max-w-7xl flex-1 flex-col items-center gap-10 px-4 pb-8 pt-24 sm:px-6 lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:px-8 lg:pb-6 lg:pt-28">
+        {/* ---------------- Copy column ---------------- */}
+        <div className="relative">
+          <motion.div
+            {...fade(0.05)}
+            className="flex flex-wrap items-center gap-2.5"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-background/70 py-1 pl-1 pr-3.5 text-xs font-semibold backdrop-blur-sm">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary text-white">
+                <Sparkles className="h-3.5 w-3.5" />
+              </span>
+              Marketing + Digital
             </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-3 py-1 text-xs font-semibold text-primary sm:px-4 sm:py-1.5">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+              </span>
               2 project slots open
             </span>
           </motion.div>
-          <h1 className="mt-5 text-balance font-bold leading-[1.05] tracking-tight text-foreground text-[2.15rem] sm:mt-6 sm:leading-[1.08] sm:text-5xl lg:text-[3.4rem] xl:text-6xl">
-            <SplitText text="Everything you need to" delay={0.25} />
-            <br />
-            <span>launch, market</span>{" "}
-            <span className="text-gradient">{"& grow."}</span>
-            <span className="mt-3 block min-h-[2.75em] text-[0.58em] font-bold leading-snug text-muted lg:min-h-0">
-              We design, build &amp; market{" "}
+
+          <h1 className="hero-title mt-7 text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-[4.35rem]">
+            <SplitText text="We design, build &" className="block" />
+            <span className="block">
               <RotatingText
                 words={heroWords}
-                className="text-primary lg:whitespace-nowrap lg:[min-width:8ch]"
-                delay={1400}
+                className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent"
                 onWordChange={setActiveSlide}
               />
+              <span className="animate-pulse text-primary">|</span>
             </span>
           </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.05, ease }}
-            className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted sm:mt-6 sm:text-base sm:text-lg"
-          >
-            FonderDigital helps startups & growing brands with websites, apps, SEO, social media, branding, design & content — one passionate team for all your marketing and tech needs.
+
+          <div className="hero-tagline mt-6 min-h-[3.5rem] max-w-xl">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={slide.word}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="text-lg leading-relaxed text-muted"
+              >
+                {slide.tagline}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
+          <motion.p {...fade(0.2)} className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted">
+            FonderDigital helps startups &amp; growing brands with websites, apps,
+            SEO, social media, branding, design &amp; content — one passionate
+            team for all your marketing and tech needs.
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.2, ease }}
-            className="mt-7 flex flex-wrap items-center gap-3 sm:mt-10 sm:gap-4"
-          >
-            <Button href="/contact" size="lg">
-              Get Free Growth Plan <ArrowRight className="h-5 w-5" />
+          <motion.div {...fade(0.28)} className="hero-cta mt-9 flex flex-wrap items-center gap-3">
+            <Button href="/contact" size="lg" className="btn-shine">
+              Get Free Growth Plan
+              <ArrowRight className="h-4 w-4" />
             </Button>
             <Button href="/services" variant="outline" size="lg">
               Explore Services
             </Button>
           </motion.div>
+
+          {/* Trust row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.45, ease }}
-            className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 sm:mt-12"
+            {...fade(0.34)}
+            className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border-subtle pt-7"
           >
-            <div className="flex items-center gap-5">
-              <div className="flex -space-x-3">
-                {["AM", "SR", "DO", "AK"].map((initials) => (
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2.5">
+                {["AV", "MK", "DS", "RJ"].map((initials) => (
                   <span
                     key={initials}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-[#0284c7] to-[#0ea5e9] text-xs font-bold text-white"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-primary to-primary text-[10px] font-extrabold text-white"
                   >
                     {initials}
                   </span>
                 ))}
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-background bg-surface-2 text-xs font-bold text-muted">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-surface text-[10px] font-extrabold text-muted">
                   +26
                 </span>
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">
-                  30+ clients onboarded
-                </p>
-                <p className="mt-1 text-xs text-muted">
-                  8 disciplines under one roof
-                </p>
+                <p className="text-sm font-bold tracking-tight">30+ clients onboarded</p>
+                <p className="text-xs text-muted">6 disciplines under one roof</p>
               </div>
             </div>
-            <span
-              aria-hidden
-              className="hidden h-10 w-px bg-border-subtle sm:block"
-            />
-            <p className="hidden max-w-[16rem] text-xs leading-relaxed text-muted sm:block">
-              Longest client partnership:{" "}
-              <strong className="font-semibold text-foreground">
-                3 years and counting
-              </strong>
-            </p>
-          </motion.div>
-          <div className="mt-8 hidden flex-wrap gap-2 sm:mt-10 sm:flex">
-            {heroServices.map((service) => {
-              const Icon = service.icon;
-              return (
-                <Link
-                  key={service.label}
-                  href={service.href}
-                  className="group inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface/50 px-3.5 py-2 text-xs font-semibold text-muted transition-colors duration-300 hover:border-primary/35 hover:bg-primary/[0.08] hover:text-foreground"
-                >
-                  <Icon className="h-3.5 w-3.5 text-primary" />
-                  {service.label}
-                </Link>
-              );
-            })}
-          </div>
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={slide.word}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.4, ease }}
-              className="mt-3 text-xs font-semibold text-muted sm:mt-4"
-            >
-              <span className="text-primary">{slide.stat}</span> {slide.caption}
-              {" · "}
-              <span className="font-normal">{slide.service}</span>
-            </motion.p>
-          </AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, y: [0, 8, 0] }}
-            transition={{
-              opacity: { duration: 0.6, delay: 1.7 },
-              y: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-            }}
-            className="mt-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted sm:mt-8"
-            aria-hidden
-          >
-            <ChevronDown className="h-4 w-4" />
-            Scroll to see how we work
-          </motion.div>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, x: 32 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.45, ease }}
-          className="relative hidden w-full self-center justify-self-end lg:block lg:max-w-[360px]"
-        >
-          <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="will-change-transform relative w-full rounded-3xl border border-border-subtle bg-surface/85 p-5 shadow-[0_24px_80px_-24px_rgba(2,132,199,0.35)]"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
-                  Full-service agency
-                </p>
-                <p className="mt-1 text-sm font-bold leading-tight text-foreground">
-                  Everything under one roof
-                </p>
-              </div>
-              <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-primary/25 bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                {heroServices.length} services
-              </span>
-            </div>
 
-            <div className="mt-3.5 rounded-xl border border-border-subtle bg-background/50 px-3 py-2">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={slide.word}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.35, ease }}
-                  className="text-xs font-semibold leading-relaxed text-muted"
-                >
-                  <span className="capitalize text-primary">{slide.word}</span>{" "}
-                  {slide.tagline}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-
-            <ul className="mt-3.5 space-y-1">
-              {heroServices.map((service) => {
-                const isActive = slide.service === service.label;
-                const Icon = service.icon;
-                return (
-                  <li key={service.label}>
-                    <Link
-                      href={service.href}
-                      className={`group flex items-center gap-2.5 rounded-xl border px-2.5 py-1.5 transition-colors duration-300 ${
-                        isActive
-                          ? "border-primary/35 bg-primary/[0.08]"
-                          : "border-transparent hover:border-border-subtle hover:bg-surface-2/60"
-                      }`}
-                    >
-                      <span
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border transition-colors duration-300 ${
-                          isActive
-                            ? "border-primary/40 bg-primary/15 text-primary"
-                            : "border-border-subtle bg-background/60 text-muted group-hover:text-foreground"
-                        }`}
-                      >
-                        <Icon className="h-3.5 w-3.5" />
-                      </span>
-                      <span
-                        className={`text-xs font-semibold transition-colors duration-300 ${
-                          isActive
-                            ? "text-foreground"
-                            : "text-muted group-hover:text-foreground"
-                        }`}
-                      >
-                        {service.label}
-                      </span>
-                      <ArrowRight
-                        className={`ml-auto h-3.5 w-3.5 shrink-0 text-primary transition-all duration-300 ${
-                          isActive
-                            ? "translate-x-0 opacity-100"
-                            : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-60"
-                        }`}
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <div className="mt-3.5 flex items-center gap-2.5 border-t border-border-subtle pt-3.5">
+            <div>
               <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, starIndex) => (
-                  <Star
-                    key={starIndex}
-                    className="h-3 w-3 fill-primary text-primary"
-                  />
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="text-[11px] font-medium text-muted">
-                Trusted by 60+ startups &amp; growing brands
+              <p className="mt-1 text-xs text-muted">
+                Longest client partnership: <span className="font-bold text-foreground">3 years</span>
               </p>
             </div>
           </motion.div>
-        </motion.div>
+        </div>
+
+        {/* ---------------- 3D stage column ---------------- */}
+        {/* The stage follows the same index the headline does, so the phone
+            deck and the floating chips always argue the active service.
+
+            Capped on lg: uncapped it filled its column at ~580px, which made
+            the 5:6 stage 696px tall and set the floor for the whole hero. */}
+        <HeroStage
+          className="hero-stage mx-auto w-full max-w-[288px] sm:max-w-[420px] lg:max-w-[500px]"
+          activeSlide={activeSlide}
+        />
       </div>
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent sm:h-40"
-      />
+
+      {/* ---------------- Bottom bar ----------------
+          Spans the full width so the section ends on a single horizontal
+          rule rather than a ragged column edge. `pb` matters here: the bar
+          previously had top padding only, so the pill row sat flush against
+          the section boundary and the dark band below crowded it. */}
+      {/* `lg:pr-24` reserves a lane for the fixed chat launcher (bottom-5
+          right-5, ~56px wide + 20px inset). Without it the rail's scroll link
+          ran under the launcher on 1280x720 and 1366x768, where max-w-7xl
+          stops constraining the rail and its right edge hits the viewport. */}
+      <div className="hero-rail mx-auto w-full max-w-7xl shrink-0 px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10 lg:pr-24">
+        <div className="flex flex-col gap-6 border-t border-border-subtle pt-7 lg:flex-row lg:items-center lg:justify-between">
+          <ul className="flex flex-wrap gap-2">
+            {heroServices.map((service, i) => (
+              <motion.li
+                key={service.label}
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.05, ease: EASE }}
+              >
+                <Link
+                  href={service.href}
+                  className="group inline-flex items-center gap-2 rounded-full border border-border-subtle bg-background/70 px-3.5 py-2 text-xs font-semibold text-muted backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary hover:shadow-[0_10px_24px_-14px_var(--primary-glow)]"
+                >
+                  <service.icon className="h-3.5 w-3.5" />
+                  {service.label}
+                </Link>
+              </motion.li>
+            ))}
+          </ul>
+
+          <a
+            href="#metrics"
+            className="group inline-flex shrink-0 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-muted transition-colors hover:text-primary"
+          >
+            Scroll to explore
+            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border-subtle transition-all duration-300 group-hover:border-primary/60 group-hover:translate-y-0.5">
+              <ChevronDown className="h-3.5 w-3.5" />
+            </span>
+          </a>
+        </div>
+      </div>
     </section>
   );
 }

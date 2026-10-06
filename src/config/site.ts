@@ -15,9 +15,9 @@ export type NavItem = { label: string; href: string };
 
 export const siteConfig = {
   name: "FonderDigital",
-  tagline: "Digital Marketing & Development Agency",
+  tagline: "Digital Marketing & Development",
   description:
-    "FonderDigital is a premium digital agency crafting high-performance websites, unforgettable brands, and growth campaigns that convert.",
+    "FonderDigital crafts high-performance websites, unforgettable brands, and growth campaigns that convert.",
   url: "https://fonderdigital.com",
   email: "hello@fonderdigital.com",
   phone: "+91 (704) 262-0665",
@@ -677,7 +677,7 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "We came for the redesign and stayed for the reporting. Every Friday I knew exactly what my budget had done that week — that never happened with our previous agency.",
+      "We came for the redesign and stayed for the reporting. Every Friday I knew exactly what my budget had done that week — that never happened with our previous team.",
     name: "Aarav Mehta",
     role: "CEO, Aurelia · Client since 2023",
     initials: "AM",
@@ -699,7 +699,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "They told us 'no' more than any agency we've hired. Every feature they cut came back as speed — and our customers felt the difference.",
+      "They told us 'no' more than any team we've hired. Every feature they cut came back as speed — and our customers felt the difference.",
     name: "Daniel Okafor",
     role: "CTO, FinFlow · Client since 2023",
     initials: "DO",

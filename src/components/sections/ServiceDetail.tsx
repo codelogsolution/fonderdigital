@@ -23,7 +23,10 @@ export default function ServiceDetail({ slug, children }: { slug: string; childr
             fetchPriority="high"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-white/85" />
+          {/* Scrim rides on the theme's own background so the photo stays
+              legible behind the heading without punching a white rectangle
+              through a dark theme. */}
+          <div className="absolute inset-0 bg-background/85" />
           <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-background" />
         </div>
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

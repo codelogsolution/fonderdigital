@@ -1,148 +1,118 @@
 "use client";
 
-import { useState } from "react";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+import AuroraOrb from "@/components/motion/AuroraOrb";
+
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 import { recentWins } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
 
 export default function RecentWins() {
-  const reduced = useReducedMotion();
-  const total = recentWins.length;
-  const [active, setActive] = useState(0);
-
-  const shift = (direction: number) =>
-    setActive((current) => (current + direction + total) % total);
+  const reduced = useReducedMotionSafe();
 
   return (
-    <section className="relative pb-24 sm:pb-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Reveal>
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                Recent wins
-              </span>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
-                Numbers from the front lines
-              </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => shift(-1)}
-                aria-label="Previous result"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-border-subtle bg-surface text-muted transition-colors hover:border-primary/40 hover:text-primary"
+    <section id="recent-wins" className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-mesh opacity-70" />
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-multiply" />
+      </div>
+      {/* Sphere on the right balances the left-aligned heading. Painted from the
+          active theme's tokens rather than a hue-rotated fixed amber, so it
+          reads as the same material lit differently in every palette. */}
+      <AuroraOrb
+        size={460}
+        className="pointer-events-none absolute right-[2%] top-[14%] opacity-80"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end lg:gap-16">
+          <Reveal>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              Recent wins
+            </span>
+            <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
+              Numbers from the front lines
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.1} className="lg:pb-2">
+            <p className="text-base leading-relaxed text-muted sm:text-lg">
+              Every result below came from work we shipped and measured. Percentages
+              describe movement in the metric named — never a guaranteed return.
+            </p>
+          </Reveal>
+        </div>
+
+        {/* All results stay visible: a prospective customer should never have to
+            click an arrow to discover the proof they came for. */}
+        <div className="mt-11 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-3">
+          {recentWins.map((win, index) => (
+            <Reveal key={win.title} delay={index * 0.09}>
+              <motion.div
+                whileHover={reduced ? undefined : { y: -6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className="h-full"
               >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => shift(1)}
-                aria-label="Next result"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-border-subtle bg-surface text-muted transition-colors hover:border-primary/40 hover:text-primary"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
+                <Link
+                  href="/work"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border-subtle bg-background/80 p-7 backdrop-blur-xl transition-colors duration-500 hover:border-primary/40 sm:p-8"
+                >
+                  {/* Each result card gets its own colour field so the three
+                      never read as the same card with different numbers. */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 bg-mesh-tight opacity-60"
+                  />
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-primary/[0.07] blur-3xl transition-opacity duration-500 group-hover:bg-primary/[0.12]"
+                  />
+
+                  <div className="relative flex items-start justify-between gap-4">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/[0.07] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
+                      <TrendingUp className="h-3.5 w-3.5" />
+                      Verified result
+                    </span>
+                    <ArrowUpRight className="h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
+                  </div>
+
+                  <p className="text-gradient relative mt-8 font-display text-5xl font-extrabold leading-none tracking-tight sm:text-6xl">
+                    {win.metric}
+                  </p>
+
+                  <div className="relative mt-auto pt-8">
+                    <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
+                      0{index + 1} / 0{recentWins.length}
+                    </span>
+                    <h3 className="mt-3 text-lg font-bold tracking-tight">
+                      {win.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {win.detail}
+                    </p>
+                  </div>
+                </Link>
+              </motion.div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal delay={0.12}>
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border-subtle pt-8">
+            <p className="text-sm text-muted">
+              Want the full breakdown, including methodology and timelines?
+            </p>
+            <Link
+              href="/work"
+              className="group inline-flex items-center gap-2 text-sm font-bold text-primary"
+            >
+              Explore all work
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </Link>
           </div>
         </Reveal>
-
-        {reduced ? (
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {recentWins.map((win) => (
-              <Link
-                key={win.title}
-                href="/work"
-                className="group flex flex-col rounded-2xl border border-border-subtle bg-surface p-8"
-              >
-                <p className="text-gradient text-5xl font-extrabold tracking-tight">
-                  {win.metric}
-                </p>
-                <h3 className="mt-6 text-base font-bold tracking-tight">{win.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{win.detail}</p>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="relative mt-12 h-[420px] sm:h-[440px]"
-            style={{ perspective: 1600 }}
-            role="group"
-            aria-roledescription="carousel"
-            onKeyDown={(event) => {
-              if (event.key === "ArrowRight") shift(1);
-              if (event.key === "ArrowLeft") shift(-1);
-            }}
-          >
-            {recentWins.map((win, index) => {
-              const offset = index - active;
-              const depth = Math.min(Math.abs(offset), 2);
-
-              return (
-                <motion.article
-                  key={win.title}
-                  onClick={() => setActive(index)}
-                  animate={{
-                    x: `${offset * 56}%`,
-                    rotateY: offset * -26,
-                    z: -depth * 150,
-                    scale: 1 - depth * 0.12,
-                    opacity: depth > 1 ? 0 : 1 - depth * 0.3,
-                    filter: `blur(${depth * 2.5}px)`,
-                  }}
-                  transition={{ type: "spring", stiffness: 160, damping: 24 }}
-                  style={{ zIndex: total - depth }}
-                  className="absolute inset-0 mx-auto w-[min(86%,26rem)]"
-                >
-                  <Link
-                    href="/work"
-                    className="group flex h-full flex-col justify-between rounded-[1.75rem] border border-border-subtle bg-surface p-8 transition-colors duration-300 hover:border-primary/40"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <p className="font-display text-gradient text-6xl font-extrabold tracking-tight">
-                        {win.metric}
-                      </p>
-                      <ArrowUpRight className="h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
-                    </div>
-                    <div>
-                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
-                        0{index + 1} / 0{total}
-                      </span>
-                      <h3 className="mt-3 text-lg font-bold tracking-tight">{win.title}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-muted">{win.detail}</p>
-                    </div>
-                  </Link>
-                </motion.article>
-              );
-            })}
-          </div>
-        )}
-
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            {recentWins.map((win, index) => (
-              <button
-                key={win.title}
-                type="button"
-                onClick={() => setActive(index)}
-                aria-label={`Show result ${index + 1}`}
-                aria-current={index === active}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  index === active ? "w-8 bg-primary" : "w-3 bg-border-subtle"
-                }`}
-              />
-            ))}
-          </div>
-          <Link
-            href="/work"
-            className="group inline-flex items-center gap-2 text-sm font-semibold text-primary"
-          >
-            Explore all work
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
       </div>
     </section>
   );

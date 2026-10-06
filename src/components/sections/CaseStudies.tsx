@@ -12,7 +12,7 @@ export default function CaseStudies() {
               delay={(index % 2) * 0.1}
               className="h-full"
             >
-              <article className="flex h-full min-w-0 flex-col rounded-3xl border border-border-subtle bg-surface p-5 sm:p-8">
+              <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] glass-premium ring-gradient p-5 transition-transform duration-500 hover:-translate-y-1.5 sm:p-8">
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary">
                     {study.client}
@@ -34,7 +34,7 @@ export default function CaseStudies() {
                   <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Project results</h3>
                   <dl className="mt-4 grid auto-rows-fr gap-3 sm:grid-cols-3">
                     {study.metrics.map((metric) => (
-                      <div key={metric.label} className="flex min-w-0 flex-col rounded-2xl border border-border-subtle bg-surface-2/60 p-4">
+                      <div key={metric.label} className="flex min-w-0 flex-col rounded-2xl border border-border-subtle bg-surface-2/40 p-4 transition-colors duration-500 group-hover:bg-primary/[0.04]">
                         <dt className="text-xs leading-relaxed text-muted">{metric.label}</dt>
                         <dd className="order-first mb-2 text-2xl font-extrabold tabular-nums text-primary sm:text-3xl">
                           {metric.displayValue ?? `${metric.prefix ?? ""}${metric.value.toFixed(metric.decimals ?? 0)}${metric.suffix ?? ""}`}

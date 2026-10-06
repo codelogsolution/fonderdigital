@@ -5,12 +5,18 @@ import { cn } from "@/lib/utils";
 type Variant = "primary" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
+/* `appearance-none` is not cosmetic. A bare <button> inherits the UA rule
+   `background-color: buttonface`, which Chrome resolves to the system accent
+   colour (sky blue on macOS). That paints over any `bg-*` utility, so a
+   copper button still rendered blue. Resetting it at the shared base — and on
+   every raw <button> that sets its own background — keeps the brand colour
+   authoritative instead of depending on each call site remembering. */
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50";
+  "inline-flex appearance-none items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary:
-    "btn-shine bg-primary text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_32px_rgba(2,132,199,0.4)]",
+    "btn-shine bg-primary text-primary-foreground hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)]",
   outline:
     "border border-border-subtle text-foreground hover:-translate-y-0.5 hover:border-primary/60 hover:text-primary",
   ghost: "text-muted hover:text-foreground",

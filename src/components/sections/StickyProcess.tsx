@@ -1,18 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   AnimatePresence,
   motion,
-  useMotionTemplate,
-  useMotionValue,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+import AuroraOrb from "@/components/motion/AuroraOrb";
 import {
   ArrowRight,
   Check,
@@ -120,10 +119,18 @@ export default function StickyProcess() {
   const isDesktop = useIsDesktop();
 
   return (
-    <section
-      id="process"
-      className="relative border-y border-border-subtle bg-white"
-    >
+    <section id="process" className="relative isolate overflow-x-clip border-y border-border-subtle">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-mesh opacity-80" />
+        <div
+          className="absolute inset-0 bg-dots opacity-30"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse 60% 55% at 50% 50%, black 10%, transparent 100%)",
+          }}
+        />
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-multiply" />
+      </div>
       {isDesktop ? <PinnedProcess /> : <FlowProcess />}
     </section>
   );
@@ -158,8 +165,8 @@ function ringPoint(angle: number) {
   };
 }
 
-const FALLBACK_STEP = 384;
-const ROW_FRAME = "min-h-[24rem]";
+const STEP = 320;
+const ROW_FRAME = "min-h-[20rem]";
 const AXIS_PULL = 22;
 const AXIS_GUTTER = "grid-cols-[1fr_15rem_1fr]";
 
@@ -189,6 +196,13 @@ function ProcessDial({
       className="relative shrink-0"
       style={{ width: DIAL_SIZE, height: DIAL_SIZE }}
     >
+      {/* The sphere belongs to the dial, not the section: the pinned track is
+          thousands of pixels tall, so a section-centred orb would drift far
+          below the ring it is meant to sit behind. */}
+      <AuroraOrb
+        size={DIAL_SIZE * 1.9}
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70"
+      />
 
       <svg
         aria-hidden
@@ -218,11 +232,11 @@ function ProcessDial({
         />
       </svg>
 
-      <div className="absolute inset-[30px] rounded-full border border-border-subtle bg-white shadow-[0_20px_46px_-28px_rgba(11,18,32,0.45)]" />
+      <div className="absolute inset-[30px] rounded-full border border-border-subtle bg-surface/70 backdrop-blur-sm" />
 
       <motion.span
         aria-hidden
-        className="absolute left-1/2 top-1/2 rounded-full border-[2px] border-white bg-primary shadow-[0_0_0_1px_rgba(2,132,199,0.4),0_6px_14px_-4px_rgba(2,132,199,0.75)]"
+        className="absolute left-1/2 top-1/2 rounded-full border-[2px] border-white bg-primary shadow-[0_0_0_1px_var(--primary-glow),0_6px_14px_-4px_var(--primary-glow-strong)]"
         style={{
           width: MARKER_SIZE,
           height: MARKER_SIZE,
@@ -244,10 +258,10 @@ function ProcessDial({
             className={cn(
               "absolute left-1/2 top-1/2 flex items-center justify-center rounded-full border font-mono text-[0.66rem] font-semibold tabular-nums transition-colors duration-300",
               index === activeIndex
-                ? "border-primary bg-primary text-primary-foreground shadow-[0_0_0_5px_rgba(2,132,199,0.14)]"
-                : reached
-                  ? "border-primary/40 bg-primary/10 text-primary bg-white"
-                  : "border-border-subtle bg-white text-muted",
+                  ? "border-primary bg-primary text-primary-foreground shadow-[0_0_0_5px_var(--primary-soft)]"
+                  : reached
+                    ? "border-primary/40 bg-primary/10 text-primary"
+                    : "border-border-subtle bg-surface/70 text-muted",
             )}
             style={{
               width: NODE_SIZE,
@@ -261,7 +275,7 @@ function ProcessDial({
       })}
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <AnimatePresence mode="wait" initial={false}>
+        <AnimatePresence mode="popLayout" initial={false}>
           <motion.span
             key={activeIndex}
             initial={{ opacity: 0, y: 10 }}
@@ -323,12 +337,10 @@ function useBlockMotion(
 function PromiseBlock({
   index,
   pos,
-  step,
   reduced,
 }: {
   index: number;
   pos: MotionValue<number>;
-  step: number;
   reduced: boolean;
 }) {
   const phase = phases[index];
@@ -336,7 +348,7 @@ function PromiseBlock({
   const { opacity, y, x } = useBlockMotion(pos, index, "left");
 
   return (
-    <div className="flex items-center justify-end pr-6" style={{ height: step }}>
+    <div className="flex items-center justify-end pr-6" style={{ height: STEP }}>
       <motion.div
         className="w-full max-w-md text-right"
         style={reduced ? { opacity } : { opacity, y, x }}
@@ -368,19 +380,17 @@ function PromiseBlock({
 function WorkBlock({
   index,
   pos,
-  step,
   reduced,
 }: {
   index: number;
   pos: MotionValue<number>;
-  step: number;
   reduced: boolean;
 }) {
   const phase = phases[index];
   const { opacity, y, x } = useBlockMotion(pos, index, "right");
 
   return (
-    <div className="flex items-center pl-6" style={{ height: step }}>
+    <div className="flex items-center pl-6" style={{ height: STEP }}>
       <motion.div
         className="w-full max-w-[30rem]"
         style={reduced ? { opacity } : { opacity, y, x }}
@@ -429,37 +439,11 @@ function ProcessRow({
   activeIndex: number;
   reduced: boolean;
 }) {
-  const rowRef = useRef<HTMLDivElement>(null);
-  const stepValue = useMotionValue(FALLBACK_STEP);
-  const [step, setStep] = useState(FALLBACK_STEP);
-
-  useEffect(() => {
-    const element = rowRef.current;
-    if (!element) return;
-
-    const measure = () => {
-      const next = element.getBoundingClientRect().height;
-      if (next > 0 && Math.abs(next - stepValue.get()) > 0.5) {
-        stepValue.set(next);
-        setStep(next);
-      }
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [stepValue]);
-
-  const railY = useTransform<number, number>(
-    [pos, stepValue],
-    ([position, height]) => -position * height,
-  );
-  const barGlow = useMotionTemplate`0 0 14px rgba(2, 132, 199, ${progress})`;
+  const railY = useTransform(pos, (position: number) => -position * STEP);
   const remaining = Math.max(0, PHASE_COUNT - 1 - activeIndex);
 
   const rail = (side: "left" | "right") => (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_3.5rem,black_calc(100%-3.5rem),transparent)]">
       <motion.div
         className="absolute inset-x-0 top-0 will-change-transform"
         style={{ y: railY }}
@@ -470,7 +454,6 @@ function ProcessRow({
               key={phase.name}
               index={index}
               pos={pos}
-              step={step}
               reduced={reduced}
             />
           ) : (
@@ -478,15 +461,11 @@ function ProcessRow({
               key={phase.name}
               index={index}
               pos={pos}
-              step={step}
               reduced={reduced}
             />
           ),
         )}
       </motion.div>
-
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-14 bg-gradient-to-b from-white to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-14 bg-gradient-to-t from-white to-transparent" />
     </div>
   );
 
@@ -512,8 +491,8 @@ function ProcessRow({
         <div className="min-w-[8rem] flex-1">
           <div className="h-1.2 overflow-hidden rounded-full bg-border-subtle">
             <motion.div
-              className="h-1.2 origin-left rounded-full bg-primary"
-              style={{ scaleX: progress, boxShadow: barGlow }}
+              className="h-1.2 origin-left rounded-full bg-primary shadow-[0_0_14px_var(--primary-glow)]"
+              style={{ scaleX: progress }}
             />
           </div>
         </div>
@@ -561,7 +540,7 @@ const PHASE_TRACK = `${PHASE_COUNT * 88}vh`;
 
 function PinnedProcess() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion() ?? false;
+  const reduced = useReducedMotionSafe();
 
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -628,7 +607,7 @@ function FlowProcess() {
             <article
               key={phase.name}
               className={cn(
-                "rounded-3xl border bg-white p-5 shadow-[0_22px_50px_-38px_rgba(11,18,32,0.5)] transition-colors duration-500 sm:p-6",
+                "rounded-3xl border bg-surface/60 p-5 shadow-[0_18px_44px_-38px_rgba(11,18,32,0.45)] backdrop-blur-md transition-colors duration-500 sm:p-6",
                 isActive ? "border-primary/40" : "border-border-subtle",
               )}
             >

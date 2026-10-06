@@ -5,10 +5,10 @@ import {
   motion,
   useMotionTemplate,
   useMotionValue,
-  useReducedMotion,
   useSpring,
   useTransform,
 } from "framer-motion";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 type Tilt3DProps = {
   children: ReactNode;
@@ -32,7 +32,7 @@ export default function Tilt3D({
   rounded = "rounded-2xl",
 }: Tilt3DProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionSafe();
 
   const pointerX = useMotionValue(0.5);
   const pointerY = useMotionValue(0.5);

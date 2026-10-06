@@ -1,6 +1,8 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -17,7 +19,7 @@ const SWAP_S = 0.3;
 
 export default function HomeShowcase() {
   const [active, setActive] = useState(0);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const slide = heroSlides[active % heroSlides.length];
 
   useEffect(() => {
@@ -117,7 +119,7 @@ export default function HomeShowcase() {
             <div className="mt-auto flex flex-col items-start gap-3 pt-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <Link
                 href={slide.href}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_32px_-12px_rgba(2,132,199,0.6)] transition-transform duration-300 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_32px_-12px_var(--primary-glow-strong)] transition-transform duration-300 hover:-translate-y-0.5"
               >
                 Explore {slide.service}
                 <ArrowRight aria-hidden className="h-4 w-4" />
@@ -127,7 +129,7 @@ export default function HomeShowcase() {
                   type="button"
                   onClick={() => go(-1)}
                   aria-label="Previous showcase"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground"
+                  className="flex h-9 w-9 appearance-none items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground"
                 >
                   <ChevronLeft aria-hidden className="h-4 w-4" />
                 </button>
@@ -139,7 +141,7 @@ export default function HomeShowcase() {
                   type="button"
                   onClick={() => go(1)}
                   aria-label="Next showcase"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground"
+                  className="flex h-9 w-9 appearance-none items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground"
                 >
                   <ChevronRight aria-hidden className="h-4 w-4" />
                 </button>

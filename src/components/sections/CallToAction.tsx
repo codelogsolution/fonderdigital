@@ -21,7 +21,7 @@ export default function CallToAction() {
 
   const rotateX = useTransform(y, [0, 100], [7, -7]);
   const rotateY = useTransform(x, [0, 100], [-8, 8]);
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${x}% ${y}%, rgba(2,132,199,0.22), transparent 62%)`;
+  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${x}% ${y}%, var(--primary-line), transparent 62%)`;
   const beam = useMotionTemplate`${x}%`;
 
   const trackPointer = (event: React.PointerEvent<HTMLDivElement>) => {

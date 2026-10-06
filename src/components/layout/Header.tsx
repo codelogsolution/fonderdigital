@@ -16,6 +16,7 @@ import { servicePages, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/useScrollLock";
 import Button from "@/components/ui/Button";
+import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
 import Magnetic from "@/components/ui/Magnetic";
 
 const mobileList: Variants = {
@@ -70,7 +71,7 @@ function NavLink({
         <span
           aria-hidden
           className={cn(
-            "absolute -left-3.5 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_10px_rgba(2,132,199,0.7)] transition-opacity duration-300",
+            "absolute -left-3.5 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_10px_var(--primary-glow-strong)] transition-opacity duration-300",
             active ? "opacity-100" : "opacity-0",
           )}
         />
@@ -138,8 +139,8 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
 
         <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#0284c7] to-[#0ea5e9] text-white shadow-[0_4px_16px_rgba(2,132,199,0.3)] transition-transform duration-300 group-hover:rotate-6">
-            <BrandMark className="h-9 w-9" />
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[var(--accent-2)] text-[var(--primary-foreground)] shadow-[0_4px_16px_var(--primary-glow)] transition-transform duration-300 group-hover:rotate-6">
+            <BrandMark className="h-9 w-9 text-primary" />
           </span>
           <span className="text-lg font-extrabold tracking-tight">
             {siteConfig.name}
@@ -219,12 +220,13 @@ export default function Header() {
           )}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-3 lg:flex">
+          <ThemeSwitcher />
           <Magnetic strength={0.4}>
             <Button
               href="/contact"
               size="sm"
-              className="shadow-[0_0_24px_rgba(2,132,199,0.3)]"
+              className="shadow-[0_0_24px_var(--primary-line)]"
             >
               Book a Call <ArrowUpRight className="h-4 w-4" />
             </Button>
@@ -236,7 +238,7 @@ export default function Header() {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-subtle text-foreground transition-colors hover:border-primary/50 hover:text-primary lg:hidden"
+          className="flex h-10 w-10 appearance-none items-center justify-center rounded-xl border border-border-subtle text-foreground transition-colors hover:border-primary/50 hover:text-primary lg:hidden"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.span
@@ -285,7 +287,7 @@ export default function Header() {
                         onClick={() => setServicesOpen((open) => !open)}
                         aria-expanded={servicesOpen}
                         className={cn(
-                          "flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
+                          "flex w-full appearance-none items-center justify-between rounded-lg border px-3 py-2.5 text-sm font-medium transition-colors",
                           active
                             ? "border-primary/30 bg-primary/5 text-primary"
                             : "border-transparent text-muted hover:bg-surface-2 hover:text-foreground",
@@ -358,11 +360,14 @@ export default function Header() {
                   </motion.div>
                 );
               })}
-              <motion.div variants={mobileItem} className="mt-3">
-                <Magnetic className="w-full">
+              <motion.div variants={mobileItem} className="mt-3 flex items-center gap-3">
+                <div className="lg:hidden">
+                  <ThemeSwitcher />
+                </div>
+                <Magnetic className="flex-1">
                   <Button
                     href="/contact"
-                    className="w-full shadow-[0_0_24px_rgba(2,132,199,0.3)]"
+                    className="w-full shadow-[0_0_24px_var(--primary-line)]"
                   >
                     Book a Call <ArrowUpRight className="h-4 w-4" />
                   </Button>

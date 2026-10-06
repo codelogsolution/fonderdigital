@@ -1,5 +1,7 @@
 "use client";
 
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+
 import Link from "next/link";
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
@@ -10,7 +12,7 @@ import {
   Star,
   ArrowUpRight,
 } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
 
@@ -30,7 +32,7 @@ const INTERVAL = 6000;
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotionSafe();
   const total = testimonials.length;
   const showControls = total > 1;
   const [playing, setPlaying] = useState(!prefersReducedMotion);
@@ -79,12 +81,16 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative overflow-hidden border-y border-border-subtle bg-surface/30 py-20 sm:py-28"
+      className="relative isolate overflow-hidden border-y border-border-subtle py-20 sm:py-28"
     >
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-aurora opacity-55" />
+        <div className="absolute inset-0 bg-noise opacity-[0.025] mix-blend-multiply" />
+      </div>
 
       <div
         aria-hidden
-        className="absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-primary/4 to-transparent blur-3xl"
+        className="absolute -top-40 -right-40 -z-10 h-96 w-96 rounded-full bg-gradient-to-br from-primary/8 to-transparent blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -111,7 +117,7 @@ export default function Testimonials() {
             aria-label="Client testimonials"
             tabIndex={-1}
           >
-            <div className="relative mx-auto max-w-3xl rounded-3xl border border-border-subtle bg-white p-8 shadow-[0_40px_80px_-60px_rgba(11,18,32,0.06)] sm:p-10">
+            <div className="relative mx-auto max-w-3xl rounded-3xl border border-border-subtle bg-background p-8 shadow-[0_40px_80px_-60px_rgba(11,18,32,0.06)] sm:p-10">
               <span
                 aria-hidden
                 className="bg-spotlight pointer-events-none absolute -top-14 -right-14 h-52 w-52"
@@ -164,7 +170,7 @@ export default function Testimonials() {
 
                   <figcaption className="mt-7 flex flex-col items-center gap-4 border-t border-border-subtle pt-5">
                     <div className="flex items-center gap-3">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#0ea5e9] text-sm font-bold text-white">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#d97706] text-sm font-bold text-white">
                         {t.initials}
                       </span>
                       <div className="min-w-0 text-center">
@@ -204,7 +210,7 @@ export default function Testimonials() {
               type="button"
               onClick={togglePlay}
               aria-label={playing ? "Pause testimonials" : "Play testimonials"}
-              className="rounded-full border border-border-subtle bg-white px-3.5 py-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+              className="appearance-none rounded-full border border-border-subtle bg-background px-3.5 py-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
             >
               {playing ? (
                 <Pause className="h-4 w-4" />
@@ -225,7 +231,7 @@ export default function Testimonials() {
                   aria-label={`Go to testimonial ${i + 1}`}
                   aria-selected={i === current}
                   role="tab"
-                  className="relative h-2 rounded-full transition-all duration-300"
+                  className="relative h-2 appearance-none rounded-full transition-all duration-300"
                   style={{
                     width: i === current ? 24 : 8,
                     backgroundColor:
@@ -242,7 +248,7 @@ export default function Testimonials() {
                 type="button"
                 onClick={() => goTo(current - 1)}
                 aria-label="Previous testimonial"
-                className="rounded-full border border-border-subtle bg-white p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                className="appearance-none rounded-full border border-border-subtle bg-background p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
                 <ArrowLeft className="h-4 w-4" />
               </button>
@@ -250,7 +256,7 @@ export default function Testimonials() {
                 type="button"
                 onClick={() => goTo(current + 1)}
                 aria-label="Next testimonial"
-                className="rounded-full border border-border-subtle bg-white p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                className="appearance-none rounded-full border border-border-subtle bg-background p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               >
                 <ArrowRight className="h-4 w-4" />
               </button>

@@ -23,7 +23,7 @@ export default function WorkFaq({ items }: { items: { question: string; answer: 
                 aria-expanded={open}
                 aria-controls={panelId}
                 onClick={() => setOpenIndex(open ? null : index)}
-                className="flex w-full cursor-pointer items-center justify-between gap-4 p-5 text-left text-base font-semibold hover:text-primary focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-primary sm:p-6"
+                className="flex w-full cursor-pointer appearance-none items-center justify-between gap-4 p-5 text-left text-base font-semibold hover:text-primary focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-primary sm:p-6"
               >
                 {question}
                 <ChevronDown aria-hidden="true" className={`h-5 w-5 shrink-0 text-primary transition-transform duration-300 motion-reduce:transition-none ${open ? "rotate-180" : ""}`} />

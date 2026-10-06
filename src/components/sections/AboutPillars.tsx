@@ -74,7 +74,7 @@ export default function AboutPillars() {
             >
 
               <Reveal className={cn("group", reversed && "lg:order-2")}>
-                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border-subtle shadow-[0_24px_64px_rgba(2,132,199,0.08)]">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border-subtle shadow-[0_24px_64px_var(--primary-soft)]">
                   <Image
                     src={pillar.image}
                     alt={pillar.imageAlt}

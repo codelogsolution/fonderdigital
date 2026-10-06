@@ -1,18 +1,31 @@
 "use client";
 
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
+
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
 
 const DURATION = 1200;
 const EXIT_DELAY = 220;
 
 export default function Preloader() {
-  const reduced = useReducedMotion();
-  const [visible, setVisible] = useState(true);
+  const reduced = useReducedMotionSafe();
+  // Returning visitors are marked by the inline script in the document body
+  // before hydration. Reading the class during the initial render keeps the
+  // first client render identical to the server's, avoiding a hydration
+  // mismatch, and means the intro markup is never painted for them.
+  const [skipped] = useState(
+    () =>
+      typeof document !== "undefined" &&
+      document.documentElement.classList.contains("fd-skip-intro"),
+  );
+  const [visible, setVisible] = useState(!skipped);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    if (skipped) return;
+
     let frame = 0;
     let timer = 0;
 
@@ -62,13 +75,13 @@ export default function Preloader() {
       window.clearTimeout(timer);
       document.documentElement.style.overflow = "";
     };
-  }, []);
+  }, [skipped]);
 
   const letters = siteConfig.name.split("");
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !skipped && (
         <motion.div
           data-preloader
           exit={{ y: "-100%" }}

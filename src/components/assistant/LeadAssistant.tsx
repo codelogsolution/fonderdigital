@@ -129,7 +129,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                       key={choice.label}
                       type="button"
                       onClick={() => { setService(choice); setStep("budget"); }}
-                      className="rounded-full border border-primary/30 bg-primary/5 px-3.5 py-2 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                      className="appearance-none rounded-full border border-primary/30 bg-primary/5 px-3.5 py-2 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
                     >
                       {choice.label}
                     </button>
@@ -151,7 +151,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                         key={choice.label}
                         type="button"
                         onClick={() => { setBudget(choice); setStep("done"); }}
-                        className="rounded-full border border-primary/30 bg-primary/5 px-3.5 py-2 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                        className="appearance-none rounded-full border border-primary/30 bg-primary/5 px-3.5 py-2 text-sm font-semibold text-primary transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
                       >
                         {choice.label}
                       </button>
@@ -238,7 +238,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
         aria-expanded={open}
         aria-label={open ? "Close quick guide" : "Open quick guide"}
         className={cn(
-          "flex h-14 w-14 items-center justify-center rounded-full text-primary-foreground shadow-[0_12px_32px_-8px_rgba(2,132,199,0.6)] transition-all duration-300 hover:scale-105 active:scale-95",
+          "flex h-14 w-14 items-center justify-center rounded-full text-primary-foreground shadow-[0_12px_32px_-8px_var(--primary-glow-strong)] transition-all duration-300 hover:scale-105 active:scale-95",
           open ? "bg-foreground" : "bg-primary",
         )}
       >

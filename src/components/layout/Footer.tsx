@@ -1,4 +1,4 @@
-import type { ComponentType, CSSProperties } from "react";
+import type { ComponentType } from "react";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { siteConfig, type SocialLink } from "@/config/site";
@@ -6,15 +6,15 @@ import { InstagramIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import NewsletterForm from "@/components/layout/NewsletterForm";
 import BrandMark from "@/components/ui/BrandMark";
 
-const footerTokens = {
-  "--foreground": "#f1f5f9",
-  "--muted": "#94a3b8",
-  "--border-subtle": "rgba(255, 255, 255, 0.1)",
-  "--surface": "rgba(255, 255, 255, 0.05)",
-  "--surface-2": "rgba(255, 255, 255, 0.08)",
-  "--primary": "#38bdf8",
-} as CSSProperties;
+/* The footer is a dark band, so it re-tunes the semantic tokens via the
+   `.band-dark` class rather than forcing light-mode values onto near-black.
+   Those tokens now live in globals.css and are theme-aware, so the footer
+   follows the active theme instead of hard-coding one copper.
 
+   It used to pass an inline `--primary: #38bdf8`, which silently recoloured
+   every `text-primary` / `bg-primary` in this subtree — most visibly the
+   newsletter button. Keeping the override in CSS means a theme switch moves
+   the footer and the page together. */
 const socialIcons: Record<
   SocialLink["icon"],
   ComponentType<{ className?: string }>
@@ -25,15 +25,12 @@ const socialIcons: Record<
 
 export default function Footer() {
   return (
-    <footer
-      className="relative bg-[#0b1220] text-slate-300"
-      style={footerTokens}
-    >
+    <footer className="band-dark relative text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
 
           <div className="lg:col-span-4">
-            <BrandMark className="mb-3 h-10 w-10" />
+            <BrandMark className="mb-3 h-10 w-10 text-primary" />
             <p className="text-lg font-extrabold tracking-tight">
               {siteConfig.name}
               <span className="text-primary">.</span>
@@ -51,7 +48,7 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-2/60 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_24px_rgba(2,132,199,0.08)]"
+                    className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-2/60 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_24px_var(--primary-soft)]"
                   >
                     <Icon className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-primary" />
                     <span className="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">
@@ -140,8 +137,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
+          {/* Copyright year is the current year, not the founding year. A
+              notice that reads "© 2022" on a live site reads as abandoned.
+              `siteConfig.established` stays for the "Est." line elsewhere. */}
           <p className="text-sm text-muted">
-            © {siteConfig.established} {siteConfig.name}. All rights reserved.
+            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
             <Link href="/privacy" className="transition-colors hover:text-primary">

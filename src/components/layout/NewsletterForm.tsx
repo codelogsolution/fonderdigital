@@ -57,7 +57,10 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
       />
       <button
         type="submit"
-        className="flex h-10 shrink-0 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_24px_rgba(2,132,199,0.4)]"
+        /* `appearance-none` is required here, not cosmetic: a bare <button>
+           picks up the UA `background-color: buttonface` rule, which resolves
+           to the browser's accent blue and paints over `bg-primary`. */
+        className="flex h-10 shrink-0 items-center gap-2 appearance-none rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_24px_var(--primary-line)]"
       >
         Subscribe <Send className="h-3.5 w-3.5" />
       </button>

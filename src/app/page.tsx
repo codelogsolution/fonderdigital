@@ -8,6 +8,9 @@ import CallToAction from "@/components/sections/CallToAction";
 
 const HomeShowcase = dynamic(() => import("@/components/sections/HomeShowcase"));
 const StickyProcess = dynamic(() => import("@/components/sections/StickyProcess"));
+const DeliveryShowcase = dynamic(
+  () => import("@/components/sections/DeliveryShowcase"),
+);
 const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
 
 export default function Home() {
@@ -19,6 +22,7 @@ export default function Home() {
       <MarqueeStrip />
       <HomeShowcase />
       <StickyProcess />
+      <DeliveryShowcase />
       <RecentWins />
       <Testimonials />
       <CallToAction />

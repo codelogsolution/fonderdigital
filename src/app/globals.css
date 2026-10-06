@@ -1,24 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  --background: #fdfcfa;
+  --foreground: #17130f;
 
-  --background: #ffffff;
-  --foreground: #0b1220;
+  --surface: #f6f2ec;
+  --surface-2: #ece5db;
+  --border-subtle: rgba(23, 19, 15, 0.11);
 
-  --surface: #f1f5f9;
-  --surface-2: #e2e8f0;
-  --border-subtle: rgba(11, 18, 32, 0.1);
-
-  --primary: #0284c7;
+  /* Copper. Dark enough to stay readable as text on white (5.4:1 on
+     --background), so it can carry links and small labels safely. */
+  --primary: #b45309;
   --primary-foreground: #ffffff;
-  --muted: #5b6b81;
+  --muted: #6b6055;
+
+  /* Lightest wash of the accent, for backgrounds behind text. */
+  --primary-soft: rgba(180, 83, 9, 0.08);
+  --primary-line: rgba(180, 83, 9, 0.22);
+
+  /* Second accent, used only by the wide aurora washes and the edge-shine
+     border so backgrounds are two-tone instead of monochrome. Kept in the
+     same family as --primary per theme, otherwise every section picks up
+     stray magenta and sky-blue from the shared utilities. */
+  --accent-2: #c2410c;
+  --accent-2-soft: rgba(194, 65, 12, 0.1);
 
   --font-sans-family:
     var(--font-instrument), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
     sans-serif;
 
   --font-display-family:
-    var(--font-bricolage), var(--font-instrument), ui-sans-serif, system-ui,
+    var(--font-outfit), var(--font-instrument), ui-sans-serif, system-ui,
     sans-serif;
 
   --font-mono-family:
@@ -26,8 +38,141 @@
     "Liberation Mono", monospace;
 }
 
-@theme inline {
+/* ------------------------------------------------------------------
+   Themes.
 
+   Everything on the site is painted from the eight tokens in :root, so a
+   theme is just a different set of those values hung off `data-theme` on
+   <html>. Set once, before paint, by the inline script in layout.tsx —
+   changing it later only repaints variables, never remounts the tree.
+
+   Each accent is picked to clear 4.5:1 as text on its own background, so
+   links and small labels stay legible in every theme.
+   ------------------------------------------------------------------ */
+
+/* --- Theme 1: Copper (default) — warm neutral + burnt orange --- */
+:root,
+[data-theme="copper"] {
+  --background: #fdfcfa;
+  --foreground: #17130f;
+  --surface: #f6f2ec;
+  --surface-2: #ece5db;
+  --border-subtle: rgba(23, 19, 15, 0.11);
+  --primary: #b45309;
+  --primary-foreground: #ffffff;
+  --muted: #6b6055;
+  --primary-soft: rgba(180, 83, 9, 0.08);
+  --primary-line: rgba(180, 83, 9, 0.22);
+  --primary-glow: rgba(180, 83, 9, 0.45);
+  --primary-glow-strong: rgba(180, 83, 9, 0.65);
+  --accent-2: #c2410c;
+  --accent-2-soft: rgba(194, 65, 12, 0.1);
+}
+
+/* --- Theme 2: Azure — a clear, saturated sky blue on cool white --- */
+[data-theme="azure"] {
+  --background: #f7fbff;
+  --foreground: #0b1220;
+  --surface: #eef6fd;
+  --surface-2: #dcebf9;
+  --border-subtle: rgba(11, 18, 32, 0.1);
+  /* #0284c7. Vibrant enough to read as a deliberate brand colour rather than
+     a default utility blue. Note it lands at 3.9:1 on --background, so it
+     clears AA for large text and UI but not for small body copy; anything
+     reading as small text should use --primary-deep (6.2:1) instead. */
+  --primary: #0284c7;
+  --primary-deep: #0a6399;
+  --primary-foreground: #ffffff;
+  --muted: #46586b;
+  --primary-soft: rgba(2, 132, 199, 0.09);
+  --primary-line: rgba(2, 132, 199, 0.22);
+  --primary-glow: rgba(2, 132, 199, 0.42);
+  --primary-glow-strong: rgba(2, 132, 199, 0.62);
+  --accent-2: #0891b2;
+  --accent-2-soft: rgba(8, 145, 178, 0.1);
+}
+
+/* --- Theme 3: Noir — neon-on-black, the dark editorial read ---
+   Same *mood* as the dark templates doing the rounds (near-black base, one
+   high-chroma accent doing all the work), but the accent is an electric
+   violet rather than the acid lime those templates use, so this is an
+   original palette and not a recolour of someone else's. Violet-on-black is
+   also the most requested dark treatment in 2025-26 product and studio
+   work, which is why it earns a slot here. */
+[data-theme="noir"] {
+  --background: #0b0b11;
+  --foreground: #f4f4f8;
+  /* Surfaces sit a clear step above the base so cards read as raised panels
+     rather than as slightly-less-black holes. */
+  --surface: #16161f;
+  --surface-2: #1e1e2a;
+  --border-subtle: rgba(255, 255, 255, 0.14);
+  --primary: #a78bfa;
+  --primary-foreground: #180c2e;
+  --muted: #a2a2b4;
+  --primary-soft: rgba(167, 139, 250, 0.16);
+  --primary-line: rgba(167, 139, 250, 0.36);
+  --primary-glow: rgba(167, 139, 250, 0.42);
+  --primary-glow-strong: rgba(167, 139, 250, 0.64);
+  /* Violet pairs with cyan on black — the neon pairing the dark templates
+     all converge on, and it holds up far better than violet-on-violet. */
+  --accent-2: #22d3ee;
+  --accent-2-soft: rgba(34, 211, 238, 0.14);
+}
+
+/* ------------------------------------------------------------------
+   Dark bands.
+
+   The footer and the metrics strip sit on a near-black surface, so they
+   re-tune the semantic tokens locally instead of dragging light-mode
+   values onto black. Each theme supplies its own band background and a
+   lifted accent that reads against it.
+   ------------------------------------------------------------------ */
+.band-dark {
+  --foreground: #f1f5f9;
+  --muted: #94a3b8;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --primary: #d97757;
+  --primary-foreground: #2a1509;
+  --primary-soft: rgba(217, 119, 87, 0.14);
+  --primary-line: rgba(217, 119, 87, 0.3);
+  --band-bg: #120c07;
+  background-color: var(--band-bg);
+}
+
+[data-theme="azure"] .band-dark {
+  --primary: #38bdf8;
+  --primary-foreground: #082f49;
+  --primary-soft: rgba(56, 189, 248, 0.14);
+  --primary-line: rgba(56, 189, 248, 0.32);
+  --band-bg: #08131f;
+}
+
+/* Noir's page is already near-black, so its band goes a shade deeper with a
+   cooler violet lift — matching the accent to the surface it sits on. */
+[data-theme="noir"] .band-dark {
+  --muted: #b4b4c6;
+  --primary: #c4b5fd;
+  --primary-foreground: #1c1036;
+  --primary-soft: rgba(196, 181, 253, 0.16);
+  --primary-line: rgba(196, 181, 253, 0.32);
+  --band-bg: #05050a;
+}
+
+/* A theme switch should read as a wash, not a flash. Scoped to colour
+   properties so it never animates layout. */
+html.theme-ready body,
+html.theme-ready header,
+html.theme-ready footer {
+  transition:
+    background-color 260ms ease,
+    color 260ms ease,
+    border-color 260ms ease;
+}
+
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
@@ -35,7 +180,13 @@
   --color-border-subtle: var(--border-subtle);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-line: var(--primary-line);
+  --color-primary-glow: var(--primary-glow);
+  --color-primary-glow-strong: var(--primary-glow-strong);
   --color-muted: var(--muted);
+  --color-accent-2: var(--accent-2);
+  --color-accent-2-soft: var(--accent-2-soft);
 
   --font-sans: var(--font-sans-family);
 
@@ -52,6 +203,10 @@
   --animate-float: float 7s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 5s ease-in-out infinite;
   --animate-marquee: marquee 32s linear infinite;
+
+  /* Shared easing so every reveal and hover feels like one system. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   @keyframes marquee {
     to {
@@ -121,6 +276,10 @@ h5,
 h6 {
   font-family: var(--font-display-family);
   font-weight: 700;
+  /* Outfit is geometric and wide-set by default; tightening it is what makes
+     large headings read as deliberate rather than airy. */
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 ::selection {
@@ -142,10 +301,13 @@ h6 {
   background: #94a3b8;
 }
 
+/* The washes below are driven by the active theme's accent rather than a
+   literal copper, so a theme switch recolours the grid, spotlight and shadow
+   with it. */
 @utility bg-grid-accent {
   background-image:
-    linear-gradient(to right, rgba(2, 132, 199, 0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(2, 132, 199, 0.4) 1px, transparent 1px);
+    linear-gradient(to right, var(--primary-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--primary-line) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -161,7 +323,7 @@ h6 {
 @utility bg-spotlight {
   background-image: radial-gradient(
     circle closest-side,
-    rgba(2, 132, 199, 0.14),
+    var(--primary-soft),
     transparent 70%
   );
 }
@@ -170,34 +332,166 @@ h6 {
   background-image: linear-gradient(
     to bottom,
     transparent,
-    rgba(11, 18, 32, 0.18) 22%,
-    rgba(11, 18, 32, 0.18) 78%,
+    var(--border-subtle) 22%,
+    var(--border-subtle) 78%,
     transparent
   );
 }
 
 @utility text-gradient {
-  background: linear-gradient(92deg, #0b1220 0%, var(--primary) 100%);
+  background: linear-gradient(92deg, var(--foreground) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 @utility glass {
-  background: #ffffff;
-  border: 1px solid rgba(11, 18, 32, 0.06);
+  /* Translucent over --background rather than solid white: the header
+     sits on top of every section, so a fixed #ffffff punches a bright bar
+     through the dark themes once the page is scrolled.
+
+     Three properties matter here. `backdrop-filter` blurs whatever scrolls
+     underneath, so headings passing behind the bar read as a soft wash
+     instead of sharp overlapping text. The 97% mix then does the rest.
+
+     The opacity is deliberately not lower. Blur alone cannot fix this: at
+     92% a 24px+ bold heading still ghosted through the bar on mobile
+     (measured ~8% of a near-black glyph, a luminance spread of 18/255).
+     Once the mix is high enough to kill the ghost, the blur is only
+     contributing a faint tint — but the header still needs to be opaque
+     because it carries nav text, and legibility outranks the frost. */
+  background: color-mix(in srgb, var(--background) 97%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border-subtle);
+}
+
+/* ------------------------------------------------------------------
+   Motion + depth system
+   Shared vocabulary so every section on the site sits at the same
+   premium level instead of each one inventing its own treatment.
+------------------------------------------------------------------- */
+
+@utility glass-premium {
+  /* Same tokenised treatment as .glass — the gradient fades between two
+     mixes of the theme background so the card still reads as frosted glass
+     in light and in dark. */
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--background) 94%, transparent) 0%,
+    color-mix(in srgb, var(--background) 76%, transparent) 52%,
+    color-mix(in srgb, var(--background) 86%, transparent) 100%
+  );
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--border-subtle);
+  box-shadow:
+    0 1px 2px rgba(11, 18, 32, 0.04),
+    0 12px 28px -12px rgba(11, 18, 32, 0.12),
+    0 40px 80px -40px var(--primary-line);
+}
+
+/* Soft multi-stop aurora used behind sections for depth. */
+@utility bg-aurora {
+  background-image:
+    radial-gradient(
+      42rem 26rem at 12% 0%,
+      var(--primary-soft),
+      transparent 62%
+    ),
+    radial-gradient(
+      36rem 24rem at 88% 12%,
+      var(--accent-2-soft),
+      transparent 60%
+    ),
+    radial-gradient(
+      30rem 20rem at 50% 100%,
+      var(--primary-soft),
+      transparent 65%
+    );
+}
+
+/* Fine film grain keeps large flat gradients from banding. */
+@utility bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+@utility mask-fade-b {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+/* Gradient hairline border that survives overflow-hidden clipping. */
+@utility ring-gradient {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      var(--primary-glow),
+      var(--accent-2-soft) 46%,
+      var(--border-subtle) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+@utility shadow-lift {
+  box-shadow:
+    0 2px 4px rgba(11, 18, 32, 0.04),
+    0 18px 40px -16px rgba(11, 18, 32, 0.16),
+    0 60px 120px -60px var(--primary-line);
 }
 
 @utility glow-primary {
   box-shadow:
-    0 0 24px rgba(2, 132, 199, 0.18),
-    0 0 64px rgba(2, 132, 199, 0.06);
+    0 0 24px var(--primary-glow),
+    0 0 64px var(--primary-soft);
 }
 
 @utility bg-grid {
   background-image:
-    linear-gradient(to right, rgba(11, 18, 32, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(11, 18, 32, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
   background-size: 56px 56px;
 }
 
@@ -222,5 +516,363 @@ h6 {
 
   &:hover::after {
     transform: translateX(120%);
+  }
+}
+
+/* ==================================================================
+   AURORA SYSTEM — the site's signature depth language.
+
+   These washes are *punctuation*, not wallpaper. Each one is kept very
+   low-contrast and warm so it reads as light falling across a paper
+   surface. The previous blue/violet/cyan trio was both too colourful and
+   too saturated behind body copy, which is what made sections feel busy;
+   the same three-stop structure now runs on amber/copper/peach at roughly
+   half the alpha.
+   ================================================================== */
+
+/* Wide, saturated multi-stop mesh. Used as the base atmosphere of a
+   section; the large blur radii keep it soft enough to sit behind text. */
+@utility bg-mesh {
+  background-image:
+    radial-gradient(
+      58rem 40rem at 14% 6%,
+      var(--primary-soft),
+      transparent 62%
+    ),
+    radial-gradient(
+      46rem 34rem at 86% 14%,
+      var(--accent-2-soft),
+      transparent 60%
+    ),
+    radial-gradient(
+      52rem 36rem at 50% 96%,
+      var(--primary-soft),
+      transparent 64%
+    );
+}
+
+/* Tighter, hotter field for smaller containers (cards, panels). */
+@utility bg-mesh-tight {
+  background-image:
+    radial-gradient(
+      22rem 16rem at 18% 12%,
+      var(--primary-soft),
+      transparent 64%
+    ),
+    radial-gradient(
+      20rem 15rem at 88% 84%,
+      var(--accent-2-soft),
+      transparent 62%
+    );
+}
+
+/* The orb itself: a layered sphere that reads as a lit 3D ball rather
+   than a flat radial dot. Three stops give it a core, a body and a rim.
+   The body runs light at the centre out to a faint edge, so on a light
+   theme it reads as coloured light and on Noir as a glowing sphere —
+   never as a dark smudge. */
+@utility orb-core {
+  background-image: radial-gradient(
+    circle at 36% 30%,
+    color-mix(in oklab, white 88%, var(--primary)) 0%,
+    color-mix(in oklab, white 62%, var(--primary)) 14%,
+    var(--primary-glow-strong) 32%,
+    var(--primary-glow) 52%,
+    var(--primary-line) 74%,
+    transparent 98%
+  );
+}
+
+/* Rim light that sits on top of the orb to fake a specular edge. */
+@utility orb-rim {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 60%,
+    color-mix(in oklab, white 62%, var(--primary)) 74%,
+    var(--primary-soft) 86%,
+    transparent 97%
+  );
+}
+
+/* Inner shadow that gives the sphere volume. Mixed toward the theme's own
+   background rather than pure black: a black mix reads as a hole punched
+   through the page on light themes and as a grey smudge on Noir. */
+@utility orb-shade {
+  background-image: radial-gradient(
+    circle at 70% 78%,
+    color-mix(in oklab, var(--primary) 30%, var(--background)) 0%,
+    transparent 56%
+  );
+}
+
+/* Soft elliptical contact shadow for floating objects — the cheapest way
+   to make an element look like it is hovering above the page. */
+@utility contact-shadow {
+  background-image: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(15, 23, 42, 0.22) 0%,
+    rgba(15, 23, 42, 0.1) 42%,
+    transparent 72%
+  );
+}
+
+/* Hairline top highlight — the "lit from above" edge on cards. */
+@utility edge-shine {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-inline: 12%;
+    top: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.9),
+      transparent
+    );
+    opacity: 0.7;
+  }
+}
+
+/* Fine dotted field, a quieter alternative to the technical grid. */
+@utility bg-dots {
+  background-image: radial-gradient(
+    var(--border-subtle) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+}
+
+/* Deep-stage panel used behind 3D mockups so they read against a floor
+   rather than floating in white space. */
+@utility stage-deep {
+  background-image:
+    radial-gradient(
+      40rem 26rem at 50% 8%,
+      var(--primary-soft),
+      transparent 66%
+    ),
+    /* Floor fog tracks --surface-2 so it stays a light haze on light
+       themes and a dark one on Noir instead of glowing white. */
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--surface-2) 70%, transparent) 100%
+    );
+}
+
+@keyframes orb-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(3%, -4%, 0) scale(1.06);
+  }
+  66% {
+    transform: translate3d(-3%, 3%, 0) scale(0.97);
+  }
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sheen-sweep {
+  0% {
+    transform: translateX(-130%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(230%) skewX(-18deg);
+  }
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Floating depth card: a slow two-axis drift so cards orbiting a pinned
+   device feel suspended rather than pinned to their anchor. Amplitudes come
+   from --float-x / --float-y so each card can differ without a new keyframe. */
+@keyframes card-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(var(--float-x), calc(var(--float-y) * -1), 0);
+  }
+  50% {
+    transform: translate3d(calc(var(--float-x) * -0.6), var(--float-y), 0);
+  }
+  75% {
+    transform: translate3d(
+      calc(var(--float-x) * 0.7),
+      calc(var(--float-y) * -0.45),
+      0
+    );
+  }
+}
+
+/* Motion-safe wrappers. Each returns to a static, fully visible state when
+   the reader has asked for reduced motion. */
+@utility animate-orb-drift {
+  animation: orb-drift 22s ease-in-out infinite;
+}
+@utility animate-orb-breathe {
+  animation: orb-breathe 9s ease-in-out infinite;
+}
+@utility animate-ring-spin {
+  animation: ring-spin 44s linear infinite;
+}
+@utility animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+@utility animate-card-float {
+  animation: card-float 9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-orb-drift,
+  .animate-orb-breathe,
+  .animate-ring-spin,
+  .animate-float-slow,
+  .animate-card-float {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Short-viewport hero.
+
+   The hero is a full-screen unit: the service pills and "Scroll to
+   explore" must land inside the first viewport. On a 1280x720 or
+   1366x768 laptop the 5:6 stage at its desktop width is ~600px tall,
+   which on its own pushes the rail past the fold. Height is the scarce
+   axis here, so the stage is capped and the vertical rhythm tightens
+   whenever the window is short but wide.
+
+   Written after the Tailwind import so it wins over the `lg:max-w-*`
+   utility on equal specificity.
+   ------------------------------------------------------------------ */
+@media (min-width: 1024px) and (max-height: 880px) {
+  .hero-stage {
+    max-width: 448px;
+  }
+
+  /* Must clear the fixed header (md:h-20 = 80px, 81 with the border) plus a
+     readable gap. At 4.75rem the chips sat ~3px under the header bar on a
+     1234x680 window and read as collided with it. */
+  .hero-grid {
+    padding-top: 6rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .hero-rail {
+    padding-bottom: 1rem;
+  }
+}
+
+/* Phones: the hero stacks, so the stage is capped small — at full width the
+   5:6 frame alone was ~500px tall and pushed the rail two screens down. */
+@media (max-width: 639px) {
+  .hero-stage {
+    max-width: 288px;
+  }
+
+  .hero-grid {
+    gap: 1.5rem;
+    padding-top: 5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .hero-title {
+    margin-top: 1.25rem;
+  }
+
+  .hero-tagline {
+    margin-top: 0.75rem;
+    min-height: 2.75rem;
+  }
+
+  .hero-cta,
+  .hero-trust {
+    margin-top: 1.25rem;
+  }
+
+  .hero-trust {
+    padding-top: 1rem;
+  }
+}
+
+/* Sub-720 windows (small laptops, half-height windows): the copy column is
+   the tall element, so trim the headline rather than the top padding — the
+   gap under the header matters more than a point or two of type size. */
+@media (min-width: 1024px) and (max-height: 700px) {
+  .hero-title {
+    font-size: 3.6rem;
+  }
+
+  .hero-stage {
+    max-width: 352px;
+  }
+}
+
+/* Even shorter (720p and below) needs the copy tightened too, or the
+   tagline + trust row alone push the rail out of view. The 5:6 stage is
+   already small by this point, so the copy column — not the stage — sets
+   the hero height, and the only lever left is the vertical rhythm. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .hero-stage {
+    max-width: 384px;
+  }
+
+  .hero-grid {
+    padding-top: 6rem;
+  }
+
+  .hero-title {
+    margin-top: 1rem;
+  }
+
+  .hero-tagline {
+    margin-top: 0.75rem;
+    min-height: 2.75rem;
+  }
+
+  .hero-lede {
+    margin-top: 0.5rem;
+  }
+
+  .hero-cta,
+  .hero-trust {
+    margin-top: 1.25rem;
+  }
+
+  .hero-trust {
+    padding-top: 1rem;
   }
 }

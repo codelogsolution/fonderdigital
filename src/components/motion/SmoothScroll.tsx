@@ -16,7 +16,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     if (!fine || reduced) return;
 
     const lenis = new Lenis({
-      lerp: 0.1,
+      lerp: 0.12,
       anchors: true,
     });
     lenisRef.current = lenis;

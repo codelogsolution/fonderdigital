@@ -39,7 +39,9 @@ const principles = [
 
 export default function Story() {
   return (
-    <section className="relative border-t border-border-subtle bg-surface/40 py-8 sm:py-14">
+    <section className="relative isolate overflow-hidden border-t border-border-subtle py-14 sm:py-20">
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-aurora opacity-50" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-noise opacity-[0.025] mix-blend-multiply" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
@@ -58,7 +60,7 @@ export default function Story() {
                 <li className="relative">
                   <span
                     aria-hidden
-                    className="absolute -left-[2.45rem] top-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background shadow-[0_0_12px_rgba(2,132,199,0.55)]"
+                    className="absolute -left-[2.45rem] top-1.5 h-3 w-3 rounded-full border-2 border-primary bg-background shadow-[0_0_12px_var(--primary-glow)]"
                   />
                   <p className="text-sm font-bold uppercase tracking-widest text-primary">
                     {entry.year}
@@ -75,7 +77,7 @@ export default function Story() {
           </ol>
 
           <Reveal delay={0.1}>
-            <div className="h-full rounded-3xl border border-border-subtle bg-surface p-8">
+            <div className="h-full rounded-[1.75rem] glass-premium ring-gradient p-8">
               <h3 className="text-xl font-extrabold tracking-tight">
                 Standard operating principles
               </h3>

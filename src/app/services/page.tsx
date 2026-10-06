@@ -21,7 +21,9 @@ export default function ServicesPage() {
         description="Six senior-led practices, one accountable team. Pick a single engagement or hand us the full stack."
       />
 
-      <section className="pb-24 sm:pb-32">
+      <section className="relative isolate overflow-hidden pb-24 sm:pb-32">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-aurora opacity-45" />
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-noise opacity-[0.025] mix-blend-multiply" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {servicePages.map((service, index) => (
@@ -32,7 +34,7 @@ export default function ServicesPage() {
               >
                 <Link
                   href={`/services/${service.slug}`}
-                  className="group flex h-full flex-col rounded-2xl border border-border-subtle bg-surface p-8 transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/40 hover:shadow-[0_16px_48px_rgba(2,132,199,0.08)]"
+                  className="group flex h-full flex-col overflow-hidden rounded-[1.75rem] glass-premium ring-gradient p-8 transition-transform duration-500 hover:-translate-y-1.5"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
                     <service.icon className="h-6 w-6" />
