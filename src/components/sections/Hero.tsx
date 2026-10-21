@@ -34,14 +34,12 @@ export default function Hero() {
   });
 
   return (
-    /* The hero is a true full-screen unit: `min-h-[100svh]` + flex column
-         lets the rail settle against the bottom of the viewport so the service
-         pills and "Scroll to explore" are visible on arrival, instead of sitting
-         a scroll away. `svh` (not `vh`) keeps the rail in view when mobile
-         browser chrome expands and shrinks the visual viewport. */
+    /* Desktop uses a full-screen hero. On phones, let the section follow its
+       content height instead of stretching to the whole viewport; this keeps
+       the copy, artwork, and service rail together without large blank bands. */
     <section
       id="home"
-      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-background"
+      className="relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
     >
       {/* Atmosphere: one soft mesh wash plus a fine dot field, masked so they
           fade before reaching the section edges. The top/bottom fades use the
