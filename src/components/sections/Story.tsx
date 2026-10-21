@@ -3,38 +3,38 @@ import Reveal from "@/components/motion/Reveal";
 
 const timeline = [
   {
-    year: "2022",
-    title: "FonderDigital is founded",
+    year: "01",
+    title: "Understand the context",
     description:
-      "Three specialists, one conviction: agencies fragment strategy, design, and engineering. We refused to.",
+      "Get clear on the people you need to reach, the problem to solve, and the constraints around the work.",
   },
   {
-    year: "2023",
-    title: "First 20 clients",
+    year: "02",
+    title: "Set a useful direction",
     description:
-      "Word of mouth in the SaaS and e-commerce scene filled our roster — without spending a rupee on ads.",
+      "Turn the brief into priorities, a defined scope, and a plan your team can review before execution begins.",
   },
   {
-    year: "2024",
-    title: "The growth engine",
+    year: "03",
+    title: "Make and review the work",
     description:
-      "We formalized the three-pillar operating system: architecture, motion, and growth under one accountable roof.",
+      "Share progress as the design, build, content, or campaign takes shape so decisions stay visible.",
   },
   {
-    year: "Today",
-    title: "120+ campaigns optimized",
+    year: "04",
+    title: "Learn what should happen next",
     description:
-      "A senior-only collective shipping premium builds and compounding results across three continents.",
+      "After launch, use the analytics and feedback available to decide what to maintain, test, or improve.",
   },
 ];
 
 const principles = [
-  "Senior-only teams — no handoffs to juniors",
-  "Every build passes a performance budget",
-  "Accessibility audit on every release",
-  "Post-launch analytics on every engagement",
-  "Weekly demos — you always see progress",
-  "Fixed-scope proposals with no surprises",
+  "Agree performance priorities before development",
+  "Consider accessibility in design and quality checks",
+  "Plan measurement around useful project questions",
+  "Share progress in reviewable increments",
+  "Make scope, assumptions, and trade-offs explicit",
+  "Document next-step recommendations where useful",
 ];
 
 export default function Story() {
@@ -48,7 +48,7 @@ export default function Story() {
             Our story
           </span>
           <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Est. 2022 — built to stay elite
+            Strategy, design, and delivery in one clear process
           </h2>
         </Reveal>
 
@@ -82,8 +82,9 @@ export default function Story() {
                 Standard operating principles
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-muted">
-                Quality assurance isn&apos;t a phase — it&apos;s the operating
-                system. Every FonderDigital engagement runs on these commitments:
+                Quality checks and clear communication should fit the goals,
+                constraints, and scope of each engagement. These principles
+                guide that process:
               </p>
               <ul className="mt-8 space-y-4">
                 {principles.map((principle) => (

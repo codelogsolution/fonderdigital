@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { Check, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
 type NewsletterFormProps = { className?: string };
 
@@ -13,6 +14,10 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email.trim()) return;
+    const body = `Please add this email address to the FonderDigital newsletter: ${email.trim()}`;
+    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+      "Newsletter subscription request",
+    )}&body=${encodeURIComponent(body)}`;
     setSubscribed(true);
   };
 
@@ -29,7 +34,15 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
           <Check className="h-4 w-4" />
         </span>
         <p className="text-sm text-foreground">
-          You&apos;re on the list — talk soon.
+          Your email app should open with a subscription request. Press Send
+          there to request a subscription. If it doesn&apos;t open, email{" "}
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="font-semibold text-primary underline underline-offset-4"
+          >
+            {siteConfig.email}
+          </a>
+          .
         </p>
       </div>
     );
@@ -62,7 +75,7 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
            to the browser's accent blue and paints over `bg-primary`. */
         className="flex h-10 shrink-0 items-center gap-2 appearance-none rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_24px_var(--primary-line)]"
       >
-        Subscribe <Send className="h-3.5 w-3.5" />
+        Request updates <Send className="h-3.5 w-3.5" />
       </button>
     </form>
   );

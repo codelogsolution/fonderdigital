@@ -10,7 +10,7 @@ const WebShowcase = dynamic(() => import("@/components/sections/WebShowcase"), {
 export const metadata: Metadata = {
   title: "Web Development",
   description:
-    "Blazing-fast, scalable web applications built with Next.js and modern tooling.",
+    "React and Next.js development from requirements and architecture through reusable components, QA, CI/CD, and production release.",
 };
 
 export default function WebDevPage() {

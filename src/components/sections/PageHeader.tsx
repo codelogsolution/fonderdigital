@@ -37,7 +37,7 @@ export default function PageHeader({
         </Reveal>
 
         <h1 className="mt-5 max-w-4xl text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.02]">
-          <SplitText text={title} by="char" className="inline-block" />
+          <SplitText text={title} by="word" className="inline-block" />
         </h1>
 
         {description && (

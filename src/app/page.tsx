@@ -11,7 +11,6 @@ const StickyProcess = dynamic(() => import("@/components/sections/StickyProcess"
 const DeliveryShowcase = dynamic(
   () => import("@/components/sections/DeliveryShowcase"),
 );
-const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
 
 export default function Home() {
   return (
@@ -24,7 +23,6 @@ export default function Home() {
       <StickyProcess />
       <DeliveryShowcase />
       <RecentWins />
-      <Testimonials />
       <CallToAction />
     </>
   );

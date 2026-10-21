@@ -373,21 +373,21 @@ const appCards = [
   {
     id: "pulsefit",
     eyebrow: "Fitness app",
-    title: "PulseFit",
+    title: "Fitness app concept",
     screen: <PulseFitScreen />,
     tab: { active: 0, items: [{ icon: Home, label: "Home" }, { icon: Activity, label: "Stats" }, { icon: Dumbbell, label: "Train" }, { icon: User, label: "Profile" }] },
   },
   {
     id: "localtable",
     eyebrow: "Food ordering app",
-    title: "LocalTable",
+    title: "Food ordering concept",
     screen: <LocalTableScreen />,
     tab: { active: 1, items: [{ icon: Home, label: "Home" }, { icon: Search, label: "Browse" }, { icon: ShoppingBag, label: "Cart" }, { icon: User, label: "Profile" }] },
   },
   {
     id: "pocketstudio",
     eyebrow: "Creator app",
-    title: "PocketStudio",
+    title: "Creator app concept",
     screen: <PocketStudioScreen />,
     tab: { active: 2, items: [{ icon: Home, label: "Home" }, { icon: Search, label: "Explore" }, { icon: Plus, label: "Create" }, { icon: User, label: "Profile" }] },
   },
@@ -403,18 +403,17 @@ export default function AppShowcase() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Inside the work</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Illustrative concepts</span>
             <h2 id="app-showcase" className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
-              What we build, <span className="text-primary">in action</span>
+              App experiences, <span className="text-primary">in concept</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted">
-              Three live-feeling app concepts — headers, hero sliders, horizontal product lists and
-              dashboards — scrolling slowly. Hover a card to pause and explore.
+              These sample screens demonstrate possible product directions. They are not published apps or client work. Scroll through each concept; hover a card to pause and explore.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-10 sm:grid-cols-[repeat(2,minmax(0,1fr))] sm:gap-8 xl:grid-cols-[repeat(3,minmax(0,1fr))]">
+        <div className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-8 md:grid-cols-3 md:gap-5 xl:gap-8">
           {appCards.map((app) => (
             <ShowcaseCard
               key={app.id}

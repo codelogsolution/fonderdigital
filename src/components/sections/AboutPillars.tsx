@@ -19,14 +19,14 @@ const pillars: Pillar[] = [
     title: "Technical Backend Architecture",
     subtitle: "Robust & Scalable Infrastructure",
     description:
-      "The invisible half of premium: type-safe APIs, resilient data layers, and cloud-native pipelines that stay fast under real production load.",
+      "Plan the data, APIs, integrations, and deployment approach around the product's needs and expected usage.",
     image:
       "/images/photo-1558494949.webp",
     imageAlt: "Server racks in a modern data center",
     points: [
       "Type-safe APIs & resilient data layers",
       "Cloud-native CI/CD pipelines",
-      "Uptime and performance budgets enforced",
+      "Performance and reliability priorities scoped up front",
     ],
   },
   {
@@ -34,14 +34,14 @@ const pillars: Pillar[] = [
     title: "Frontend & Motion Engineering",
     subtitle: "Premium User Experiences",
     description:
-      "Interfaces people can feel — 60fps interactions, design systems in Figma and code, and accessibility built in from the first commit.",
+      "Shape clear interfaces and purposeful motion, with reusable design systems and accessibility considered throughout the work.",
     image:
       "/images/photo-1587620962725.webp",
     imageAlt: "Frontend code on a laptop screen",
     points: [
-      "Butter-smooth 60fps interactions",
+      "Motion tuned to the interaction",
       "Design systems in Figma + code",
-      "Accessibility (WCAG 2.2) baked in",
+      "Accessibility considered from design through QA",
     ],
   },
   {
@@ -49,14 +49,14 @@ const pillars: Pillar[] = [
     title: "Growth Marketing & Copywriting",
     subtitle: "High-Converting Copy & Strategy",
     description:
-      "Strategy that survives contact with a market: direct-response copy, full-funnel campaigns, and reporting tied to revenue — not vanity metrics.",
+      "Connect messaging, campaign planning, and reporting to the goals agreed for your business and audience.",
     image:
       "/images/photo-1557804506.webp",
     imageAlt: "Growth team reviewing campaign performance together",
     points: [
       "Direct-response copywriting",
       "Full-funnel campaign architecture",
-      "Weekly reporting tied to revenue",
+      "Reporting aligned to agreed business measures",
     ],
   },
 ];

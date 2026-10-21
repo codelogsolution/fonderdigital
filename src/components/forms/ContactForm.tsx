@@ -4,6 +4,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Send, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
 const inputBaseClasses =
   "h-11 w-full rounded-xl bg-surface-2/60 px-4 text-sm text-foreground placeholder:text-muted/60 transition-all duration-300 focus:outline-none";
@@ -20,10 +21,12 @@ const errorTextClasses =
   "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-400";
 
 const serviceOptions = [
-  { value: "web-dev", label: "Web Dev" },
+  { value: "web-dev", label: "Web Development" },
+  { value: "app-dev", label: "App Development" },
   { value: "seo", label: "SEO" },
-  { value: "marketing", label: "Marketing" },
-  { value: "content", label: "Copywriting" },
+  { value: "marketing", label: "Performance Marketing" },
+  { value: "content", label: "Content & Copywriting" },
+  { value: "branding", label: "Branding & Design" },
 ];
 
 const ease: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
@@ -119,6 +122,21 @@ export default function ContactForm({ className }: { className?: string }) {
     setTouched({ name: true, email: true, service: true, website: true, message: true });
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      const serviceLabel = serviceOptions.find(
+        (option) => option.value === formData.service,
+      )?.label;
+      const body = [
+        `Name: ${formData.name.trim()}`,
+        `Email: ${formData.email.trim()}`,
+        `Service: ${serviceLabel ?? formData.service}`,
+        `Website: ${formData.website.trim() || "Not provided"}`,
+        "",
+        "Message:",
+        formData.message.trim(),
+      ].join("\n");
+      window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+        `Project enquiry from ${formData.name.trim()}`,
+      )}&body=${encodeURIComponent(body)}`;
       setSubmitted(true);
     }
   };
@@ -169,11 +187,18 @@ export default function ContactForm({ className }: { className?: string }) {
               <Check className="h-8 w-8" />
             </motion.span>
             <h2 className="mt-8 text-2xl font-extrabold tracking-tight">
-              Thank you!
+              Email draft ready
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              Our growth strategist will audit your brand and reach out within
-              24 hours.
+              Your email app should open with your message ready. Press Send
+              there to complete your enquiry. If it doesn&apos;t open, email{" "}
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="font-semibold text-primary underline underline-offset-4"
+              >
+                {siteConfig.email}
+              </a>
+              .
             </p>
           </motion.div>
         ) : (

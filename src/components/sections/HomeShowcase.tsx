@@ -163,7 +163,7 @@ export default function HomeShowcase() {
               </motion.div>
             </AnimatePresence>
             <p className="mt-3 w-full truncate text-center text-[11px] text-muted">
-              Live concept preview
+              Illustrative concept preview · not client work
               <span className="hidden sm:inline"> · heading opens {slide.service}</span>
             </p>
             </Tilt3D>

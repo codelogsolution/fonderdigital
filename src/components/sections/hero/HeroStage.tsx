@@ -41,15 +41,15 @@ import { cn } from "@/lib/utils";
 ------------------------------------------------------------------- */
 
 const KPIS = [
-  { label: "Revenue", value: "$48.2k", delta: "+18%", tone: "text-sky-600" },
-  { label: "Signups", value: "3,140", delta: "+26%", tone: "text-violet-600" },
-  { label: "Conv. rate", value: "7.4%", delta: "+1.2", tone: "text-emerald-600" },
+  { label: "Revenue", value: "$48.2k", delta: "sample", tone: "text-sky-600" },
+  { label: "Signups", value: "3,140", delta: "sample", tone: "text-violet-600" },
+  { label: "Conv. rate", value: "7.4%", delta: "sample", tone: "text-emerald-600" },
 ];
 
 const DASH_ROWS = [
-  { icon: Users, name: "Checkout redesign", meta: "Live · 2.1k visits" },
-  { icon: Zap, name: "Speed pass", meta: "Live · 0.9s LCP" },
-  { icon: Bell, name: "Winback flow", meta: "In review" },
+  { icon: Users, name: "Checkout redesign", meta: "Sample concept" },
+  { icon: Zap, name: "Speed pass", meta: "Sample concept" },
+  { icon: Bell, name: "Winback flow", meta: "Sample concept" },
 ];
 
 function DashboardScreen() {
@@ -58,10 +58,10 @@ function DashboardScreen() {
       <div className="flex items-center justify-between">
         <div>
           <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
-            Growth overview
+            Illustrative dashboard · sample data
           </p>
           <p className="text-[13px] font-extrabold tracking-tight text-slate-900">
-            Funderly Co.
+            Sample business
           </p>
         </div>
         <div className="flex items-center gap-1.5">
@@ -161,38 +161,38 @@ const CHIPS_BY_SERVICE: Chip[][] = [
   // Web Development
   [
     { icon: Code2, label: "Next.js" },
-    { icon: Gauge, label: "0.9s LCP" },
-    { icon: MousePointerClick, label: "+41% CVR" },
+    { icon: Gauge, label: "Performance" },
+    { icon: MousePointerClick, label: "Conversion-led" },
   ],
   // App Development
   [
     { icon: Smartphone, label: "React Native" },
-    { icon: Download, label: "35k+ installs" },
-    { icon: ShieldCheck, label: "99.8% crash-free" },
+    { icon: Download, label: "Store-ready" },
+    { icon: ShieldCheck, label: "Monitored" },
   ],
   // SEO
   [
-    { icon: Search, label: "+240% organic" },
-    { icon: TrendingUp, label: "Top-3 × 34" },
-    { icon: Link2, label: "1.2k backlinks" },
+    { icon: Search, label: "Technical SEO" },
+    { icon: TrendingUp, label: "Intent-led" },
+    { icon: Link2, label: "Search reporting" },
   ],
   // Social Marketing
   [
-    { icon: Megaphone, label: "2.8x ROAS" },
-    { icon: Users, label: "310 leads/mo" },
+    { icon: Megaphone, label: "Paid + social" },
+    { icon: Users, label: "Audience-led" },
     { icon: CalendarDays, label: "Always-on" },
   ],
   // Branding
   [
     { icon: Palette, label: "Brand kit" },
-    { icon: Layers, label: "19 systems" },
+    { icon: Layers, label: "Design system" },
     { icon: PenTool, label: "Logo suite" },
   ],
   // Content Writing
   [
-    { icon: FileText, label: "42k words/mo" },
+    { icon: FileText, label: "Search-ready" },
     { icon: PenLine, label: "SEO briefs" },
-    { icon: Sparkles, label: "+27% CVR" },
+    { icon: Sparkles, label: "Conversion-led" },
   ],
 ];
 
@@ -243,14 +243,14 @@ export default function HeroStage({
       </motion.div>
 
       <motion.div style={reduced ? undefined : { y: stageY }} className="relative">
-        <Scene3D intensity={7} shift={14}>
+        <Scene3D intensity={5} shift={10} float={false}>
           <div className="relative aspect-[5/6] w-full">
             {/* Browser — pushed back and turned away from the reader. */}
             <div
               className="absolute left-0 top-[4%] w-[74%] overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_40px_80px_-30px_rgba(15,23,42,0.4)]"
               style={{ transform: "rotateY(15deg) rotateX(3deg) translateZ(-70px)" }}
             >
-              <BrowserBar url="funderly.co" />
+              <BrowserBar url="sample-business.demo" />
               <div className="aspect-[16/10]">
                 <DashboardScreen />
               </div>
@@ -281,9 +281,15 @@ export default function HeroStage({
             {chips.map((chip, i) => (
               <motion.div
                 key={`${serviceIndexForSlide(activeSlide)}-${chip.label}`}
-                initial={{ opacity: 0, scale: 0.85, y: 12 }}
+                initial={
+                  reduced ? false : { opacity: 0, scale: 0.96, y: 8 }
+                }
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.09, ease: [0.16, 1, 0.3, 1] }}
+                transition={{
+                  duration: reduced ? 0 : 0.32,
+                  delay: reduced ? 0 : 0.06 + i * 0.05,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 style={{ transform: "translateZ(120px)" }}
                 className={cn(
                   "absolute z-20 flex items-center gap-1.5 rounded-full border border-white/70 bg-white/85 px-2.5 py-1.5 text-[10px] font-bold text-slate-700 shadow-[0_14px_30px_-14px_rgba(15,23,42,0.45)] backdrop-blur-xl",

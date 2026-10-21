@@ -11,37 +11,32 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import CountUp from "@/components/motion/CountUp";
 import AuroraOrb from "@/components/motion/AuroraOrb";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 const metrics: {
   icon: LucideIcon;
-  to: number;
-  suffix: string;
+  step: string;
   label: string;
   detail: string;
 }[] = [
   {
     icon: Target,
-    to: 125,
-    suffix: "+",
-    label: "Projects delivered",
-    detail: "Web, mobile and campaign work shipped end to end.",
+    step: "01",
+    label: "Start with clarity",
+    detail: "Understand the audience, business goal, and constraints before choosing a direction.",
   },
   {
     icon: Users,
-    to: 96,
-    suffix: "%",
-    label: "Clients who return",
-    detail: "Repeat engagements, most spanning multiple quarters.",
+    step: "02",
+    label: "Build with focus",
+    detail: "Bring design, engineering, and growth work around a clear scope and shared priorities.",
   },
   {
     icon: Medal,
-    to: 12,
-    suffix: "+",
-    label: "Years of experience",
-    detail: "Combined senior experience across every discipline.",
+    step: "03",
+    label: "Improve with evidence",
+    detail: "Review the signals available after launch and use them to guide the next decisions.",
   },
 ];
 
@@ -51,15 +46,13 @@ const metrics: {
  */
 function StatCard({
   icon: Icon,
-  to,
-  suffix,
+  step,
   label,
   detail,
   progress,
 }: {
   icon: LucideIcon;
-  to: number;
-  suffix: string;
+  step: string;
   label: string;
   detail: string;
   progress: MotionValue<number>;
@@ -71,7 +64,7 @@ function StatCard({
   const x = useSpring(pointerX, { stiffness: 150, damping: 24 });
   const y = useSpring(pointerY, { stiffness: 150, damping: 24 });
 
-  const spotlight = useMotionTemplate`radial-gradient(260px circle at ${x}% ${y}%, rgba(251,191,36,0.14), transparent 68%)`;
+  const spotlight = useMotionTemplate`radial-gradient(260px circle at ${x}% ${y}%, var(--primary-soft), transparent 68%)`;
 
   // Card rises and rotates to a flat, front-facing pose as it enters view.
   const enter = useTransform(progress, [0, 0.75], [0, 1]);
@@ -109,7 +102,7 @@ function StatCard({
       ref={cardRef}
       onPointerMove={trackPointer}
       style={{ y: cardY, opacity: cardOpacity }}
-      className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-7 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:bg-white/[0.075] hover:shadow-[0_30px_60px_-30px_rgba(180,83,9,0.45)] sm:p-8"
+      className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-7 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:bg-white/[0.075] hover:shadow-[0_30px_60px_-30px_var(--primary-glow)] sm:p-8"
     >
       {!reduced && (
         <motion.div
@@ -124,12 +117,12 @@ function StatCard({
           <Icon className="h-5 w-5" />
         </span>
         <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted/70">
-          Track record
+          Our approach
         </span>
       </div>
 
       <p className="relative mt-7 bg-gradient-to-br from-white via-primary to-accent-2 bg-clip-text font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-transparent">
-        <CountUp to={to} suffix={suffix} />
+        {step}
       </p>
 
       <p className="relative mt-3 text-base font-bold tracking-tight text-white">
@@ -152,7 +145,7 @@ export default function TrustMetrics() {
   return (
     <section
       ref={sectionRef}
-      aria-label="Track record"
+      aria-label="How we work"
       className="band-dark relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24"
     >
       {/* A dark band in the middle of an otherwise light page. It gives the

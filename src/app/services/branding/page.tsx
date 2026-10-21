@@ -10,7 +10,7 @@ const ServicePreview = dynamic(() => import("@/components/sections/ServicePrevie
 export const metadata: Metadata = {
   title: "Branding & Design",
   description:
-    "Logo to design system — distinct visual identities engineered to signal premium.",
+    "Brand discovery, positioning, messaging, visual identity, and usage guidance shaped around your business and audience.",
 };
 
 export default function BrandingPage() {

@@ -11,13 +11,8 @@ import Footer from "@/components/layout/Footer";
 import AssistantLauncher from "@/components/assistant/AssistantLauncher";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import CustomCursor from "@/components/motion/CustomCursor";
-import Preloader from "@/components/motion/Preloader";
 import ThemeProvider from "@/components/theme/ThemeProvider";
-import Script from "next/script";
 import "./globals.css";
-
-const skipIntroScript =
-  "try{if(sessionStorage.getItem('fd-intro-seen')){document.documentElement.classList.add('fd-skip-intro')}}catch(e){}";
 
 /* Applies the stored theme before first paint.
    This has to run synchronously in <head>, ahead of any CSS paint —
@@ -94,14 +89,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        <Script id="fd-theme-boot" strategy="beforeInteractive">
-          {themeBootScript}
-        </Script>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
       </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
-        <Script id="fd-skip-intro" strategy="beforeInteractive">
-          {skipIntroScript}
-        </Script>
         <ThemeProvider>
           <SmoothScroll>
             <ScrollProgress />
@@ -110,7 +100,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Footer />
             <AssistantLauncher />
             <CustomCursor />
-            <Preloader />
           </SmoothScroll>
         </ThemeProvider>
       </body>

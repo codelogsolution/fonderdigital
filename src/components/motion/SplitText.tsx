@@ -2,6 +2,7 @@
 
 import { memo } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 type SplitTextProps = {
   text: string;
@@ -22,6 +23,7 @@ function SplitText({
   wordClassName,
   by = "word",
 }: SplitTextProps) {
+  const reduced = useReducedMotionSafe();
   const step = stagger ?? (by === "char" ? 0.016 : 0.07);
   const words = text.split(" ");
   let unitIndex = 0;
@@ -49,11 +51,11 @@ function SplitText({
                 <motion.span
                   key={unitIdx}
                   className={`inline-block ${wordClassName ?? ""}`}
-                  initial={{ y: "115%" }}
+                  initial={false}
                   animate={{ y: 0 }}
                   transition={{
-                    duration: 0.7,
-                    delay: delay + current * step,
+                    duration: reduced ? 0 : 0.52,
+                    delay: reduced ? 0 : delay + current * step,
                     ease: [0.21, 0.47, 0.32, 0.98],
                   }}
                 >

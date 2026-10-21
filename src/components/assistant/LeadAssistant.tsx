@@ -176,7 +176,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                     Perfect. How would you like to proceed?
                   </div>
                   <div className="space-y-2">
-                    <a
+                    {digits && <a
                       href={waHref}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -184,7 +184,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                     >
                       <Phone className="h-4 w-4" />
                       Chat on WhatsApp
-                    </a>
+                    </a>}
                     <a
                       href="/contact"
                       className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-all hover:brightness-110"
@@ -215,7 +215,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                   Back
                 </button>
               ) : (
-                <span className="text-xs text-muted">{siteConfig.location}</span>
+                <span className="text-xs text-muted">{siteConfig.name}</span>
               )}
               {(service || budget) && (
                 <button

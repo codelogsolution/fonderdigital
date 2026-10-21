@@ -13,19 +13,19 @@ const sections = [
   },
   {
     title: "Quotes & payment",
-    body: "Every project starts from a written quote with a defined scope, timeline, and payment schedule. Work outside the agreed scope is quoted separately before it begins — no surprise invoices.",
+    body: "The scope, price, schedule, payment terms, and process for handling changes should be set out in a written agreement for each engagement before work begins.",
   },
   {
     title: "Ownership",
-    body: "On final payment, the deliverables we create for your project — code, design files, and content we produced — are yours. Pre-existing tools, libraries, and licences we use remain governed by their own terms.",
+    body: "Ownership, handover, and third-party licences should be agreed in writing for each project. Third-party tools, libraries, fonts, and services remain subject to their own licence terms.",
   },
   {
     title: "Results & content",
-    body: "Case studies, metrics, and previews shown on this site are illustrative demonstrations of our way of working. Results vary with your market, budget, and starting point; examples are not guarantees of outcome.",
+    body: "Interface previews and concepts shown on this site are illustrative design demonstrations. They are not represented as completed client projects, published products, or measured business outcomes. Any future case study or performance claim should be supported by the relevant project data and client permission.",
   },
   {
     title: "Liability & changes",
-    body: "Our liability for any claim connected to the services is limited to the fees paid for the engagement in question. We may update these terms from time to time; the version in effect when you engage us applies to that engagement.",
+    body: "Project responsibilities, liability, cancellation, and dispute terms should be recorded in the written agreement for the engagement. This website page is general information and does not replace that agreement.",
   },
 ];
 

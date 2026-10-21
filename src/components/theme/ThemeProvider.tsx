@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -69,13 +68,8 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
-  // Enables the colour transition once real values are on the element, so the
-  // very first paint is not animated.
-  useEffect(() => {
-    document.documentElement.classList.add("theme-ready");
-  }, []);
-
   const setTheme = useCallback((next: ThemeId) => {
+    document.documentElement.classList.add("theme-ready");
     document.documentElement.setAttribute("data-theme", next);
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, next);

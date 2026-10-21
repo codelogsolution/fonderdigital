@@ -9,9 +9,9 @@ import {
 import { Activity, Dumbbell, Home, Plus, Search, ShoppingBag, User } from "lucide-react";
 
 const SCREENS = [
-  { screen: <PulseFitScreen />, eyebrow: "Fitness app", title: "PulseFit" },
-  { screen: <LocalTableScreen />, eyebrow: "Food ordering app", title: "LocalTable" },
-  { screen: <PocketStudioScreen />, eyebrow: "Creator app", title: "PocketStudio" },
+  { screen: <PulseFitScreen />, eyebrow: "Fitness app concept", title: "Fitness UI concept" },
+  { screen: <LocalTableScreen />, eyebrow: "Food ordering concept", title: "Ordering UI concept" },
+  { screen: <PocketStudioScreen />, eyebrow: "Creator app concept", title: "Creator UI concept" },
 ];
 
 const TABS = [

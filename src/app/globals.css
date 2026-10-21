@@ -241,10 +241,6 @@ html {
   overflow-x: clip;
 }
 
-html.fd-skip-intro [data-preloader] {
-  display: none !important;
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

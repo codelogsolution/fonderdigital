@@ -10,7 +10,7 @@ const AppShowcase = dynamic(() => import("@/components/sections/AppShowcase"), {
 export const metadata: Metadata = {
   title: "App Development",
   description:
-    "Native-quality mobile apps, cross-platform by default, shipped weekly.",
+    "End-to-end iOS and Android app development with React Native, Flutter, or native Kotlin and Swift, including QA and release workflows.",
 };
 
 export default function AppDevPage() {

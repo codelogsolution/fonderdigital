@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { FileText, Mail } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import PageHeader from "@/components/sections/PageHeader";
 import ContactForm from "@/components/forms/ContactForm";
@@ -13,9 +13,7 @@ export const metadata: Metadata = {
 
 const contactCards = [
   { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
-  { icon: Phone, label: "Phone", value: siteConfig.phone, href: `tel:${siteConfig.phone.replace(/[^+\d]/g, "")}` },
-    { icon: MapPin, label: "Office", value: siteConfig.location },
-  { icon: Clock, label: "Response time", value: "Within one business day" },
+  { icon: FileText, label: "Helpful context", value: "Your goal, audience, and timing" },
 ];
 
 export default function ContactPage() {

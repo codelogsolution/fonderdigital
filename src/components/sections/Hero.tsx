@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Sparkles, Star } from "lucide-react";
+import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
@@ -12,21 +12,26 @@ import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { heroServices, heroSlides } from "@/config/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const heroWords = heroSlides.map((s) => s.word + ".");
+const heroWords = [
+  "websites.",
+  "apps.",
+  "SEO.",
+  "campaigns.",
+  "branding.",
+  "design.",
+  "content.",
+];
 
 export default function Hero() {
   const [activeSlide, setActiveSlide] = useState(0);
   const reduced = useReducedMotionSafe();
   const slide = heroSlides[activeSlide];
 
-  const fade = (delay: number) =>
-    reduced
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 } }
-      : {
-        initial: { opacity: 0, y: 26 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.8, delay, ease: EASE },
-      };
+  const fade = (delay: number) => ({
+    initial: false,
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reduced ? 0 : 0.55, delay: reduced ? 0 : delay, ease: EASE },
+  });
 
   return (
     /* The hero is a true full-screen unit: `min-h-[100svh]` + flex column
@@ -69,16 +74,12 @@ export default function Hero() {
               Marketing + Digital
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
-              </span>
-              2 project slots open
+              Strategy + digital delivery
             </span>
           </motion.div>
 
           <h1 className="hero-title mt-7 text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-[4.35rem]">
-            <SplitText text="We design, build &" className="block" />
+            <SplitText text="Grow your business with" className="block" />
             <span className="block">
               <RotatingText
                 words={heroWords}
@@ -93,7 +94,7 @@ export default function Hero() {
             <AnimatePresence mode="wait">
               <motion.p
                 key={slide.word}
-                initial={{ opacity: 0, y: 8 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.4, ease: EASE }}
@@ -105,9 +106,8 @@ export default function Hero() {
           </div>
 
           <motion.p {...fade(0.2)} className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted">
-            FonderDigital helps startups &amp; growing brands with websites, apps,
-            SEO, social media, branding, design &amp; content — one passionate
-            team for all your marketing and tech needs.
+            We design and build websites, apps, and marketing that help growing
+            businesses win more customers.
           </motion.p>
           <motion.div {...fade(0.28)} className="hero-cta mt-9 flex flex-wrap items-center gap-3">
             <Button href="/contact" size="lg" className="btn-shine">
@@ -125,33 +125,18 @@ export default function Hero() {
             className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border-subtle pt-7"
           >
             <div className="flex items-center gap-3">
-              <div className="flex -space-x-2.5">
-                {["AV", "MK", "DS", "RJ"].map((initials) => (
-                  <span
-                    key={initials}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-primary to-primary text-[10px] font-extrabold text-white"
-                  >
-                    {initials}
-                  </span>
-                ))}
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-background bg-surface text-[10px] font-extrabold text-muted">
-                  +26
-                </span>
-              </div>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-primary">
+                <Sparkles className="h-4 w-4" />
+              </span>
               <div>
-                <p className="text-sm font-bold tracking-tight">30+ clients onboarded</p>
-                <p className="text-xs text-muted">6 disciplines under one roof</p>
+                <p className="text-sm font-bold tracking-tight">One connected team</p>
+                <p className="text-xs text-muted">Strategy through delivery</p>
               </div>
             </div>
 
             <div>
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
               <p className="mt-1 text-xs text-muted">
-                Longest client partnership: <span className="font-bold text-foreground">3 years</span>
+                Clear project rhythm <span className="px-1.5 text-primary">·</span> Visible milestones
               </p>
             </div>
           </motion.div>
@@ -184,7 +169,7 @@ export default function Hero() {
             {heroServices.map((service, i) => (
               <motion.li
                 key={service.label}
-                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.05, ease: EASE }}

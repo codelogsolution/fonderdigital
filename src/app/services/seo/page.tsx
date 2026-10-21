@@ -10,7 +10,7 @@ const ServicePreview = dynamic(() => import("@/components/sections/ServicePrevie
 export const metadata: Metadata = {
   title: "SEO & Growth",
   description:
-    "Technical SEO and content systems that compound organic traffic and pipeline.",
+    "Technical SEO, useful content planning, local search support, and Search Console reporting tailored to your site and goals.",
 };
 
 export default function SeoPage() {

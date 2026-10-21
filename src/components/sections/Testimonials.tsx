@@ -16,17 +16,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
 
-const marqueeBrands = [
-  "AURELIA",
-  "VERTEX",
-  "FINFLOW",
-  "PULSEFIT",
-  "ORBITLY",
-  "MAISON",
-  "CLOUDCART",
-  "NORTHWIND",
-];
-
 const INTERVAL = 6000;
 
 export default function Testimonials() {
@@ -76,6 +65,7 @@ export default function Testimonials() {
     return () => document.removeEventListener("keydown", onKey);
     }, [current, showControls, goTo]);
 
+  if (total === 0) return null;
   const t = testimonials[current];
 
   return (
@@ -279,23 +269,6 @@ export default function Testimonials() {
             />
           </div>
         )}
-      </div>
-
-      <div className="group relative mt-16 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-        <div className="flex w-max animate-marquee items-center gap-12 group-hover:[animation-play-state:paused]">
-          {[...marqueeBrands, ...marqueeBrands].map((brand, index) => (
-            <span
-              key={`${brand}-${index}`}
-              className="flex items-center gap-12 text-lg font-extrabold tracking-[0.25em] text-foreground/20"
-            >
-              {brand}
-              <span
-                aria-hidden
-                className="h-1.5 w-1.5 rounded-full bg-primary/40"
-              />
-            </span>
-          ))}
-        </div>
       </div>
     </section>
   );

@@ -126,7 +126,7 @@ export default function Header() {
 
   return (
     <motion.header
-      initial={{ y: -72, opacity: 0 }}
+      initial={false}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={cn(
@@ -138,13 +138,10 @@ export default function Header() {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
 
-        <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-[var(--accent-2)] text-[var(--primary-foreground)] shadow-[0_4px_16px_var(--primary-glow)] transition-transform duration-300 group-hover:rotate-6">
-            <BrandMark className="h-9 w-9 text-primary" />
-          </span>
-          <span className="text-lg font-extrabold tracking-tight">
-            {siteConfig.name}
-            <span className="text-primary">.</span>
+        <Link href="/" aria-label="FonderDigital home" className="group flex items-center gap-2">
+          <BrandMark className="h-10 w-10 text-foreground transition-transform duration-300 group-hover:-rotate-3" />
+          <span className="text-[1.1rem] font-extrabold tracking-[-0.055em] text-foreground sm:text-xl">
+            Fonder<span className="text-primary">Digital</span>
           </span>
         </Link>
 

@@ -10,7 +10,7 @@ const ServicePreview = dynamic(() => import("@/components/sections/ServicePrevie
 export const metadata: Metadata = {
   title: "Content & Copywriting",
   description:
-    "Direct-response copy and editorial engines that move metrics — from landing pages to full content calendars.",
+    "Website copy, editorial planning, email, and campaign writing developed from your audience, source material, and brand voice.",
 };
 
 export default function ContentPage() {

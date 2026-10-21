@@ -30,16 +30,17 @@ export default function Footer() {
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
 
           <div className="lg:col-span-4">
-            <BrandMark className="mb-3 h-10 w-10 text-primary" />
-            <p className="text-lg font-extrabold tracking-tight">
-              {siteConfig.name}
-              <span className="text-primary">.</span>
-            </p>
+            <Link href="/" aria-label="FonderDigital home" className="mb-3 inline-flex items-center gap-2">
+              <BrandMark className="h-10 w-10 text-foreground" />
+              <span className="text-lg font-extrabold tracking-[-0.055em] text-foreground">
+                Fonder<span className="text-primary">Digital</span>
+              </span>
+            </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
               {siteConfig.description}
             </p>
 
-            <div className="mt-8 grid max-w-xs grid-cols-2 gap-3">
+            {siteConfig.socials.length > 0 && <div className="mt-8 grid max-w-xs grid-cols-2 gap-3">
               {siteConfig.socials.map((social) => {
                 const Icon = socialIcons[social.icon];
                 return (
@@ -57,7 +58,7 @@ export default function Footer() {
                   </a>
                 );
               })}
-            </div>
+            </div>}
           </div>
 
           <div className="lg:col-span-2">
@@ -109,8 +110,7 @@ export default function Footer() {
               Newsletter
             </p>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
-              Monthly insights on design, engineering, and growth. No spam —
-              unsubscribe anytime.
+              Want occasional notes on design, engineering, and growth? This opens an email draft so you can request updates.
             </p>
             <NewsletterForm className="mt-6 max-w-sm" />
 
@@ -124,22 +124,20 @@ export default function Footer() {
                   {siteConfig.email}
                 </a>
               </li>
-              <li className="flex items-center gap-2.5">
+              {siteConfig.phone && <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
                 {siteConfig.phone}
-              </li>
-              <li className="flex items-center gap-2.5">
+              </li>}
+              {siteConfig.location && <li className="flex items-center gap-2.5">
                 <MapPin className="h-4 w-4 shrink-0 text-primary" />
                 {siteConfig.location}
-              </li>
+              </li>}
             </ul>
           </div>
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
-          {/* Copyright year is the current year, not the founding year. A
-              notice that reads "© 2022" on a live site reads as abandoned.
-              `siteConfig.established` stays for the "Est." line elsewhere. */}
+          {/* Keep the copyright year current for a maintained site. */}
           <p className="text-sm text-muted">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>

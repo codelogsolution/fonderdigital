@@ -30,56 +30,55 @@ export function serviceLabelFor(slide: number): string {
 
 type Detail = { headline: string; rows: { label: string; value: string }[] };
 
-/* Proof per service, drawn from figures the rest of the site already claims
-   (28+ sites shipped, 35k+ installs, +240% organic, 34 top-three terms,
-   2.8x ROAS) so the deck can't drift into numbers the copy never backs. */
+/* Capability highlights for each service. Keep this panel descriptive until
+   verified client outcomes are available to publish. */
 const DETAIL: Detail[] = [
   {
     headline: "Conversion-focused builds",
     rows: [
-      { label: "Avg. LCP", value: "0.9s" },
-      { label: "Sites shipped", value: "28+" },
-      { label: "Avg. rebuild", value: "5 wks" },
+      { label: "Focus", value: "Performance" },
+      { label: "CMS", value: "Editor-ready" },
+      { label: "Quality", value: "Accessible" },
     ],
   },
   {
     headline: "One codebase, two stores",
     rows: [
-      { label: "Installs", value: "35k+" },
-      { label: "Crash-free", value: "99.8%" },
-      { label: "Store rating", value: "4.8" },
+      { label: "Platforms", value: "iOS + Android" },
+      { label: "Release", value: "Store-ready" },
+      { label: "Quality", value: "Monitored" },
     ],
   },
   {
     headline: "Rankings that compound",
     rows: [
-      { label: "Top-3 terms", value: "34" },
-      { label: "Organic", value: "+240%" },
-      { label: "Keywords", value: "1.2k" },
+      { label: "Foundation", value: "Technical" },
+      { label: "Content", value: "Intent-led" },
+      { label: "Reporting", value: "Search-led" },
     ],
   },
   {
     headline: "Weekly lead flow",
     rows: [
-      { label: "ROAS", value: "2.8x" },
-      { label: "Leads / mo", value: "310" },
-      { label: "Cost per lead", value: "-24%" },
+      { label: "Channels", value: "Paid + social" },
+      { label: "Creative", value: "Tested" },
+      { label: "Reporting", value: "Clear" },
     ],
   },
   {
     headline: "Identity systems",
     rows: [
-      { label: "Brand kits", value: "19" },
-      { label: "Assets", value: "140+" },
-      { label: "Turnaround", value: "3 wks" },
+      { label: "Identity", value: "Distinctive" },
+      { label: "System", value: "Reusable" },
+      { label: "Delivery", value: "Launch-ready" },
     ],
   },
   {
     headline: "Words that sell",
     rows: [
-      { label: "Words / mo", value: "42k" },
-      { label: "Avg. CVR", value: "+27%" },
-      { label: "Briefs / mo", value: "60" },
+      { label: "Content", value: "Search-ready" },
+      { label: "Messaging", value: "On-brand" },
+      { label: "Copy", value: "Conversion-led" },
     ],
   },
 ];

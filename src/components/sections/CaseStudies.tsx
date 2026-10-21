@@ -8,7 +8,7 @@ export default function CaseStudies() {
         <div className="grid gap-6 lg:grid-cols-2">
           {caseStudies.map((study, index) => (
             <Reveal
-              key={study.client}
+              key={study.industry}
               delay={(index % 2) * 0.1}
               className="h-full"
             >
@@ -30,7 +30,7 @@ export default function CaseStudies() {
                   {study.summary}
                 </p>
 
-                <div className="mt-auto pt-8">
+                  {study.metrics.length > 0 && <div className="mt-auto pt-8">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-primary">Project results</h3>
                   <dl className="mt-4 grid auto-rows-fr gap-3 sm:grid-cols-3">
                     {study.metrics.map((metric) => (
@@ -45,8 +45,8 @@ export default function CaseStudies() {
                       </div>
                     ))}
                   </dl>
-                </div>
-                <h3 className="mt-6 text-xs font-semibold text-muted">Services provided</h3>
+                </div>}
+                <h3 className="mt-6 text-xs font-semibold text-muted">Concept focus</h3>
 
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {study.services.map((service) => (

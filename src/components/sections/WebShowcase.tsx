@@ -312,15 +312,15 @@ const siteCards = [
   {
     id: "aurelia",
     eyebrow: "E-commerce storefront",
-    title: "Aurelia",
-    url: "aurelia-store.com",
+    title: "Retail UI concept",
+    url: "storefront.demo",
     page: <AureliaPage />,
   },
   {
     id: "orbit",
     eyebrow: "SaaS landing page",
-    title: "Orbit",
-    url: "orbit-app.io",
+    title: "Product site concept",
+    url: "product-site.demo",
     page: <OrbitPage />,
   },
 ];
@@ -335,7 +335,7 @@ export default function WebShowcase() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Inside the work</span>
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Illustrative concepts</span>
             <h2 id="web-showcase" className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
               What we build, <span className="text-primary">in action</span>
             </h2>

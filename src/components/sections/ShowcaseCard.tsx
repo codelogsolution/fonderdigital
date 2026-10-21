@@ -89,7 +89,7 @@ export function ShowcaseFallback({ cards = 3, height = 510 }: { cards?: number; 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto h-4 w-36 rounded-full bg-surface motion-safe:animate-pulse" />
         <div className="mx-auto mt-4 h-8 w-64 rounded-lg bg-surface motion-safe:animate-pulse" />
-        <div className={cn("mt-12 grid gap-10 sm:gap-8", cards > 2 ? "sm:grid-cols-2 xl:grid-cols-3" : "lg:grid-cols-2")}>
+        <div className={cn("mt-12 grid gap-10 sm:gap-8", cards > 2 ? "sm:grid-cols-2 md:grid-cols-3" : "lg:grid-cols-2")}>
           {Array.from({ length: cards }, (_, index) => (
             <div key={index} className="flex flex-col">
               <div className="mx-auto h-[66px] w-44 rounded-xl bg-surface motion-safe:animate-pulse" />

@@ -2,8 +2,8 @@ import ShowcaseCard from "@/components/sections/ShowcaseCard";
 import { AureliaPage, BrowserBar, OrbitPage } from "@/components/sections/WebShowcase";
 
 const SITES = [
-  { page: <AureliaPage />, eyebrow: "E-commerce storefront", title: "Aurelia", url: "aurelia-store.com" },
-  { page: <OrbitPage />, eyebrow: "SaaS landing page", title: "Orbit", url: "orbit-app.io" },
+  { page: <AureliaPage />, eyebrow: "Storefront concept", title: "Retail UI concept", url: "storefront.demo" },
+  { page: <OrbitPage />, eyebrow: "SaaS website concept", title: "Product site concept", url: "product-site.demo" },
 ];
 
 export default function WebPage({

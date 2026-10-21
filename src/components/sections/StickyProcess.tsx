@@ -41,7 +41,7 @@ const phases: Phase[] = [
     description:
       "Analytics, ad accounts, funnel drop-off, and where competitors are quietly winning — pulled apart and explained in plain language, not a 60-page deck.",
     deliverable: "Audit findings & priority list",
-    timeline: "Week 1",
+    timeline: "Discovery",
     checklist: [
       "Ad accounts, analytics and CRM access mapped",
       "Where leads drop off between click and sale",
@@ -55,7 +55,7 @@ const phases: Phase[] = [
     description:
       "The channels worth your budget, the messaging that fits your market, and targets we both agree are realistic — written down so scope never drifts.",
     deliverable: "Growth blueprint",
-    timeline: "Week 2",
+    timeline: "Planning",
     checklist: [
       "Channel mix chosen around your margin, not vanity metrics",
       "Messaging and offers written for your actual buyer",
@@ -65,15 +65,15 @@ const phases: Phase[] = [
   },
   {
     name: "Execution",
-    title: "Campaigns, creative, and results move every week",
+    title: "Campaigns, creative, and measurement move in planned cycles",
     description:
-      "Ads, landing pages, email flows, and tracking updates ship on a weekly cadence — so you can see what works while there's still budget to shift.",
-    deliverable: "Weekly releases with numbers attached",
-    timeline: "Weeks 3–8",
+      "Ads, landing pages, email flows, and tracking updates move in agreed increments, with progress available to review as the work develops.",
+    deliverable: "Campaigns and creative in reviewable increments",
+    timeline: "Delivery sprints",
     checklist: [
       "Live campaigns with spend tied to real outcomes",
       "Landing pages and offers tested against your buyers",
-      "Friday review you can send to your team",
+      "Clear review notes for your team",
     ],
     icon: Rocket,
   },
@@ -81,8 +81,8 @@ const phases: Phase[] = [
     name: "Optimisation",
     title: "The work starts compounding",
     description:
-      "A/B tests, funnel tuning, and honest reporting steered by real numbers. We review it with you every month and cut what is not paying for itself.",
-    deliverable: "Monthly performance review",
+      "Use agreed measures, experiments, and funnel feedback to decide what to refine. Review timing and optimization scope are set for each engagement.",
+    deliverable: "Performance review and recommendations",
     timeline: "Ongoing",
     checklist: [
       "A/B tests on the pages and ads that actually move the needle",

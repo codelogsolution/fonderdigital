@@ -10,7 +10,7 @@ const ServicePreview = dynamic(() => import("@/components/sections/ServicePrevie
 export const metadata: Metadata = {
   title: "Digital Marketing",
   description:
-    "Full-funnel paid, social, and email campaigns engineered to convert.",
+    "Paid campaign planning, social content, and email marketing scoped around your audience, offer, and measurable goals.",
 };
 
 export default function MarketingPage() {

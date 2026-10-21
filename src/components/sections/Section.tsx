@@ -2,7 +2,6 @@
 
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 type SectionProps = {
   children: ReactNode;
   className?: string;
@@ -38,8 +37,6 @@ export default function Section({
   tone = "light",
   rich = false,
 }: SectionProps) {
-  const reduced = useReducedMotionSafe();
-
   return (
     <section
       id={id}
@@ -76,7 +73,7 @@ export default function Section({
       />
 
       <motion.div
-        initial={reduced ? { opacity: 0 } : { opacity: 0, y: 22 }}
+        initial={false}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}

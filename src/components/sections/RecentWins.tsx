@@ -30,17 +30,16 @@ export default function RecentWins() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end lg:gap-16">
           <Reveal>
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Recent wins
+              How we create progress
             </span>
             <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
-              Numbers from the front lines
+              A practical path to better outcomes
             </h2>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:pb-2">
             <p className="text-base leading-relaxed text-muted sm:text-lg">
-              Every result below came from work we shipped and measured. Percentages
-              describe movement in the metric named — never a guaranteed return.
+              Each engagement starts with a clear problem, moves through focused work, and uses the evidence available to shape the next step.
             </p>
           </Reveal>
         </div>
@@ -56,7 +55,7 @@ export default function RecentWins() {
                 className="h-full"
               >
                 <Link
-                  href="/work"
+                  href="/services"
                   className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border-subtle bg-background/80 p-7 backdrop-blur-xl transition-colors duration-500 hover:border-primary/40 sm:p-8"
                 >
                   {/* Each result card gets its own colour field so the three
@@ -73,7 +72,7 @@ export default function RecentWins() {
                   <div className="relative flex items-start justify-between gap-4">
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/[0.07] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
                       <TrendingUp className="h-3.5 w-3.5" />
-                      Verified result
+                      Our approach
                     </span>
                     <ArrowUpRight className="h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
                   </div>
@@ -102,13 +101,13 @@ export default function RecentWins() {
         <Reveal delay={0.12}>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border-subtle pt-8">
             <p className="text-sm text-muted">
-              Want the full breakdown, including methodology and timelines?
+              Want to see how this could apply to your business?
             </p>
             <Link
-              href="/work"
+              href="/services"
               className="group inline-flex items-center gap-2 text-sm font-bold text-primary"
             >
-              Explore all work
+              Explore our services
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </div>

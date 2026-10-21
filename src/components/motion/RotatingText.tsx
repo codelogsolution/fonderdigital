@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 type RotatingTextProps = {
   words: string[];
@@ -22,8 +23,9 @@ function RotatingText({
   className,
   onWordChange,
 }: RotatingTextProps) {
+  const reduced = useReducedMotionSafe();
   const [wordIndex, setWordIndex] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(words[0] ?? "");
   const [phase, setPhase] = useState<"waiting" | "typing" | "deleting">(
     "waiting",
   );
@@ -34,6 +36,12 @@ function RotatingText({
 
   useEffect(() => {
     const current = words[wordIndex];
+    if (reduced) {
+      setText(current);
+      setPhase("waiting");
+      return;
+    }
+
     let timer: ReturnType<typeof setTimeout> | undefined;
 
     if (phase === "waiting") {
@@ -57,14 +65,14 @@ function RotatingText({
           setWordIndex(next);
           onWordChangeRef.current?.(next);
           setPhase("typing");
-        }, 300);
+        }, 90);
       }
     }
 
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [phase, text, wordIndex, words, typeSpeed, deleteSpeed, holdPause, delay]);
+  }, [phase, text, wordIndex, words, typeSpeed, deleteSpeed, holdPause, delay, reduced]);
 
   return (
     <span
@@ -74,7 +82,9 @@ function RotatingText({
       <span aria-hidden>
         {text}
 
-        <span className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[0.08em] animate-pulse bg-current" />
+        {!reduced && (
+          <span className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[0.08em] animate-pulse bg-current" />
+        )}
       </span>
     </span>
   );

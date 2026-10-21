@@ -32,9 +32,9 @@ export default function SectionHeading({
 
   const reveal = () =>
     reduced
-      ? { initial: { opacity: 0 }, whileInView: { opacity: 1 } }
+      ? { initial: false, whileInView: { opacity: 1, y: 0 } }
       : {
-          initial: { opacity: 0, y: 24 },
+          initial: { opacity: 0, y: 18 },
           whileInView: { opacity: 1, y: 0 },
         };
 
@@ -42,8 +42,8 @@ export default function SectionHeading({
     <>
       <motion.span
         {...reveal()}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.6, ease: EASE }}
+        viewport={{ once: true, margin: "-72px" }}
+        transition={{ duration: reduced ? 0 : 0.42, ease: EASE }}
         className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary"
       >
         <span aria-hidden className="h-px w-7 bg-primary/45" />
@@ -52,8 +52,12 @@ export default function SectionHeading({
 
       <motion.h2
         {...reveal()}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
+        viewport={{ once: true, margin: "-72px" }}
+        transition={{
+          duration: reduced ? 0 : 0.46,
+          delay: reduced ? 0 : 0.06,
+          ease: EASE,
+        }}
         className={`mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06] ${
           align === "center" ? "mx-auto" : ""
         }`}
@@ -66,8 +70,12 @@ export default function SectionHeading({
   const copy = lede ? (
     <motion.p
       {...reveal()}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: 0.12, ease: EASE }}
+      viewport={{ once: true, margin: "-72px" }}
+      transition={{
+        duration: reduced ? 0 : 0.46,
+        delay: reduced ? 0 : 0.1,
+        ease: EASE,
+      }}
       className={`text-base leading-relaxed text-muted sm:text-lg ${
         align === "center" ? "mx-auto max-w-2xl" : "max-w-xl"
       }`}

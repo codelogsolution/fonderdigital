@@ -10,23 +10,23 @@ export const metadata: Metadata = {
 const sections = [
   {
     title: "What we collect",
-    body: "When you contact us through this website, we receive the details you choose to submit: your name, email address, company or website, and the message itself. This site does not run advertising trackers or sell data to third parties.",
+    body: "The contact and newsletter forms validate information in your browser and open your email application with a prefilled message. They do not send form data directly to this website. Information is shared with us only if you choose to send that email. This site also stores your selected visual theme in your browser's local storage.",
   },
   {
     title: "How we use it",
-    body: "Your details are used only to reply to your enquiry, prepare proposals you ask for, and continue the conversation you started. We may keep a record of the exchange so future conversations have context.",
+    body: "If you email us, we use the information in your message to respond to your enquiry and continue that conversation.",
   },
   {
     title: "Sharing",
-    body: "We never sell your information. It is shared only with the team members who need it to answer you, and with service providers that help us operate email — under their own confidentiality obligations.",
+    body: "Email is handled by your email provider and ours. Review those providers' privacy information for details about their processing and storage. Do not include sensitive personal information in a project enquiry.",
   },
   {
     title: "Retention & your rights",
-    body: "We keep enquiry records only as long as they are useful, and you can ask us to correct or delete them at any time by emailing us. We will action reasonable requests promptly.",
+    body: "Email copies may remain in the mailboxes and backups operated by the email providers involved. Contact us at hello@fonder.com to ask about a message you sent.",
   },
   {
     title: "Questions",
-    body: "For any privacy question or request, write to us and we will get back to you within one business day.",
+    body: "For a privacy question or request, contact us at hello@fonder.com.",
   },
 ];
 

@@ -125,7 +125,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
               Growth overview
             </p>
             <p className="mt-1 text-lg font-bold tracking-tight text-foreground">
-              Fonderly Co.
+              Sample business
             </p>
 
             <div className="mt-4 grid grid-cols-3 gap-2">
@@ -255,10 +255,10 @@ export default function DeliveryShowcase() {
         eyebrow="How the work ships"
         title={
           <span id="delivery-heading">
-            Numbers you can <span className="text-muted">actually watch move.</span>
+            A clearer view of <span className="text-muted">what matters.</span>
           </span>
         }
-        lede="Every engagement reports on the same handful of metrics, updated weekly. This is the reporting our clients actually see — not a monthly PDF."
+        lede="An illustrative dashboard concept showing how a project might organize useful signals and decisions. All figures shown are sample data, not client results."
         align="center"
       />
 
