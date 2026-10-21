@@ -61,7 +61,7 @@ export default function Hero() {
         <div className="relative">
           <motion.div
             {...fade(0.05)}
-            className="flex flex-wrap items-center gap-2.5"
+            className="flex flex-wrap items-center gap-2.5 pt-4"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-background/70 py-1 pl-1 pr-3.5 text-xs font-semibold backdrop-blur-sm">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary text-white">
