@@ -41,7 +41,7 @@ export default function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24 ${className}`}
+      className={`site-section relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24 ${className}`}
     >
       {backdrop !== "none" && (
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">

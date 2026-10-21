@@ -39,7 +39,7 @@ export default function Hero() {
        hero and leave oversized blank bands around its content. */
     <section
       id="home"
-      className="relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
+      className="home-hero relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
     >
       {/* Atmosphere: one soft mesh wash plus a fine dot field, masked so they
           fade before reaching the section edges. The top/bottom fades use the

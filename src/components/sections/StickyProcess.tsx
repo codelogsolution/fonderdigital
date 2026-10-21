@@ -99,7 +99,10 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-const DESKTOP_QUERY = "(min-width: 1024px)";
+// A phone in Chrome's "Desktop site" mode can report a wide layout viewport.
+// Keep the scroll-pinned desktop experience for real pointer/hover desktops,
+// while touch devices continue using the compact, in-flow process layout.
+const DESKTOP_QUERY = "(min-width: 1024px) and (hover: hover) and (pointer: fine)";
 
 function subscribeDesktop(callback: () => void) {
   const query = window.matchMedia(DESKTOP_QUERY);
@@ -595,7 +598,7 @@ function FlowProcess() {
   });
 
   return (
-    <div className={`${PANEL} py-20 lg:hidden`}>
+    <div className={`desktop-mode-flow ${PANEL} py-20 lg:hidden`}>
       <SectionHeader />
 
       <div ref={flowRef} className="mt-9 space-y-3">

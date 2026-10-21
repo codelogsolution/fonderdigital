@@ -872,3 +872,33 @@ h6 {
     padding-top: 1rem;
   }
 }
+
+/* Chrome's "Desktop site" mode gives a phone a wide CSS viewport, which
+   activates the desktop spacing and scroll-pinned sections despite the small
+   physical screen. Preserve the desktop navigation, but use compact, natural
+   section flow on touch devices so content does not float inside tall tracks. */
+@media (pointer: coarse) and (min-width: 640px) {
+  .home-hero {
+    min-height: 0 !important;
+  }
+
+  .site-section {
+    padding-block: 3.25rem;
+  }
+
+  .delivery-track {
+    height: auto !important;
+    margin-top: 2rem;
+  }
+
+  .delivery-sticky {
+    position: static !important;
+    top: auto !important;
+    display: block !important;
+    min-height: 0 !important;
+  }
+
+  .desktop-mode-flow {
+    display: block !important;
+  }
+}

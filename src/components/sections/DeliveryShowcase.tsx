@@ -250,7 +250,7 @@ export default function DeliveryShowcase() {
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora">
+    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section">
       <SectionHeading
         eyebrow="How the work ships"
         title={
@@ -265,8 +265,8 @@ export default function DeliveryShowcase() {
       {/* Tall track gives the pinned stage room to travel. On mobile the orbit
           is dropped (see DepthCard `compact`) and the track collapses to normal
           document flow, so nothing is pinned in a cramped viewport. */}
-      <div ref={trackRef} className="relative mt-14 lg:h-[150vh]">
-        <div className="lg:sticky lg:top-16 lg:flex lg:min-h-[calc(100svh-4rem)] lg:items-center">
+      <div ref={trackRef} className="delivery-track relative mt-14 lg:h-[150vh]">
+        <div className="delivery-sticky lg:sticky lg:top-16 lg:flex lg:min-h-[calc(100svh-4rem)] lg:items-center">
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="relative mx-auto h-[26rem] max-w-5xl sm:h-[30rem]">
               {/* Painted from the theme's own accent tokens, so the bloom
