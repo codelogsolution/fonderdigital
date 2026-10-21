@@ -34,12 +34,10 @@ export default function Hero() {
   });
 
   return (
-    /* Desktop uses a full-screen hero. On phones, let the section follow its
-       content height instead of stretching to the whole viewport; this keeps
-       the copy, artwork, and service rail together without large blank bands. */
+    /* Keep the hero and its service rail together as a full-screen section. */
     <section
       id="home"
-      className="relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-background"
     >
       {/* Atmosphere: one soft mesh wash plus a fine dot field, masked so they
           fade before reaching the section edges. The top/bottom fades use the
