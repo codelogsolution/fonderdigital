@@ -125,15 +125,33 @@ export default function Header() {
   useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 16));
 
   return (
+    <>
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[60] cursor-default bg-background lg:hidden"
+          />
+        )}
+      </AnimatePresence>
+
     <motion.header
       initial={false}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "glass shadow-[0_8px_32px_rgba(2,6,23,0.08)]"
-          : "border-b border-transparent bg-transparent",
+        "fixed inset-x-0 top-0 z-[70] transition-all duration-300",
+        menuOpen
+          ? "border-b border-border-subtle bg-background shadow-[0_8px_32px_rgba(2,6,23,0.08)]"
+          : scrolled
+            ? "glass shadow-[0_8px_32px_rgba(2,6,23,0.08)]"
+            : "border-b border-transparent bg-transparent",
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
@@ -263,7 +281,7 @@ export default function Header() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="glass overflow-hidden lg:hidden"
+            className="max-h-[calc(100dvh-4rem)] overflow-x-hidden overflow-y-auto overscroll-contain border-t border-border-subtle bg-background shadow-[0_16px_32px_rgba(2,6,23,0.08)] lg:hidden"
             aria-label="Mobile"
           >
             <motion.div
@@ -375,5 +393,6 @@ export default function Header() {
         )}
       </AnimatePresence>
     </motion.header>
+    </>
   );
 }

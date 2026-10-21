@@ -29,7 +29,7 @@ export const siteConfig = {
     { label: "Work", href: "/work" },
     { label: "Contact", href: "/contact" },
   ] satisfies NavItem[],
-  socials: [] satisfies SocialLink[],
+  socials: [] as SocialLink[],
   footerServices: [
     { label: "Web Development", href: "/services/web-dev" },
     { label: "App Development", href: "/services/app-dev" },
