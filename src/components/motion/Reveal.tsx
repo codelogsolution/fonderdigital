@@ -6,14 +6,12 @@ import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 type RevealProps = {
   children: ReactNode;
   delay?: number;
-  y?: number;
   className?: string;
 };
 
 export default function Reveal({
   children,
   delay = 0,
-  y = 28,
   className,
 }: RevealProps) {
   const prefersReducedMotion = useReducedMotionSafe();

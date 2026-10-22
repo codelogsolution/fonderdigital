@@ -35,12 +35,8 @@ function RotatingText({
   }, [onWordChange]);
 
   useEffect(() => {
-    const current = words[wordIndex];
-    if (reduced) {
-      setText(current);
-      setPhase("waiting");
-      return;
-    }
+    const current = words[wordIndex] ?? "";
+    if (reduced) return;
 
     let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -77,10 +73,10 @@ function RotatingText({
   return (
     <span
       className={cn("relative inline-block", className)}
-      aria-label={words[wordIndex]}
+      aria-label={words[wordIndex] ?? ""}
     >
       <span aria-hidden>
-        {text}
+        {reduced ? words[wordIndex] ?? "" : text}
 
         {!reduced && (
           <span className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[0.08em] animate-pulse bg-current" />

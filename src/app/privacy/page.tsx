@@ -22,11 +22,11 @@ const sections = [
   },
   {
     title: "Retention & your rights",
-    body: "Email copies may remain in the mailboxes and backups operated by the email providers involved. Contact us at hello@fonder.com to ask about a message you sent.",
+    body: "Email copies may remain in the mailboxes and backups operated by the email providers involved. Contact us at hello@fonderdigital.com to ask about a message you sent.",
   },
   {
     title: "Questions",
-    body: "For a privacy question or request, contact us at hello@fonder.com.",
+    body: "For a privacy question or request, contact us at hello@fonderdigital.com.",
   },
 ];
 

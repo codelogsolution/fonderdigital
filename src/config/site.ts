@@ -19,7 +19,7 @@ export const siteConfig = {
   description:
     "FonderDigital crafts high-performance websites, unforgettable brands, and growth campaigns that convert.",
   url: "https://fonderdigital.com",
-  email: "hello@fonder.com",
+  email: "hello@fonderdigital.com",
   phone: "",
   location: "",
   nav: [

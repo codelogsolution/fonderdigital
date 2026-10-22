@@ -48,7 +48,7 @@ export default function Preloader() {
       try {
         sessionStorage.setItem("fd-intro-seen", "1");
       } catch {
-
+        // Storage can be unavailable in privacy-restricted browser contexts.
       }
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         finish();

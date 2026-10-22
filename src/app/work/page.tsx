@@ -1,6 +1,5 @@
 import PageHeader from "@/components/sections/PageHeader";
 import CaseStudies from "@/components/sections/CaseStudies";
-import Reveal from "@/components/motion/Reveal";
 import CallToAction from "@/components/sections/CallToAction";
 import WorkFaq from "@/components/sections/WorkFaq";
 
