@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Terms of Service",
   description: "The terms that apply to FonderDigital's services and the use of this website.",
-};
+  path: "/terms",
+});
 
 const sections = [
   {

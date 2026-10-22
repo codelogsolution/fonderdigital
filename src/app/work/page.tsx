@@ -2,11 +2,13 @@ import PageHeader from "@/components/sections/PageHeader";
 import CaseStudies from "@/components/sections/CaseStudies";
 import CallToAction from "@/components/sections/CallToAction";
 import WorkFaq from "@/components/sections/WorkFaq";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "Illustrative Concepts",
   description: "Browse illustrative website and product interface concepts that show FonderDigital's design direction.",
-};
+  path: "/work",
+});
 
 export default function WorkPage() {
   return (

@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
 import { FileText, Mail } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import PageHeader from "@/components/sections/PageHeader";
 import ContactForm from "@/components/forms/ContactForm";
 import Reveal from "@/components/motion/Reveal";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Contact Us",
   description:
     "Tell us where you want to go — we'll engineer the fastest route and build the vehicle to get you there.",
-};
+  path: "/contact",
+});
 
 const contactCards = [
   { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },

@@ -137,9 +137,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
-          {/* Keep the copyright year current for a maintained site. */}
           <p className="text-sm text-muted">
-            © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
+            © 2022 Sept {siteConfig.name}. All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
             <Link href="/privacy" className="transition-colors hover:text-primary">

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
   description:
     "How FonderDigital collects, uses, and protects the information you share through this website.",
-};
+  path: "/privacy",
+});
 
 const sections = [
   {

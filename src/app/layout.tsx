@@ -52,21 +52,17 @@ export const metadata: Metadata = {
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: [
-    "digital marketing",
-    "web development",
-    "Next.js development",
-    "SEO",
-    "branding",
-    "UI design",
-  ],
+  alternates: { canonical: "/" },
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
+    locale: "en_US",
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
     url: siteConfig.url,
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FonderDigital — Digital Marketing & Development" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -82,6 +78,18 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteConfig.url}/#organization`,
+    name: siteConfig.name,
+    alternateName: "Fonder Digital",
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/icon.svg`,
+    email: siteConfig.email,
+    description: siteConfig.description,
+  };
+
   return (
     <html
       lang="en"
@@ -90,6 +98,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
       </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <ThemeProvider>

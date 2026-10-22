@@ -1,16 +1,17 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowDownRight, ArrowRight } from "lucide-react";
 import { servicePages } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
 import CallToAction from "@/components/sections/CallToAction";
 import { ServicesGrowthPath, ServicesStartingPoints } from "@/components/sections/ServicesGrowthPath";
+import { createPageMetadata } from "@/config/seo";
 
-export const metadata: Metadata = {
+export const metadata = createPageMetadata({
   title: "Services",
   description:
     "Explore FonderDigital's services — web development, app development, SEO, paid media, content & copywriting, and branding.",
-};
+  path: "/services",
+});
 
 export default function ServicesPage() {
   return (

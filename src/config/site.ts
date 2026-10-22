@@ -17,8 +17,8 @@ export const siteConfig = {
   name: "FonderDigital",
   tagline: "Digital Marketing & Development",
   description:
-    "FonderDigital crafts high-performance websites, unforgettable brands, and growth campaigns that convert.",
-  url: "https://fonderdigital.com",
+    "FonderDigital builds websites and apps, improves search visibility, shapes brands, and creates digital marketing and content for growing businesses.",
+  url: "https://www.fonderdigital.com",
   email: "hello@fonderdigital.com",
   phone: "",
   location: "",
