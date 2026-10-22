@@ -104,7 +104,8 @@ export default function Hero() {
           </div>
 
           <motion.p {...fade(0.2)} className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted">
-            We design and build websites, apps, and marketing that help growing
+            FonderDigital is a digital marketing and development agency. We
+            design and build websites, apps, and marketing that help growing
             businesses win more customers.
           </motion.p>
           <motion.div {...fade(0.28)} className="hero-cta mt-9 flex flex-wrap items-center gap-3">

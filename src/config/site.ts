@@ -13,11 +13,20 @@ export type Stat = { value: string; label: string };
 
 export type NavItem = { label: string; href: string };
 
+export const serviceAreas = [
+  { city: "Dallas", region: "Texas", country: "United States" },
+  { city: "Austin", region: "Texas", country: "United States" },
+  { city: "Atlanta", region: "Georgia", country: "United States" },
+  { city: "London", region: "England", country: "United Kingdom" },
+  { city: "Manchester", region: "England", country: "United Kingdom" },
+  { city: "Birmingham", region: "England", country: "United Kingdom" },
+] as const;
+
 export const siteConfig = {
   name: "FonderDigital",
-  tagline: "Digital Marketing & Development",
+  tagline: "Web & App Development, SEO & Digital Marketing",
   description:
-    "FonderDigital builds websites and apps, improves search visibility, shapes brands, and creates digital marketing and content for growing businesses.",
+    "FonderDigital provides remote website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
   email: "hello@fonderdigital.com",
   phone: "",
@@ -61,14 +70,14 @@ export type HeroSlide = {
 export const heroSlides: HeroSlide[] = [
   {
         word: "websites",
-    long: "high-converting websites",
-    tagline: "that turn visitors into customers.",
+    long: "conversion-focused websites",
+    tagline: "built around your business goals.",
     service: "Web Development",
     href: "/services/web-dev",
     stat: "Custom-built",
     caption: "for your goals",
     blurb:
-      "FonderDigital builds fast, conversion-focused websites that load in a flash and guide visitors to book, buy or sign up.",
+      "FonderDigital builds fast, conversion-focused websites designed to help visitors understand your offer and take a clear next step.",
     label: "Websites",
   },
   {
@@ -85,20 +94,20 @@ export const heroSlides: HeroSlide[] = [
   },
   {
         word: "rankings",
-    long: "search rankings",
-    tagline: "that compound month after month.",
+    long: "search visibility",
+    tagline: "built to improve discoverability over time.",
     service: "SEO",
     href: "/services/seo",
     stat: "Search-led",
     caption: "growth strategy",
     blurb:
-      "Technical + content SEO that compounds: clean architecture, fast pages and keyword-rich content.",
+      "Technical and content SEO focused on crawlability, useful pages, and measurement. Search visibility and results depend on your market and search engines.",
     label: "SEO",
   },
   {
         word: "campaigns",
     long: "growth campaigns",
-    tagline: "that bring leads every week.",
+    tagline: "planned around your audience and goals.",
     service: "Social Marketing",
     href: "/services/marketing",
     stat: "Full-funnel",
@@ -109,8 +118,8 @@ export const heroSlides: HeroSlide[] = [
   },
   {
         word: "brands",
-    long: "memorable brands",
-    tagline: "people remember & trust.",
+    long: "distinctive brand identities",
+    tagline: "grounded in your business and audience.",
     service: "Branding",
     href: "/services/branding",
     stat: "Distinctive",
@@ -121,26 +130,26 @@ export const heroSlides: HeroSlide[] = [
   },
   {
         word: "interfaces",
-    long: "intuitive interfaces",
-    tagline: "that users understand at first click.",
+    long: "clear digital interfaces",
+    tagline: "designed around user needs.",
     service: "UI/UX Design",
     href: "/services/branding",
     stat: "User-centred",
     caption: "digital experiences",
     blurb:
-      "Pixel-perfect interfaces and prototypes designed for clarity, not clutter — tested with real users.",
+      "Interfaces and prototypes designed for clarity, with usability testing available when included in the project scope.",
     label: "Design",
   },
   {
         word: "content",
-    long: "effective content",
-    tagline: "that ranks, engages & sells.",
+    long: "useful digital content",
+    tagline: "planned for readers and search intent.",
     service: "Content Writing",
     href: "/services/content",
     stat: "Useful",
     caption: "search-ready content",
     blurb:
-      "Content strategy, SEO copy and long-form stories that rank in Google and convert readers into leads.",
+      "Content strategy, SEO copy, and long-form writing shaped around your audience, subject matter, and search intent. Rankings and enquiries are not guaranteed.",
     label: "Content",
   },
 ];

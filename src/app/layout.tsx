@@ -4,7 +4,7 @@ import {
   JetBrains_Mono,
   Outfit,
 } from "next/font/google";
-import { siteConfig } from "@/config/site";
+import { serviceAreas, siteConfig } from "@/config/site";
 import ScrollProgress from "@/components/layout/ScrollProgress";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
     url: siteConfig.url,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "FonderDigital — Digital Marketing & Development" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: `${siteConfig.name} — ${siteConfig.tagline}` }],
   },
   twitter: {
     card: "summary_large_image",
@@ -85,9 +85,27 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     name: siteConfig.name,
     alternateName: "Fonder Digital",
     url: siteConfig.url,
-    logo: `${siteConfig.url}/icon.svg`,
+    logo: `${siteConfig.url}/images/fonderdigital-logo.svg`,
     email: siteConfig.email,
     description: siteConfig.description,
+    areaServed: serviceAreas.map(({ city, region, country }) => ({
+      "@type": "City",
+      name: city,
+      containedInPlace: {
+        "@type": "AdministrativeArea",
+        name: region,
+        containedInPlace: { "@type": "Country", name: country },
+      },
+    })),
+  };
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}/#website`,
+    name: siteConfig.name,
+    alternateName: "Fonder Digital",
+    url: siteConfig.url,
+    publisher: { "@id": `${siteConfig.url}/#organization` },
   };
 
   return (
@@ -102,6 +120,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
           }}
         />
       </head>

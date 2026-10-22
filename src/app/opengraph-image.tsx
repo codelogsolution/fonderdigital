@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
+import { siteConfig } from "@/config/site";
 
-export const alt = "FonderDigital — Digital Marketing & Development";
+export const alt = `${siteConfig.name} — Web and app development, SEO, and digital marketing`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,10 +27,10 @@ export default function OpenGraphImage() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ display: "flex", flexDirection: "column", fontSize: 70, lineHeight: 1.08, fontWeight: 800, letterSpacing: -2 }}>
-            Digital marketing<br />&amp; development
+            Web &amp; app development<br />SEO &amp; digital marketing
           </div>
           <div style={{ display: "flex", fontSize: 28, color: "#ead9cc" }}>
-            Websites · Apps · SEO · Branding
+            Remote services across the US &amp; UK
           </div>
         </div>
         <div style={{ display: "flex", fontSize: 22, color: "#dfb99e" }}>www.fonderdigital.com</div>
