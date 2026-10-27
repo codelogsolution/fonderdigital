@@ -4,7 +4,7 @@ import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import AuroraOrb from "@/components/motion/AuroraOrb";
 
 import Link from "next/link";
-import { ArrowUpRight, TrendingUp } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { recentWins } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
@@ -30,22 +30,22 @@ export default function RecentWins() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end lg:gap-16">
           <Reveal>
             <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              How we create progress
+              AI delivery principles
             </span>
             <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
-              A practical path to better outcomes
+              Build AI people can rely on.
             </h2>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:pb-2">
             <p className="text-base leading-relaxed text-muted sm:text-lg">
-              Each engagement starts with a clear problem, moves through focused work, and uses the evidence available to shape the next step.
+              Useful AI starts with clear boundaries. We define the approved data, test how a feature behaves, and keep people involved where judgement matters.
             </p>
           </Reveal>
         </div>
 
-        {/* All results stay visible: a prospective customer should never have to
-            click an arrow to discover the proof they came for. */}
+                {/* Keep each principle visible together so the safeguards read as
+                    one practical set, not as separate claims. */}
         <div className="mt-11 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-3">
           {recentWins.map((win, index) => (
             <Reveal key={win.title} delay={index * 0.09}>
@@ -55,11 +55,10 @@ export default function RecentWins() {
                 className="h-full"
               >
                 <Link
-                  href="/services"
+                  href="/services/app-dev"
                   className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border-subtle bg-background/80 p-7 backdrop-blur-xl transition-colors duration-500 hover:border-primary/40 sm:p-8"
                 >
-                  {/* Each result card gets its own colour field so the three
-                      never read as the same card with different numbers. */}
+                  {/* The cards are principles rather than performance claims. */}
                   <span
                     aria-hidden
                     className="pointer-events-none absolute inset-0 bg-mesh-tight opacity-60"
@@ -71,8 +70,8 @@ export default function RecentWins() {
 
                   <div className="relative flex items-start justify-between gap-4">
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/[0.07] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-primary">
-                      <TrendingUp className="h-3.5 w-3.5" />
-                      Our approach
+                      <win.icon className="h-3.5 w-3.5" />
+                      Design guardrail
                     </span>
                     <ArrowUpRight className="h-5 w-5 shrink-0 text-muted transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
                   </div>
@@ -101,13 +100,13 @@ export default function RecentWins() {
         <Reveal delay={0.12}>
           <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-border-subtle pt-8">
             <p className="text-sm text-muted">
-              Want to see how this could apply to your business?
+              Planning an AI feature or workflow?
             </p>
             <Link
-              href="/services"
+              href="/services/app-dev"
               className="group inline-flex items-center gap-2 text-sm font-bold text-primary"
             >
-              Explore our services
+              Explore AI development
               <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
           </div>

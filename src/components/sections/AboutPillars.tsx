@@ -73,7 +73,10 @@ export default function AboutPillars() {
               className="grid items-center gap-12 lg:grid-cols-2"
             >
 
-              <Reveal className={cn("group", reversed && "lg:order-2")}>
+              <Reveal
+                direction={reversed ? "right" : "left"}
+                className={cn("group", reversed && "lg:order-2")}
+              >
                 <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border-subtle shadow-[0_24px_64px_var(--primary-soft)]">
                   <Image
                     src={pillar.image}
@@ -92,7 +95,11 @@ export default function AboutPillars() {
                 </div>
               </Reveal>
 
-              <Reveal delay={0.1} className={cn(reversed && "lg:order-1")}>
+              <Reveal
+                direction={reversed ? "left" : "right"}
+                delay={0.1}
+                className={cn(reversed && "lg:order-1")}
+              >
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
                   {pillar.subtitle}
                 </p>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
-import { ArrowRight, Code2, PenTool, Search, type LucideIcon } from "lucide-react";
+import { ArrowRight, BrainCircuit, Code2, Search, type LucideIcon } from "lucide-react";
 import {
   motion,
   useMotionValue,
@@ -42,14 +42,14 @@ const pillars: Pillar[] = [
     capabilities: ["Next.js platforms", "Mobile apps", "Core Web Vitals"],
   },
   {
-    title: "Content",
-    icon: PenTool,
+    title: "AI & automation",
+    icon: BrainCircuit,
     description:
-      "Brand identities, design systems, and editorial engines that keep your audience coming back.",
+      "AI assistants, product features, and workflow integrations shaped around approved data and useful human review.",
     tone: "var(--primary)",
-    cta: "See brand & copy",
-    href: "/services/branding",
-    capabilities: ["Brand identity", "Design systems", "SEO content"],
+    cta: "Explore AI development",
+    href: "/services/app-dev",
+    capabilities: ["RAG assistants", "AI workflows", "Human review"],
   },
   {
     title: "SEO",
@@ -246,15 +246,15 @@ export default function Pillars() {
               Core pillars
             </span>
             <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
-              Three disciplines. One growth engine.
+              AI, digital products, and growth.
             </h2>
           </Reveal>
 
           <Reveal delay={0.1} className="lg:pb-2">
             <p className="text-base leading-relaxed text-muted sm:text-lg">
-              Everything we do ladders up to the same outcome — your growth.
-              Development, content and SEO run together, so each one makes the
-              next compounding instead of competing for the same budget.
+              We bring AI engineering, web and app development, and search-led
+              growth into one considered plan, so every part supports the same
+              business goal.
             </p>
           </Reveal>
         </div>

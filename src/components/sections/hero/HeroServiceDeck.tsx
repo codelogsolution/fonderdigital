@@ -9,11 +9,10 @@ import { cn } from "@/lib/utils";
    glanceable proof panel, not readable body copy — labels stay short and the
    type stays in the 8–11px range the other mock screens already use. */
 
-/* `heroSlides` rotates 7 words but the studio sells 6 services, so the deck is
-   exactly 6 rows — one per service — and every slide resolves to one of them.
-   "brands" and "interfaces" both point at /services/branding, so they share
-   the Branding row rather than padding the list out to a 7th. */
-export const slideToServiceIndex = [0, 1, 2, 3, 4, 4, 5];
+/* AI Development shares the app-development row in this compact phone view;
+   the hero copy labels that slide separately. Branding and UI/UX also share a
+   row because they lead to the same service page. */
+export const slideToServiceIndex = [1, 0, 1, 2, 3, 4, 4, 5];
 
 export function serviceIndexForSlide(slide: number): number {
   return slideToServiceIndex[slide] ?? 0;
@@ -23,7 +22,9 @@ export function serviceIndexForSlide(slide: number): number {
    "Branding & UI/UX" while the interfaces word is up, so the highlighted row
    always matches the copy the reader is looking at on the left. */
 export function serviceLabelFor(slide: number): string {
-  return slide === 5
+  return slide === 0
+    ? "AI Development"
+    : slide === 6
     ? "Branding & UI/UX"
     : heroServices[serviceIndexForSlide(slide)].label;
 }

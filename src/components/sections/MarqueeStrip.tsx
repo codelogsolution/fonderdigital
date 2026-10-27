@@ -47,7 +47,7 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
               <span key={`${item}-${index}`} className="flex items-center">
                 {/* Sized in body-scale type, not display caps: this band sits
                     between sections and should pass information, not shout. */}
-                <span className="whitespace-nowrap px-6 text-lg font-semibold tracking-tight text-foreground/85 sm:px-8 sm:text-xl">
+                <span className="whitespace-nowrap px-10 text-lg font-semibold tracking-tight text-foreground/85 sm:px-12 sm:text-xl">
                   {item}
                 </span>
                 {/* Small copper lozenge as the separator — a precise accent
@@ -73,9 +73,11 @@ export default function MarqueeStrip() {
     offset: ["start end", "end start"],
   });
 
-  // Rows drift apart slightly as the band passes through the viewport.
-  const rowATranslate = useTransform(scrollYProgress, [0, 1], [26, -26]);
-  const rowBTranslate = useTransform(scrollYProgress, [0, 1], [-22, 22]);
+  // Keep the rows close while scrolling; their base gap provides breathing
+  // room when still, and the subtle counter-drift adds depth without a large
+  // jump in the space between them.
+  const rowATranslate = useTransform(scrollYProgress, [0, 1], [10, -10]);
+  const rowBTranslate = useTransform(scrollYProgress, [0, 1], [-10, 10]);
 
   // Express the reduced-motion preference through the same MotionValue channel
   // rather than dropping the `style` prop. Framer Motion binds these values to
@@ -114,14 +116,14 @@ export default function MarqueeStrip() {
       <motion.div
         ref={bandRef}
         style={{ y: rowAY }}
-        className="flex flex-col gap-6 sm:gap-8"
+        className="flex flex-col gap-8 sm:gap-10"
       >
         <Row items={rowA} />
       </motion.div>
 
       <motion.div
         style={{ y: rowBY }}
-        className="mt-6 flex flex-col sm:mt-8"
+        className="mt-8 flex flex-col sm:mt-10"
       >
         <Row items={rowB} reverse />
       </motion.div>

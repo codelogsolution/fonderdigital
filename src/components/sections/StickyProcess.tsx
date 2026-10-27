@@ -1,668 +1,389 @@
 "use client";
 
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
-import AuroraOrb from "@/components/motion/AuroraOrb";
-import {
-  ArrowRight,
+  ArrowDownRight,
+  ArrowUpRight,
   Check,
-  ClipboardCheck,
   Compass,
+  Layers3,
   Rocket,
-  SlidersHorizontal,
+  ScanSearch,
   type LucideIcon,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Reveal from "@/components/motion/Reveal";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 type Phase = {
   name: string;
   title: string;
   description: string;
   deliverable: string;
-  timeline: string;
-  checklist: string[];
   icon: LucideIcon;
+  checkpoints: string[];
 };
 
 const phases: Phase[] = [
   {
-    name: "Audit",
-    title: "We map what is actually happening",
+    name: "Discover",
+    title: "Start with the right question.",
     description:
-      "Analytics, ad accounts, funnel drop-off, and where competitors are quietly winning — pulled apart and explained in plain language, not a 60-page deck.",
-    deliverable: "Audit findings & priority list",
-    timeline: "Discovery",
-    checklist: [
-      "Ad accounts, analytics and CRM access mapped",
-      "Where leads drop off between click and sale",
-      "What your three closest competitors are bidding on",
+      "We learn about your audience, current setup, and the outcome you need—before recommending a direction.",
+    deliverable: "A focused brief and priorities",
+    icon: ScanSearch,
+    checkpoints: [
+      "Understand your audience and their needs",
+      "Review the current product, site, or marketing",
+      "Agree on goals, constraints, and open questions",
     ],
+  },
+  {
+    name: "Plan",
+    title: "Agree on the route before work begins.",
+    description:
+      "Turn the brief into a practical scope, milestones, and measures of success. You review and approve the plan first.",
+    deliverable: "A shared roadmap and clear scope",
     icon: Compass,
+    checkpoints: [
+      "Prioritise the work that matters first",
+      "Set milestones and review points together",
+      "Confirm the tools and approach for the job",
+    ],
   },
   {
-    name: "Strategy",
-    title: "A plan you sign off before we build",
+    name: "Create",
+    title: "Make progress visible as we build.",
     description:
-      "The channels worth your budget, the messaging that fits your market, and targets we both agree are realistic — written down so scope never drifts.",
-    deliverable: "Growth blueprint",
-    timeline: "Planning",
-    checklist: [
-      "Channel mix chosen around your margin, not vanity metrics",
-      "Messaging and offers written for your actual buyer",
-      "Targets per channel, agreed and signed off before spend",
+      "Design, development, content, and campaign work move through agreed reviews, so feedback arrives while it can still shape the result.",
+    deliverable: "Reviewable work at each milestone",
+    icon: Layers3,
+    checkpoints: [
+      "Share work in manageable increments",
+      "Collect feedback at planned checkpoints",
+      "Check quality, usability, and agreed requirements",
     ],
-    icon: ClipboardCheck,
   },
   {
-    name: "Execution",
-    title: "Campaigns, creative, and measurement move in planned cycles",
+    name: "Launch & learn",
+    title: "Ship carefully. Decide what comes next.",
     description:
-      "Ads, landing pages, email flows, and tracking updates move in agreed increments, with progress available to review as the work develops.",
-    deliverable: "Campaigns and creative in reviewable increments",
-    timeline: "Delivery sprints",
-    checklist: [
-      "Live campaigns with spend tied to real outcomes",
-      "Landing pages and offers tested against your buyers",
-      "Clear review notes for your team",
-    ],
+      "Prepare the handover, confirm launch details, and use the evidence available to shape useful next steps.",
+    deliverable: "A considered handover and next-step list",
     icon: Rocket,
-  },
-  {
-    name: "Optimisation",
-    title: "The work starts compounding",
-    description:
-      "Use agreed measures, experiments, and funnel feedback to decide what to refine. Review timing and optimization scope are set for each engagement.",
-    deliverable: "Performance review and recommendations",
-    timeline: "Ongoing",
-    checklist: [
-      "A/B tests on the pages and ads that actually move the needle",
-      "Budget shifted to whichever channel keeps paying for itself",
-      "A one-page monthly review your whole board can read",
+    checkpoints: [
+      "Review launch readiness and key details",
+      "Document the work and agreed handover",
+      "Identify what to maintain, test, or improve next",
     ],
-    icon: SlidersHorizontal,
   },
 ];
 
-const PHASE_COUNT = phases.length;
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-
-// A phone in Chrome's "Desktop site" mode can report a wide layout viewport.
-// Keep the scroll-pinned desktop experience for real pointer/hover desktops,
-// while touch devices continue using the compact, in-flow process layout.
-const DESKTOP_QUERY = "(min-width: 1024px) and (hover: hover) and (pointer: fine)";
-
-function subscribeDesktop(callback: () => void) {
-  const query = window.matchMedia(DESKTOP_QUERY);
-  query.addEventListener("change", callback);
-  return () => query.removeEventListener("change", callback);
-}
-
-function getDesktopSnapshot() {
-  return window.matchMedia(DESKTOP_QUERY).matches;
-}
-
-function useIsDesktop() {
-  return useSyncExternalStore(subscribeDesktop, getDesktopSnapshot, () => false);
-}
-
-export default function StickyProcess() {
-  const isDesktop = useIsDesktop();
-
-  return (
-    <section id="process" className="relative isolate overflow-x-clip border-y border-border-subtle">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-mesh opacity-80" />
-        <div
-          className="absolute inset-0 bg-dots opacity-30"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse 60% 55% at 50% 50%, black 10%, transparent 100%)",
-          }}
-        />
-        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-multiply" />
-      </div>
-      {isDesktop ? <PinnedProcess /> : <FlowProcess />}
-    </section>
-  );
-}
-
-const PANEL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
-const PANEL_WIDE = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-12 xl:px-20";
-
-const DIAL_SIZE = 172;
-const RING_STROKE = 3;
-const RING_RADIUS = DIAL_SIZE / 2 - RING_STROKE / 2 - 3;
-const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
-
-const MARKER_STEP = 360 / (PHASE_COUNT - 1);
-
-const PHASE_SPAN = (PHASE_COUNT - 1) / PHASE_COUNT;
-
-function activeNumberAt(position: number) {
-  return clamp(Math.floor(position / PHASE_SPAN), 0, PHASE_COUNT - 1);
-}
-const NODE_SIZE = 30;
-const MARKER_SIZE = 16;
-
-function nodeAngle(index: number) {
-  return (index * (360 / PHASE_COUNT) - 90) * (Math.PI / 180);
-}
-
-function ringPoint(angle: number) {
-  return {
-    x: Math.cos(angle) * RING_RADIUS,
-    y: Math.sin(angle) * RING_RADIUS,
-  };
-}
-
-const STEP = 320;
-const ROW_FRAME = "min-h-[20rem]";
-const AXIS_PULL = 22;
-const AXIS_GUTTER = "grid-cols-[1fr_15rem_1fr]";
-
-function ProcessDial({
-  pos,
-  activeIndex,
-}: {
-  pos: MotionValue<number>;
-  activeIndex: number;
-}) {
-  const arcProgress = useTransform(
-    pos,
-    (value) => clamp(value, 0, PHASE_COUNT - 1) / (PHASE_COUNT - 1),
-  );
-  const dashOffset = useTransform(arcProgress, [0, 1], [RING_CIRCUMFERENCE, 0]);
-
-  const point = useTransform(pos, (value) =>
-    ringPoint(
-      ((clamp(value, 0, PHASE_COUNT - 1) * MARKER_STEP - 90) * Math.PI) / 180,
-    ),
-  );
-  const markerX = useTransform(point, (value) => value.x);
-  const markerY = useTransform(point, (value) => value.y);
-
-  return (
-    <div
-      className="relative shrink-0"
-      style={{ width: DIAL_SIZE, height: DIAL_SIZE }}
-    >
-      {/* The sphere belongs to the dial, not the section: the pinned track is
-          thousands of pixels tall, so a section-centred orb would drift far
-          below the ring it is meant to sit behind. */}
-      <AuroraOrb
-        size={DIAL_SIZE * 1.9}
-        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70"
-      />
-
-      <svg
-        aria-hidden
-        className="absolute inset-0 -rotate-90"
-        width={DIAL_SIZE}
-        height={DIAL_SIZE}
-        viewBox={`0 0 ${DIAL_SIZE} ${DIAL_SIZE}`}
-      >
-        <circle
-          cx={DIAL_SIZE / 2}
-          cy={DIAL_SIZE / 2}
-          r={RING_RADIUS}
-          fill="none"
-          stroke="#cbd5e1"
-          strokeWidth={RING_STROKE}
-        />
-        <motion.circle
-          cx={DIAL_SIZE / 2}
-          cy={DIAL_SIZE / 2}
-          r={RING_RADIUS}
-          fill="none"
-          stroke="var(--color-primary)"
-          strokeWidth={RING_STROKE}
-          strokeLinecap="round"
-          strokeDasharray={RING_CIRCUMFERENCE}
-          style={{ strokeDashoffset: dashOffset }}
-        />
-      </svg>
-
-      <div className="absolute inset-[30px] rounded-full border border-border-subtle bg-surface/70 backdrop-blur-sm" />
-
-      <motion.span
-        aria-hidden
-        className="absolute left-1/2 top-1/2 rounded-full border-[2px] border-white bg-primary shadow-[0_0_0_1px_var(--primary-glow),0_6px_14px_-4px_var(--primary-glow-strong)]"
-        style={{
-          width: MARKER_SIZE,
-          height: MARKER_SIZE,
-          x: markerX,
-          y: markerY,
-          marginLeft: -MARKER_SIZE / 2,
-          marginTop: -MARKER_SIZE / 2,
-        }}
-      />
-
-      {phases.map((phase, index) => {
-        const { x, y } = ringPoint(nodeAngle(index));
-        const reached = index <= activeIndex;
-
-        return (
-          <span
-            key={phase.name}
-            aria-hidden
-            className={cn(
-              "absolute left-1/2 top-1/2 flex items-center justify-center rounded-full border font-mono text-[0.66rem] font-semibold tabular-nums transition-colors duration-300",
-              index === activeIndex
-                  ? "border-primary bg-primary text-primary-foreground shadow-[0_0_0_5px_var(--primary-soft)]"
-                  : reached
-                    ? "border-primary/40 bg-primary/10 text-primary"
-                    : "border-border-subtle bg-surface/70 text-muted",
-            )}
-            style={{
-              width: NODE_SIZE,
-              height: NODE_SIZE,
-              transform: `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0)`,
-            }}
-          >
-            {index + 1}
-          </span>
-        );
-      })}
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={activeIndex}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
-            className="text-[1.75rem] font-semibold leading-none tabular-nums text-foreground"
-          >
-            {String(activeIndex + 1).padStart(2, "0")}
-          </motion.span>
-        </AnimatePresence>
-        <span className="mt-1.5 px-3 text-center text-[0.56rem] font-semibold uppercase tracking-[0.2em] text-muted">
-          {phases[activeIndex].name}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function SectionHeader() {
-  return (
-    <Reveal>
-      <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-3">
-        <div>
-          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-primary">
-            The operating system
-          </p>
-          <h2 className="mt-2 text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl">
-            One process. <span className="text-muted">Zero surprises.</span>
-          </h2>
-        </div>
-        <p className="max-w-sm text-sm leading-relaxed text-muted">
-          Keep scrolling. The dial stays put and both halves move through it —
-          one phase at a time, in order.
-        </p>
-      </div>
-    </Reveal>
-  );
-}
-
-function useBlockMotion(
-  pos: MotionValue<number>,
-  index: number,
-  side: "left" | "right",
-) {
-  const distance = useTransform(pos, (value) => index - value);
-  const opacity = useTransform(
-    distance,
-    [-1.05, -0.4, 0, 0.4, 1.05],
-    [0, 0.9, 1, 0.9, 0],
-  );
-  const y = useTransform(distance, [-1, 0, 1], [24, 0, -24]);
-  const out = side === "left" ? -AXIS_PULL : AXIS_PULL;
-  const x = useTransform(distance, [-1, 0, 1], [out, 0, out]);
-
-  return { opacity, y, x };
-}
-
-function PromiseBlock({
-  index,
-  pos,
-  reduced,
-}: {
-  index: number;
-  pos: MotionValue<number>;
-  reduced: boolean;
-}) {
-  const phase = phases[index];
+function PhasePanel({ phase, index }: { phase: Phase; index: number }) {
   const Icon = phase.icon;
-  const { opacity, y, x } = useBlockMotion(pos, index, "left");
 
   return (
-    <div className="flex items-center justify-end pr-6" style={{ height: STEP }}>
-      <motion.div
-        className="w-full max-w-md text-right"
-        style={reduced ? { opacity } : { opacity, y, x }}
-      >
-        <div className="flex items-center justify-end gap-2.5">
-          <span className="font-mono text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-primary">
-            Phase {String(index + 1).padStart(2, "0")}
+    <div className="process-phase-content relative flex h-full flex-col">
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-primary/30 bg-primary/15 text-primary">
+            <Icon className="h-5 w-5" aria-hidden="true" />
           </span>
-          <span className="h-1 w-1 rounded-full bg-border-subtle" />
-          <span className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted">
-            {phase.timeline}
-          </span>
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary">
-            <Icon className="h-4.5 w-4.5" aria-hidden />
-          </span>
-        </div>
-
-        <h3 className="mt-4 text-[1.35rem] font-semibold leading-snug tracking-tight text-foreground">
-          {phase.title}
-        </h3>
-        <p className="mt-2.5 text-sm leading-relaxed text-muted">
-          {phase.description}
-        </p>
-      </motion.div>
-    </div>
-  );
-}
-
-function WorkBlock({
-  index,
-  pos,
-  reduced,
-}: {
-  index: number;
-  pos: MotionValue<number>;
-  reduced: boolean;
-}) {
-  const phase = phases[index];
-  const { opacity, y, x } = useBlockMotion(pos, index, "right");
-
-  return (
-    <div className="flex items-center pl-6" style={{ height: STEP }}>
-      <motion.div
-        className="w-full max-w-[30rem]"
-        style={reduced ? { opacity } : { opacity, y, x }}
-      >
-        <div className="flex items-center gap-3 border-t border-border-subtle pt-5">
-          <span className="font-mono text-[0.68rem] font-semibold tabular-nums text-primary">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted">
-            {phase.name}
-          </span>
-        </div>
-
-        <ul className="mt-5 space-y-3">
-          {phase.checklist.map((item) => (
-            <li
-              key={item}
-              className="flex gap-3 text-sm leading-relaxed text-muted"
-            >
-              <Check
-                className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                aria-hidden
-              />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-
-        <p className="mt-6 border-t border-border-subtle pt-4 text-sm text-foreground/80">
-          <span className="font-medium text-foreground">You get:</span>{" "}
-          {phase.deliverable}
-        </p>
-      </motion.div>
-    </div>
-  );
-}
-
-function ProcessRow({
-  pos,
-  progress,
-  activeIndex,
-  reduced,
-}: {
-  pos: MotionValue<number>;
-  progress: MotionValue<number>;
-  activeIndex: number;
-  reduced: boolean;
-}) {
-  const railY = useTransform(pos, (position: number) => -position * STEP);
-  const remaining = Math.max(0, PHASE_COUNT - 1 - activeIndex);
-
-  const rail = (side: "left" | "right") => (
-    <div className="relative overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_3.5rem,black_calc(100%-3.5rem),transparent)]">
-      <motion.div
-        className="absolute inset-x-0 top-0 will-change-transform"
-        style={{ y: railY }}
-      >
-        {phases.map((phase, index) =>
-          side === "left" ? (
-            <PromiseBlock
-              key={phase.name}
-              index={index}
-              pos={pos}
-              reduced={reduced}
-            />
-          ) : (
-            <WorkBlock
-              key={phase.name}
-              index={index}
-              pos={pos}
-              reduced={reduced}
-            />
-          ),
-        )}
-      </motion.div>
-    </div>
-  );
-
-  return (
-    <div className="mt-10">
-      <div className={cn("relative grid items-stretch", ROW_FRAME, AXIS_GUTTER)}>
-        {rail("left")}
-
-        <div className="relative">
-          <div
-            aria-hidden
-            className="axis-rule absolute left-1/2 top-0 h-full w-px -translate-x-1/2"
-          />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-            <ProcessDial pos={pos} activeIndex={activeIndex} />
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+              Delivery playbook
+            </p>
+            <p className="mt-1 text-xs font-medium text-muted">
+              Stage 0{index + 1} <span aria-hidden="true">·</span> {phase.name}
+            </p>
           </div>
         </div>
-
-        {rail("right")}
+        <span className="font-mono text-5xl font-semibold leading-none tracking-[-0.08em] text-white/10 sm:text-6xl">
+          0{index + 1}
+        </span>
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
-        <div className="min-w-[8rem] flex-1">
-          <div className="h-1.2 overflow-hidden rounded-full bg-border-subtle">
-            <motion.div
-              className="h-1.2 origin-left rounded-full bg-primary shadow-[0_0_14px_var(--primary-glow)]"
-              style={{ scaleX: progress }}
-            />
-          </div>
+      <h3 className="mt-5 line-clamp-2 max-w-2xl text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        {phase.title}
+      </h3>
+      <p className="mt-3 line-clamp-3 min-h-[4.5rem] max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+        {phase.description}
+      </p>
+
+      <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
+        {phase.checkpoints.map((checkpoint) => (
+          <li
+            key={checkpoint}
+            className="flex min-h-[4.25rem] items-start gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5 text-xs leading-relaxed text-foreground/85 sm:text-sm"
+          >
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            <span>{checkpoint}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-auto flex flex-col gap-4 border-t border-white/10 pt-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted">
+            What you take away
+          </p>
+          <p className="mt-1.5 text-sm font-semibold text-foreground">
+            {phase.deliverable}
+          </p>
         </div>
-
-        <div className="flex items-center gap-1.5">
-          {phases.map((item, index) => (
-            <span
-              key={item.name}
-              className={cn(
-                "h-1.2 rounded-full transition-all duration-500",
-                index <= activeIndex
-                  ? "w-5 bg-primary"
-                  : "w-1.5 bg-border-subtle",
-              )}
-            />
-          ))}
-        </div>
-
-        <span className="font-mono text-[0.66rem] font-semibold tabular-nums text-muted">
-          {String(activeIndex + 1).padStart(2, "0")} /{" "}
-          {String(PHASE_COUNT).padStart(2, "0")}
-        </span>
-
-        <p className="text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted">
-          {remaining === 0
-            ? "That is the whole engagement"
-            : remaining === 1
-              ? "One phase left"
-              : `${remaining} phases left`}
-        </p>
-
         <Link
           href="/contact"
-          className="group inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+          className="group inline-flex shrink-0 items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary/80"
         >
-          Free audit first
-          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          Talk through your project
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </Link>
       </div>
     </div>
   );
 }
 
-const PHASE_TRACK = `${PHASE_COUNT * 88}vh`;
-
-function PinnedProcess() {
+function ScrollJourney() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const reduced = useReducedMotionSafe();
-
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
+  const phaseTarget = useMotionValue(0);
+  const phasePosition = useSpring(phaseTarget, {
+    stiffness: 210,
+    damping: 30,
+    mass: 0.45,
+  });
+  const cursorTop = useTransform(phasePosition, [0, 1], ["0%", "100%"]);
 
-  const pos = useTransform(scrollYProgress, [0, 1], [0, PHASE_COUNT - 1]);
+  useEffect(() => {
+    const position = activeIndex / (phases.length - 1);
+    phaseTarget.set(position);
+    if (reduced) phasePosition.jump(position);
+  }, [activeIndex, phasePosition, phaseTarget, reduced]);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useMotionValueEvent(pos, "change", (value) => {
-    const next = activeNumberAt(value);
-    setActiveIndex((current) => (current === next ? current : next));
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const nextIndex = Math.min(
+      phases.length - 1,
+      Math.floor(progress * phases.length),
+    );
+    setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
   });
 
-  return (
-    <div
-      ref={trackRef}
-      className="relative"
-      style={{ height: PHASE_TRACK }}
-      data-process-track
-    >
-      <div className="sticky top-0 flex min-h-screen items-center py-24">
-        <div className={`${PANEL_WIDE} w-full`}>
-          <SectionHeader />
+  const goToPhase = (index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const start = track.getBoundingClientRect().top + window.scrollY;
+    const travel = Math.max(0, track.offsetHeight - window.innerHeight);
+    const progress = (index + 0.5) / phases.length;
+    window.scrollTo({
+      top: start + travel * progress,
+      behavior: reduced ? "instant" : "smooth",
+    });
+  };
 
-          <ProcessRow
-            pos={pos}
-            progress={scrollYProgress}
-            activeIndex={activeIndex}
-            reduced={reduced}
-          />
+  return (
+    <div ref={trackRef} className="process-scroll-story relative hidden h-[260svh] lg:block motion-reduce:hidden">
+      <div className="sticky top-16 flex min-h-[calc(100svh-4rem)] flex-col justify-center py-5">
+        <div className="mb-4 flex shrink-0 items-end justify-between gap-4 border-b border-border-subtle/70 pb-3 sm:mb-5">
+          <div>
+            <p aria-hidden="true" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+              A clear way to work
+            </p>
+            <p aria-hidden="true" className="mt-1 text-base font-semibold tracking-tight text-foreground sm:text-lg">
+              From first brief to a better launch.
+            </p>
+          </div>
+          <span className="shrink-0 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted">
+            0{activeIndex + 1} <span aria-hidden="true">/</span> 0{phases.length}
+          </span>
+        </div>
+        <div className="grid w-full grid-cols-[minmax(14rem,0.72fr)_3rem_minmax(0,1.28fr)] grid-rows-[auto_auto] items-center gap-x-6 gap-y-4">
+          <div className="col-start-1 row-start-1 self-start">
+            <div className="relative h-[19.5rem] space-y-2">
+              {phases.map((phase, index) => {
+                const Icon = phase.icon;
+                const active = index === activeIndex;
+
+                return (
+                  <button
+                    key={phase.name}
+                    type="button"
+                    aria-current={active ? "step" : undefined}
+                    aria-controls="process-story-panel"
+                    onClick={() => goToPhase(index)}
+                    className={
+                      "group relative flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition-all duration-300 " +
+                      (active
+                        ? "border-primary/35 bg-surface shadow-[0_16px_42px_-30px_var(--primary-glow-strong)]"
+                        : "border-transparent bg-background/35 hover:border-border-subtle hover:bg-surface/70")
+                    }
+                  >
+                    <span
+                      className={
+                        "relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border transition-all duration-300 " +
+                        (active
+                          ? "scale-105 border-primary/30 bg-primary text-primary-foreground shadow-[0_6px_18px_-8px_var(--primary-glow-strong)]"
+                          : "border-border-subtle bg-surface text-muted group-hover:text-primary")
+                      }
+                    >
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-primary/80">
+                        STEP 0{index + 1}
+                      </span>
+                      <span className="mt-0.5 block text-sm font-bold text-foreground">
+                        {phase.name}
+                      </span>
+                    </span>
+                    <ArrowDownRight
+                      aria-hidden="true"
+                      className={
+                        "h-4 w-4 shrink-0 transition-all duration-300 " +
+                        (active
+                          ? "translate-x-0.5 translate-y-0.5 text-primary"
+                          : "text-muted/50 group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:text-primary")
+                      }
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div aria-hidden="true" className="relative col-start-2 row-start-1 h-[19.5rem] self-start">
+            <div className="absolute inset-x-0 inset-y-9">
+              <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 rounded-full bg-primary/20" />
+              <motion.span
+                style={{ scaleY: phasePosition }}
+                className="absolute inset-y-0 left-1/2 w-px origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-primary via-primary to-primary/45"
+              />
+              {phases.map((phase, index) => (
+                <span
+                  key={phase.name}
+                  className="absolute left-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/55 bg-background"
+                  style={{ top: `${(index / (phases.length - 1)) * 100}%` }}
+                />
+              ))}
+              <motion.span
+                className="absolute left-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-background bg-primary font-mono text-[9px] font-bold text-primary-foreground shadow-[0_0_0_4px_var(--primary-soft),0_0_20px_var(--primary-glow)]"
+                style={{ top: cursorTop }}
+              >
+                0{activeIndex + 1}
+              </motion.span>
+            </div>
+          </div>
+
+          <p className="col-start-1 row-start-2 rounded-2xl border border-border-subtle bg-background/50 p-4 text-sm leading-relaxed text-foreground/80">
+            You approve the scope and key milestones. Progress stays visible
+            while the work takes shape.
+          </p>
+
+          <div
+            id="process-story-panel"
+            className="process-story-panel band-dark relative col-start-3 row-span-2 row-start-1 self-center overflow-hidden rounded-[1.75rem] border border-white/10 p-6 shadow-[0_32px_90px_-52px_var(--primary-glow-strong)] sm:p-7 lg:p-9"
+            aria-live="off"
+          >
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+              <div className="absolute inset-0 bg-grid opacity-25" />
+              <div className="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-primary/20 blur-[90px]" />
+              <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-primary/55 to-transparent" />
+            </div>
+            <motion.div
+              key={activeIndex}
+              initial={reduced ? false : { y: 7 }}
+              animate={{ y: 0 }}
+              transition={{ duration: reduced ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+              className="relative h-full"
+            >
+              <PhasePanel phase={phases[activeIndex]} index={activeIndex} />
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function FlowProcess() {
-  const flowRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: flowRef,
-    offset: ["start 0.85", "end 0.6"],
-  });
-
-  const pos = useTransform(scrollYProgress, [0, 1], [0, PHASE_COUNT - 1]);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useMotionValueEvent(pos, "change", (value) => {
-    const next = activeNumberAt(value);
-    setActiveIndex((current) => (current === next ? current : next));
-  });
-
+export default function StickyProcess() {
   return (
-    <div className={`desktop-mode-flow ${PANEL} py-20 lg:hidden`}>
-      <SectionHeader />
-
-      <div ref={flowRef} className="mt-9 space-y-3">
-        {phases.map((phase, index) => {
-          const Icon = phase.icon;
-          const isActive = index === activeIndex;
-
-          return (
-            <article
-              key={phase.name}
-              className={cn(
-                "rounded-3xl border bg-surface/60 p-5 shadow-[0_18px_44px_-38px_rgba(11,18,32,0.45)] backdrop-blur-md transition-colors duration-500 sm:p-6",
-                isActive ? "border-primary/40" : "border-border-subtle",
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[0.6rem] font-semibold tabular-nums transition-colors duration-300",
-                    isActive
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border-subtle bg-surface-2 text-muted",
-                  )}
-                >
-                  {index + 1}
-                </span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-primary/25 bg-primary/10 text-primary">
-                  <Icon className="h-4 w-4" aria-hidden />
-                </span>
-                <h3 className="text-base font-semibold tracking-tight text-foreground">
-                  {phase.name}
-                </h3>
-                <span className="ml-auto text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-muted">
-                  {phase.timeline}
-                </span>
-              </div>
-
-              <p className="mt-4 text-[0.95rem] font-medium leading-snug text-foreground">
-                {phase.title}
-              </p>
-
-              <ul className="mt-3 space-y-2.5">
-                {phase.checklist.map((item) => (
-                  <li
-                    key={item}
-                    className="flex gap-3 text-sm leading-relaxed text-muted"
-                  >
-                    <Check
-                      className="mt-0.5 h-4 w-4 shrink-0 text-primary"
-                      aria-hidden
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <p className="mt-4 border-t border-border-subtle pt-4 text-sm text-foreground/80">
-                <span className="font-medium text-foreground">You get:</span>{" "}
-                {phase.deliverable}
-              </p>
-            </article>
-          );
-        })}
+    <section
+      id="process"
+      aria-labelledby="process-heading"
+      className="relative isolate overflow-x-clip border-y border-border-subtle py-16 sm:py-20 lg:py-24"
+    >
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-mesh opacity-80" />
+        <div className="absolute -left-48 top-1/3 h-[30rem] w-[30rem] rounded-full bg-primary/[0.08] blur-[100px]" />
+        <div className="absolute -right-48 bottom-0 h-[26rem] w-[26rem] rounded-full bg-primary/[0.07] blur-[100px]" />
       </div>
-    </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Reveal>
+          <div className="flex flex-col gap-6 border-b border-border-subtle pb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-10">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
+                A clear way to work
+              </span>
+              <h2
+                id="process-heading"
+                className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl"
+              >
+                From first brief to&nbsp;
+                <span className="text-gradient">a better launch.</span>
+              </h2>
+            </div>
+            <p className="max-w-md text-sm leading-relaxed text-muted sm:text-base">
+              Good work should feel clear while it is happening. Scroll through
+              each stage to see what you can expect.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-8 lg:mt-10">
+          <ScrollJourney />
+
+          <div className="process-flow space-y-4 lg:hidden motion-reduce:block">
+            {phases.map((phase, index) => (
+              <Reveal key={phase.name} delay={index * 0.04}>
+                <article className="rounded-2xl border border-border-subtle bg-surface/70 p-5 sm:p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary">
+                      <phase.icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <div>
+                      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
+                        Step 0{index + 1}
+                      </p>
+                      <h3 className="text-sm font-bold text-foreground">{phase.name}</h3>
+                    </div>
+                  </div>
+                  <p className="mt-4 font-semibold text-foreground">{phase.title}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{phase.description}</p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        <Reveal delay={0.12}>
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-border-subtle pt-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
+              Strategy <span className="px-2 text-primary">→</span> Design &amp; build{" "}
+              <span className="px-2 text-primary">→</span> Launch &amp; learn
+            </p>
+            <p className="text-xs text-muted">
+              Clear checkpoints. Thoughtful delivery. No mystery handoffs.
+            </p>
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { BarChart3, Globe, Search, Sparkles, Target, TrendingUp } from "lucide-react";
+import { CheckCircle2, Globe, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import Section from "@/components/sections/Section";
 import SectionHeading from "@/components/sections/SectionHeading";
 import AuroraOrb from "@/components/motion/AuroraOrb";
@@ -32,9 +32,9 @@ type OrbitCard = {
 const orbitCards: OrbitCard[] = [
   {
     icon: TrendingUp,
-    label: "ROAS",
-    value: "+214%",
-    caption: "Blended, 90 days",
+    label: "Knowledge",
+    value: "RAG",
+    caption: "approved source context",
     x: 20,
     y: 24,
     rotate: -5,
@@ -45,9 +45,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Search,
-    label: "Organic clicks",
-    value: "3.1k",
-    caption: "Monthly, up 62%",
+    label: "Integrations",
+    value: "API",
+    caption: "connected to chosen tools",
     x: 78,
     y: 20,
     rotate: 4,
@@ -58,9 +58,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Target,
-    label: "Cost per lead",
-    value: "−38%",
-    caption: "vs. previous quarter",
+    label: "Quality",
+    value: "Tested",
+    caption: "expected and fallback paths",
     x: 15,
     y: 68,
     rotate: 3,
@@ -71,9 +71,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Globe,
-    label: "Markets live",
-    value: "7",
-    caption: "Across 4 regions",
+    label: "Review",
+    value: "Human",
+    caption: "approval where it matters",
     x: 83,
     y: 72,
     rotate: -4,
@@ -85,19 +85,19 @@ const orbitCards: OrbitCard[] = [
 ];
 
 
-/** The pinned device. Purely presentational — a stand-in for the live product. */
+/** Illustrative dashboard device, not a live product. */
 function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
   const reduced = useReducedMotionSafe();
   const lift = useTransform(progress, [0, 1], [0, -18]);
   const glow = useTransform(progress, [0, 0.5, 1], [0.35, 0.7, 0.45]);
 
   const tiles = [
-    { k: "Revenue", v: "$48.2k", d: "+18%" },
-    { k: "Signups", v: "3140", d: "+24%" },
-    { k: "Conv.", v: "7.4%", d: "+2" },
+    { k: "Use case", v: "Defined", d: "scope agreed" },
+    { k: "Knowledge", v: "Approved", d: "sources reviewed" },
+    { k: "Release", v: "Prepared", d: "handover planned" },
   ];
 
-  const rows = ["Checkout redesign", "Speed pass", "Winback flow"];
+  const rows = ["Prompt and response checks", "Fallback and privacy review", "Owner handoff and documentation"];
 
   return (
     <motion.div
@@ -122,10 +122,10 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
 
           <div className="rounded-2xl bg-mesh-tight p-4">
             <p className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-muted">
-              Growth overview
+              AI delivery workspace
             </p>
             <p className="mt-1 text-lg font-bold tracking-tight text-foreground">
-              Sample business
+              Knowledge assistant
             </p>
 
             <div className="mt-4 grid grid-cols-3 gap-2">
@@ -140,7 +140,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
                   <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
                     {s.v}
                   </p>
-                  <p className="text-[0.6rem] font-semibold text-emerald-600">{s.d}</p>
+                  <p className="text-[0.6rem] font-semibold text-emerald-700">{s.d}</p>
                 </div>
               ))}
             </div>
@@ -149,7 +149,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
             <div className="mt-3 rounded-xl border border-border-subtle bg-white/80 px-3 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted">
-                  Trend
+                  Feature flow
                 </span>
                 <Sparkles className="h-3 w-3 text-primary" aria-hidden />
               </div>
@@ -166,7 +166,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
                   </linearGradient>
                 </defs>
                 <path
-                  d="M0 27 L18 22 L36 24 L54 15 L72 17 L90 8 L108 11 L120 4"
+                  d="M0 17 L40 17 L40 7 L80 7 L80 27 L120 27"
                   fill="none"
                   stroke="url(#dc-spark)"
                   strokeWidth="2.25"
@@ -183,7 +183,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
                 key={row}
                 className="flex items-center gap-2 rounded-lg border border-border-subtle bg-white/70 px-3 py-2"
               >
-                <BarChart3 className="h-3 w-3 shrink-0 text-primary" aria-hidden />
+                <CheckCircle2 className="h-3 w-3 shrink-0 text-primary" aria-hidden />
                 <span className="text-[0.7rem] font-medium text-foreground/85">
                   {row}
                 </span>
@@ -238,7 +238,6 @@ function OrbitCardBody({ card }: { card: OrbitCard }) {
 }
 
 export default function DeliveryShowcase() {
-  const reduced = useReducedMotionSafe();
   const trackRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -246,27 +245,26 @@ export default function DeliveryShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // 0 -> 1 across the pinned track; drives the device lift and bloom pulse.
+  // Drives a restrained device lift and bloom as the section enters view.
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section">
       <SectionHeading
-        eyebrow="How the work ships"
+        eyebrow="From AI concept to reliable release"
         title={
           <span id="delivery-heading">
-            A clearer view of <span className="text-muted">what matters.</span>
+            Useful AI, <span className="text-muted">built around real work.</span>
           </span>
         }
-        lede="An illustrative dashboard concept showing how a project might organize useful signals and decisions. All figures shown are sample data, not client results."
+        lede="An illustrative workspace showing how an AI feature can move from a clear use case through source review, testing, and a considered handover. It is a concept interface, not client data or a live product."
         align="center"
       />
 
-      {/* Tall track gives the pinned stage room to travel. On mobile the orbit
-          is dropped (see DepthCard `compact`) and the track collapses to normal
-          document flow, so nothing is pinned in a cramped viewport. */}
-      <div ref={trackRef} className="delivery-track relative mt-14 lg:h-[150vh]">
-        <div className="delivery-sticky lg:sticky lg:top-16 lg:flex lg:min-h-[calc(100svh-4rem)] lg:items-center">
+      {/* Keep the dashboard in normal document flow so trackpad and wheel
+          scrolling never pause while the visual changes. */}
+      <div ref={trackRef} className="relative mt-10 sm:mt-14">
+        <div>
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="relative mx-auto h-[26rem] max-w-5xl sm:h-[30rem]">
               {/* Painted from the theme's own accent tokens, so the bloom
@@ -295,8 +293,7 @@ export default function DeliveryShowcase() {
               ))}
             </div>
 
-            {/* Stage steps under the device, so the reader can tell the section
-                is scroll-driven rather than a static hero. */}
+            {/* Keep the delivery stages visible below the illustrative dashboard. */}
             <Reveal delay={0.1}>
               <ol className="mt-10 grid gap-3 sm:grid-cols-3">
                 {stages.map((stage, i) => (
@@ -318,11 +315,6 @@ export default function DeliveryShowcase() {
               </ol>
             </Reveal>
 
-            {!reduced && (
-              <p className="mt-6 text-center text-xs font-medium text-muted">
-                Keep scrolling — the dashboard stays pinned.
-              </p>
-            )}
           </div>
         </div>
       </div>

@@ -1,10 +1,13 @@
 
 import {
   Code2,
+  Database,
   FileText,
   Megaphone,
   Palette,
   Search,
+  SearchCheck,
+  ShieldCheck,
   Smartphone,
   type LucideIcon,
 } from "lucide-react";
@@ -24,7 +27,7 @@ export const serviceAreas = [
 
 export const siteConfig = {
   name: "FonderDigital",
-  tagline: "Web & App Development, SEO & Digital Marketing",
+  tagline: "AI, Web & App Development, SEO & Digital Marketing",
   description:
     "FonderDigital provides remote website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
@@ -69,7 +72,19 @@ export type HeroSlide = {
 
 export const heroSlides: HeroSlide[] = [
   {
-        word: "websites",
+    word: "AI products",
+    long: "AI-enabled products",
+    tagline: "planned around real business workflows.",
+    service: "AI Development",
+    href: "/services/app-dev",
+    stat: "Use-case led",
+    caption: "human-reviewed delivery",
+    blurb:
+      "Plan AI assistants, product features, and workflow integrations around approved data, useful safeguards, and the people who use them.",
+    label: "AI Development",
+  },
+  {
+    word: "websites",
     long: "conversion-focused websites",
     tagline: "built around your business goals.",
     service: "Web Development",
@@ -81,7 +96,7 @@ export const heroSlides: HeroSlide[] = [
     label: "Websites",
   },
   {
-        word: "apps",
+    word: "apps",
     long: "beautiful mobile apps",
     tagline: "your customers love to use.",
     service: "App Development",
@@ -93,7 +108,7 @@ export const heroSlides: HeroSlide[] = [
     label: "Apps",
   },
   {
-        word: "rankings",
+    word: "rankings",
     long: "search visibility",
     tagline: "built to improve discoverability over time.",
     service: "SEO",
@@ -105,7 +120,7 @@ export const heroSlides: HeroSlide[] = [
     label: "SEO",
   },
   {
-        word: "campaigns",
+    word: "campaigns",
     long: "growth campaigns",
     tagline: "planned around your audience and goals.",
     service: "Social Marketing",
@@ -117,7 +132,7 @@ export const heroSlides: HeroSlide[] = [
     label: "Marketing",
   },
   {
-        word: "brands",
+    word: "brands",
     long: "distinctive brand identities",
     tagline: "grounded in your business and audience.",
     service: "Branding",
@@ -129,7 +144,7 @@ export const heroSlides: HeroSlide[] = [
     label: "Branding",
   },
   {
-        word: "interfaces",
+    word: "interfaces",
     long: "clear digital interfaces",
     tagline: "designed around user needs.",
     service: "UI/UX Design",
@@ -141,7 +156,7 @@ export const heroSlides: HeroSlide[] = [
     label: "Design",
   },
   {
-        word: "content",
+    word: "content",
     long: "useful digital content",
     tagline: "planned for readers and search intent.",
     service: "Content Writing",
@@ -687,23 +702,31 @@ export const caseStudies: CaseStudy[] = [
   },
 ];
 
-export type RecentWin = { metric: string; title: string; detail: string };
+export type RecentWin = {
+  metric: string;
+  title: string;
+  detail: string;
+  icon: LucideIcon;
+};
 
 export const recentWins: RecentWin[] = [
   {
     metric: "01",
-    title: "Find the friction",
-    detail: "Review the customer journey, content, and available analytics to identify what is getting in the way.",
+    title: "Use approved sources",
+    detail: "Ground assistants in project-approved knowledge and give people useful source context for the answer.",
+    icon: Database,
   },
   {
     metric: "02",
-    title: "Make focused improvements",
-    detail: "Prioritize changes around the audience, business goal, and practical constraints of the project.",
+    title: "Evaluate the edge cases",
+    detail: "Review expected answers, failure paths, and fallback behavior against examples agreed for the project.",
+    icon: SearchCheck,
   },
   {
     metric: "03",
-    title: "Learn from real signals",
-    detail: "Agree on useful measures before launch, then use the data available to plan what to improve next.",
+    title: "Keep people in control",
+    detail: "Add approval and override steps to AI-assisted actions that need human judgement.",
+    icon: ShieldCheck,
   },
 ];
 

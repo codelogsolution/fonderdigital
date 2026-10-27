@@ -3,9 +3,10 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import {
-  Bell,
+  BrainCircuit,
   CalendarDays,
   Code2,
+  Database,
   Download,
   FileText,
   Gauge,
@@ -22,7 +23,7 @@ import {
   Sparkles,
   TrendingUp,
   Users,
-  Zap,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
 import Scene3D from "@/components/motion/Scene3D";
@@ -40,103 +41,54 @@ import { cn } from "@/lib/utils";
    the shapes and densities are tuned to survive being seen for 2 seconds.
 ------------------------------------------------------------------- */
 
-const KPIS = [
-  { label: "Revenue", value: "$48.2k", delta: "sample", tone: "text-sky-600" },
-  { label: "Signups", value: "3,140", delta: "sample", tone: "text-violet-600" },
-  { label: "Conv. rate", value: "7.4%", delta: "sample", tone: "text-emerald-600" },
-];
-
-const DASH_ROWS = [
-  { icon: Users, name: "Checkout redesign", meta: "Sample concept" },
-  { icon: Zap, name: "Speed pass", meta: "Sample concept" },
-  { icon: Bell, name: "Winback flow", meta: "Sample concept" },
-];
-
 function DashboardScreen() {
   return (
-    <div className="flex h-full flex-col gap-3 bg-slate-50 p-4">
+    <div className="flex h-full flex-col gap-3 bg-[#0c111b] p-4 text-white">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
-            Illustrative dashboard · sample data
-          </p>
-          <p className="text-[13px] font-extrabold tracking-tight text-slate-900">
-            Sample business
-          </p>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="rounded-md border border-slate-200 bg-white px-2 py-1 text-[8px] font-semibold text-slate-500">
-            Last 30 days
+        <div className="flex items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
+            <BrainCircuit className="h-4 w-4" />
           </span>
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-sky-500 to-violet-500 text-[9px] font-bold text-white">
-            F
-          </span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-2">
-        {KPIS.map((kpi) => (
-          <div
-            key={kpi.label}
-            className="rounded-lg border border-slate-200/80 bg-white p-2"
-          >
-            <p className="text-[8px] font-semibold text-slate-400">{kpi.label}</p>
-            <p className="text-[13px] font-extrabold tracking-tight text-slate-900">
-              {kpi.value}
+          <div>
+            <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
+              AI workflow concept
             </p>
-            <p className={`text-[8px] font-bold ${kpi.tone}`}>{kpi.delta}</p>
+            <p className="text-[13px] font-extrabold tracking-tight text-white">
+              Product intelligence
+            </p>
           </div>
-        ))}
-      </div>
-
-      <div className="relative flex-1 overflow-hidden rounded-lg border border-slate-200/80 bg-white p-2">
-        <div className="flex items-center justify-between">
-          <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-slate-400">
-            Sessions
-          </span>
-          <TrendingUp className="h-3 w-3 text-sky-500" />
         </div>
-        <svg
-          viewBox="0 0 200 56"
-          preserveAspectRatio="none"
-          className="mt-1 h-full w-full"
-          aria-hidden
-        >
-          <defs>
-            <linearGradient id="heroChart" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,44 L25,38 L50,41 L75,28 L100,31 L125,19 L150,23 L175,10 L200,14 L200,56 L0,56 Z"
-            fill="url(#heroChart)"
-          />
-          <path
-            d="M0,44 L25,38 L50,41 L75,28 L100,31 L125,19 L150,23 L175,10 L200,14"
-            fill="none"
-            stroke="var(--primary)"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-        </svg>
+        <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-1 text-[8px] font-bold text-emerald-300">HUMAN IN LOOP</span>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        {DASH_ROWS.map((row) => (
-          <div
-            key={row.name}
-            className="flex items-center gap-2 rounded-lg border border-slate-200/80 bg-white px-2 py-1.5"
-          >
-            <span className="flex h-5 w-5 items-center justify-center rounded bg-sky-50 text-sky-600">
-              <row.icon className="h-2.5 w-2.5" />
+      <div className="relative grid grid-cols-4 gap-1.5 rounded-xl border border-white/10 bg-white/[0.035] p-2.5">
+        <span aria-hidden="true" className="absolute left-[12%] right-[12%] top-[1.55rem] h-px bg-gradient-to-r from-primary/25 via-primary/70 to-primary/25" />
+        {[
+          { icon: Database, label: "Approved\nsource" },
+          { icon: Search, label: "Retrieve\ncontext" },
+          { icon: BrainCircuit, label: "AI\nresponse" },
+          { icon: ShieldCheck, label: "Human\nreview" },
+        ].map(({ icon: Icon, label }, index) => (
+          <div key={label} className="relative z-10 flex min-w-0 flex-col items-center gap-1.5 text-center">
+            <span className={`flex h-7 w-7 items-center justify-center rounded-lg border ${index === 2 ? "border-primary/35 bg-primary/20 text-primary" : "border-white/10 bg-[#151d2a] text-slate-300"}`}>
+              <Icon className="h-3.5 w-3.5" />
             </span>
-            <span className="text-[9px] font-bold text-slate-700">{row.name}</span>
-            <span className="ml-auto text-[8px] font-medium text-slate-400">
-              {row.meta}
-            </span>
+            <span className="whitespace-pre-line text-[7px] font-semibold leading-tight text-slate-400">{label}</span>
           </div>
         ))}
+      </div>
+
+      <div className="flex-1 rounded-xl border border-white/10 bg-white/[0.035] p-3">
+        <div className="flex items-center gap-2">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/15 text-primary"><Users className="h-3 w-3" /></span>
+          <p className="text-[8px] font-bold uppercase tracking-[0.12em] text-slate-400">Workspace request</p>
+        </div>
+        <p className="mt-2 text-[10px] font-semibold leading-relaxed text-slate-200">“Find the right next step from our approved service guide.”</p>
+        <div className="mt-2 rounded-lg border border-primary/20 bg-primary/[0.08] p-2">
+          <div className="flex items-center gap-1.5 text-[8px] font-bold text-primary"><Sparkles className="h-2.5 w-2.5" /> Context-aware response</div>
+          <p className="mt-1 text-[8px] leading-relaxed text-slate-300">A grounded answer with a source reference, ready for a person to review.</p>
+        </div>
+        <div className="mt-2 flex items-center gap-1.5 text-[7px] text-slate-500"><Workflow className="h-2.5 w-2.5" /> Retrieval, model, and review steps are project-specific.</div>
       </div>
     </div>
   );
@@ -196,6 +148,12 @@ const CHIPS_BY_SERVICE: Chip[][] = [
   ],
 ];
 
+const AI_CHIPS: Chip[] = [
+  { icon: BrainCircuit, label: "AI features" },
+  { icon: Database, label: "RAG assistants" },
+  { icon: ShieldCheck, label: "Human reviewed" },
+];
+
 export default function HeroStage({
   className,
   activeSlide = 0,
@@ -205,7 +163,9 @@ export default function HeroStage({
 }) {
   const reduced = useReducedMotionSafe();
   const stageRef = useRef<HTMLDivElement>(null);
-  const chips = CHIPS_BY_SERVICE[serviceIndexForSlide(activeSlide)] ?? CHIPS_BY_SERVICE[0];
+  const chips = activeSlide === 0
+    ? AI_CHIPS
+    : CHIPS_BY_SERVICE[serviceIndexForSlide(activeSlide)] ?? CHIPS_BY_SERVICE[0];
 
   // Slow parallax: the orb sinks as the hero scrolls away while the devices
   // lift, which separates the two depth planes instead of moving them together.
@@ -250,7 +210,7 @@ export default function HeroStage({
               className="absolute left-0 top-[4%] w-[74%] overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_40px_80px_-30px_rgba(15,23,42,0.4)]"
               style={{ transform: "rotateY(15deg) rotateX(3deg) translateZ(-70px)" }}
             >
-              <BrowserBar url="sample-business.demo" />
+              <BrowserBar url="ai-workspace.demo" />
               <div className="aspect-[16/10]">
                 <DashboardScreen />
               </div>

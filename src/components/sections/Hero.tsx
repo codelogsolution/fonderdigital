@@ -13,6 +13,7 @@ import { heroServices, heroSlides } from "@/config/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const heroWords = [
+  "AI products.",
   "websites.",
   "apps.",
   "SEO.",
@@ -69,10 +70,10 @@ export default function Hero() {
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary text-white">
                 <Sparkles className="h-3.5 w-3.5" />
               </span>
-              Marketing + Digital
+              AI + Digital Products
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-3 py-1 text-xs font-semibold text-primary">
-              Strategy + digital delivery
+              Strategy + engineered delivery
             </span>
           </motion.div>
 
@@ -104,9 +105,9 @@ export default function Hero() {
           </div>
 
           <motion.p {...fade(0.2)} className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted">
-            FonderDigital is a digital marketing and development agency. We
-            design and build websites, apps, and marketing that help growing
-            businesses win more customers.
+            FonderDigital plans and builds AI-enabled products, websites, mobile
+            apps, and marketing systems to help growing businesses serve
+            customers and work more effectively.
           </motion.p>
           <motion.div {...fade(0.28)} className="hero-cta mt-9 flex flex-wrap items-center gap-3">
             <Button href="/contact" size="lg" className="btn-shine">

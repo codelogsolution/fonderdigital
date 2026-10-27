@@ -886,19 +886,57 @@ h6 {
     padding-block: 3.25rem;
   }
 
-  .delivery-track {
-    height: auto !important;
-    margin-top: 2rem;
+}
+
+/* Let the editorial layouts breathe on wide desktop displays without making
+   paragraphs or cards feel stretched. At 2K widths, a 1600px content rail
+   keeps the side margins intentional while giving grids more room. */
+@media (min-width: 1536px) {
+  .max-w-7xl {
+    max-width: 90rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .max-w-7xl {
+    max-width: 100rem;
+  }
+}
+
+/* A fixed process panel height keeps the scroll story visually anchored when
+   a new stage has more or less copy. Short displays get a compact, matching
+   layout so the content still fits above the fold. */
+.process-story-panel {
+  height: min(32rem, calc(100svh - 11rem));
+}
+
+@media (min-width: 60rem) and (max-height: 680px) {
+  .process-scroll-story .sticky {
+    padding-block: 1rem;
+  }
+}
+
+@media (min-width: 60rem) and (max-height: 680px) {
+  .process-phase-content h3 {
+    margin-top: 0.75rem;
+    font-size: 1.3rem;
   }
 
-  .delivery-sticky {
-    position: static !important;
-    top: auto !important;
-    display: block !important;
-    min-height: 0 !important;
+  .process-phase-content > p {
+    min-height: 3.25rem;
+    margin-top: 0.5rem;
   }
 
-  .desktop-mode-flow {
-    display: block !important;
+  .process-phase-content > ul {
+    margin-top: 0.5rem;
+  }
+
+  .process-phase-content > ul li {
+    min-height: 2.75rem;
+    padding-block: 0.5rem;
+  }
+
+  .process-phase-content > div:last-child {
+    padding-top: 0.5rem;
   }
 }
