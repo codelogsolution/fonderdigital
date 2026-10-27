@@ -48,7 +48,7 @@ const pillars: Pillar[] = [
       "AI assistants, product features, and workflow integrations shaped around approved data and useful human review.",
     tone: "var(--primary)",
     cta: "Explore AI development",
-    href: "/services/app-dev",
+    href: "/services/ai-development",
     capabilities: ["RAG assistants", "AI workflows", "Human review"],
   },
   {

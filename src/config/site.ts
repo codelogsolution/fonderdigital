@@ -1,13 +1,11 @@
 
 import {
+  BrainCircuit,
   Code2,
-  Database,
   FileText,
   Megaphone,
   Palette,
   Search,
-  SearchCheck,
-  ShieldCheck,
   Smartphone,
   type LucideIcon,
 } from "lucide-react";
@@ -29,7 +27,7 @@ export const siteConfig = {
   name: "FonderDigital",
   tagline: "AI, Web & App Development, SEO & Digital Marketing",
   description:
-    "FonderDigital provides remote website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
+    "FonderDigital provides AI assistant development, website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
   email: "hello@fonderdigital.com",
   phone: "",
@@ -43,6 +41,7 @@ export const siteConfig = {
   ] satisfies NavItem[],
   socials: [] as SocialLink[],
   footerServices: [
+    { label: "AI Development", href: "/services/ai-development" },
     { label: "Web Development", href: "/services/web-dev" },
     { label: "App Development", href: "/services/app-dev" },
     { label: "SEO", href: "/services/seo" },
@@ -76,7 +75,7 @@ export const heroSlides: HeroSlide[] = [
     long: "AI-enabled products",
     tagline: "planned around real business workflows.",
     service: "AI Development",
-    href: "/services/app-dev",
+    href: "/services/ai-development",
     stat: "Use-case led",
     caption: "human-reviewed delivery",
     blurb:
@@ -177,6 +176,7 @@ export const heroServices: { label: string; href: string; icon: LucideIcon }[] =
     { label: "Social Marketing", href: "/services/marketing", icon: Megaphone },
     { label: "Branding", href: "/services/branding", icon: Palette },
     { label: "Content Writing", href: "/services/content", icon: FileText },
+    { label: "AI Development", href: "/services/ai-development", icon: BrainCircuit },
   ];
 
 export type ProcessStep = { step: string; title: string; description: string };
@@ -319,6 +319,60 @@ export const servicePages: ServicePage[] = [
         title: "Monitor and plan the next iteration",
         description:
           "Agree handover, crash monitoring, analytics, and post-launch support in the project scope. Use real product feedback to prioritize future fixes and features.",
+      },
+    ],
+  },
+  {
+    slug: "ai-development",
+    title: "AI Development",
+    tagline: "Grounded chatbots and AI workflows, built around your business data.",
+    description:
+      "Plan and build retrieval-augmented assistants and AI product features with an architecture scoped to your data, workflow, and review needs. Example technologies can include Python, FastAPI, LangChain, LangGraph, embeddings, chunking, PostgreSQL, and pgvector; the final stack depends on the project.",
+    icon: BrainCircuit,
+    image: "/images/ai-network-poster.jpg",
+    imageAlt: "Abstract copper data network used as an illustrative AI visual",
+    fitFor: [
+      "Your team needs answers grounded in approved internal documents or business content.",
+      "You want to explore an AI assistant with clear source references and a useful fallback path.",
+      "You need an AI feature or workflow that can be reviewed before it takes an action.",
+    ],
+    features: [
+      "Knowledge ingestion, document parsing, chunking, metadata, and embedding strategy",
+      "Retrieval-augmented generation using approved sources, with citations or source context where appropriate",
+      "Python and FastAPI endpoints for a web or app experience, with authentication and request boundaries scoped to the project",
+      "LangChain components for retrieval and model workflows; LangGraph when stateful routing, retries, or human handoffs are useful",
+      "PostgreSQL with pgvector or another suitable vector store, chosen around data, scale, and operational needs",
+      "Evaluation examples, fallback behavior, privacy review, and monitoring planned before production release",
+    ],
+    stats: [
+      { value: "RAG", label: "retrieve from approved knowledge" },
+      { value: "FastAPI", label: "serve scoped application endpoints" },
+      { value: "LangGraph", label: "orchestrate stateful workflows when useful" },
+    ],
+    process: [
+      {
+        step: "Discover",
+        title: "Choose a real, bounded use case",
+        description:
+          "Map users, questions, source material, data permissions, failure risks, and the actions an assistant should never take. Agree the initial scope and evaluation examples before selecting models.",
+      },
+      {
+        step: "Prepare knowledge",
+        title: "Make approved content retrievable",
+        description:
+          "Parse the selected documents, split them into meaningful chunks, attach useful metadata, create embeddings, and store them in PostgreSQL with pgvector or another suitable retrieval system.",
+      },
+      {
+        step: "Build the assistant",
+        title: "Connect retrieval, generation, and controls",
+        description:
+          "Expose a project-scoped API with FastAPI. Compose retrieval and model calls with LangChain; use LangGraph when the workflow needs state, branching, retries, or a human approval step.",
+      },
+      {
+        step: "Evaluate & release",
+        title: "Test answers and failure paths before launch",
+        description:
+          "Review source relevance, answer quality, refusals, privacy boundaries, latency, and cost against agreed examples. Fix and retest issues, then release through the project's approved hosting and CI/CD process.",
       },
     ],
   },
@@ -699,34 +753,6 @@ export const caseStudies: CaseStudy[] = [
       "A sample mobile experience exploring approachable progress tracking, clear workout choices, and a calm daily routine. This is a UI concept, not a published app or client result.",
     services: ["Product UI concept", "Mobile interaction design", "Component system"],
     metrics: [],
-  },
-];
-
-export type RecentWin = {
-  metric: string;
-  title: string;
-  detail: string;
-  icon: LucideIcon;
-};
-
-export const recentWins: RecentWin[] = [
-  {
-    metric: "01",
-    title: "Use approved sources",
-    detail: "Ground assistants in project-approved knowledge and give people useful source context for the answer.",
-    icon: Database,
-  },
-  {
-    metric: "02",
-    title: "Evaluate the edge cases",
-    detail: "Review expected answers, failure paths, and fallback behavior against examples agreed for the project.",
-    icon: SearchCheck,
-  },
-  {
-    metric: "03",
-    title: "Keep people in control",
-    detail: "Add approval and override steps to AI-assisted actions that need human judgement.",
-    icon: ShieldCheck,
   },
 ];
 

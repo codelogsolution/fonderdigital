@@ -3,7 +3,7 @@
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Reveal from "@/components/motion/Reveal";
@@ -19,16 +19,18 @@ const SWAP_S = 0.3;
 
 export default function HomeShowcase() {
   const [active, setActive] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isEngaged, setIsEngaged] = useState(false);
   const prefersReducedMotion = useReducedMotionSafe();
   const slide = heroSlides[active % heroSlides.length];
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || !isPlaying || isEngaged) return;
     const timer = setTimeout(() => {
       setActive((current) => (current + 1) % heroSlides.length);
     }, ROTATE_MS);
     return () => clearTimeout(timer);
-  }, [prefersReducedMotion, active]);
+  }, [prefersReducedMotion, isEngaged, isPlaying, active]);
 
   const go = (direction: 1 | -1) => {
     setActive(
@@ -40,6 +42,14 @@ export default function HomeShowcase() {
     <section
       aria-labelledby="home-showcase"
       className="relative overflow-hidden py-12 sm:py-16"
+      onPointerEnter={() => setIsEngaged(true)}
+      onPointerLeave={() => setIsEngaged(false)}
+      onFocusCapture={() => setIsEngaged(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setIsEngaged(false);
+        }
+      }}
     >
       <div
         aria-hidden
@@ -48,17 +58,17 @@ export default function HomeShowcase() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-            Fresh from the studio
+            The studio, in motion
           </span>
           <h2
             id="home-showcase"
             className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl"
           >
-            Websites, apps &amp; growth — watch it all in one slider
+            One brief. The right digital pieces.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
-            A live taste of every discipline. It auto-plays slowly — tap a
-            heading to open that service page.
+            Explore AI, web, apps, and growth through original concept previews.
+            Choose a discipline to see how the work can take shape.
           </p>
         </Reveal>
         <div className="mt-12 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
@@ -71,7 +81,7 @@ export default function HomeShowcase() {
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`copy-${active}`}
-                  initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={
                     prefersReducedMotion
@@ -96,20 +106,29 @@ export default function HomeShowcase() {
                     <span className="text-primary">{slide.stat}</span>{" "}
                     <span className="font-normal text-muted">{slide.caption}</span>
                   </p>
-                  <div aria-hidden className="mt-6 flex gap-1.5">
+                  <div className="mt-6 flex gap-1.5" role="group" aria-label="Choose a service preview">
                     {heroSlides.map((item, index) => (
-                      <span
+                      <button
+                        type="button"
                         key={`${item.href}-${index}`}
-                        className="h-1 flex-1 overflow-hidden rounded-full bg-border-subtle"
+                        onClick={() => setActive(index)}
+                        aria-label={`Show ${item.label ?? item.service} preview`}
+                        aria-pressed={index === active}
+                        className="group/indicator flex h-4 min-w-0 flex-1 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                       >
-                        {index === active && (
-                          <span
-                            className={cn("block h-full rounded-full bg-primary", styles.homeProgress)}
-                            style={{ animationDuration: `${ROTATE_MS}ms` }}
-                          />
-                        )}
-                        {index < active && <span className="block h-full w-full bg-primary/40" />}
-                      </span>
+                        <span className="relative block h-1 w-full overflow-hidden rounded-full bg-border-subtle transition-colors group-hover/indicator:bg-primary/30">
+                          {index === active && (
+                            <span
+                              className={cn("block h-full rounded-full bg-primary", styles.homeProgress)}
+                              style={{
+                                animationDuration: `${ROTATE_MS}ms`,
+                                animationPlayState: isPlaying && !isEngaged && !prefersReducedMotion ? "running" : "paused",
+                              }}
+                            />
+                          )}
+                          {index < active && <span className="block h-full w-full bg-primary/40" />}
+                        </span>
+                      </button>
                     ))}
                   </div>
                 </motion.div>
@@ -139,6 +158,16 @@ export default function HomeShowcase() {
                 </span>
                 <button
                   type="button"
+                  onClick={() => setIsPlaying((current) => !current)}
+                  disabled={prefersReducedMotion}
+                  aria-label={prefersReducedMotion ? "Automatic preview is off because reduced motion is enabled" : isPlaying ? "Pause automatic previews" : "Play automatic previews"}
+                  title={prefersReducedMotion ? "Automatic preview is off because reduced motion is enabled" : isPlaying ? "Pause previews" : "Play previews"}
+                  className="flex h-9 w-9 appearance-none items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isPlaying ? <Pause aria-hidden className="h-3.5 w-3.5" /> : <Play aria-hidden className="ml-0.5 h-3.5 w-3.5" />}
+                </button>
+                <button
+                  type="button"
                   onClick={() => go(1)}
                   aria-label="Next showcase"
                   className="flex h-9 w-9 appearance-none items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:border-primary/40 hover:text-foreground"
@@ -154,7 +183,7 @@ export default function HomeShowcase() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={`preview-${active}`}
-                initial={{ opacity: 0, scale: 0.98 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.18 } }}
                 transition={{ duration: SWAP_S, ease: [0.21, 0.47, 0.32, 0.98] }}

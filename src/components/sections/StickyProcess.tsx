@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -152,25 +152,17 @@ function ScrollJourney() {
     target: trackRef,
     offset: ["start start", "end end"],
   });
-  const phaseTarget = useMotionValue(0);
-  const phasePosition = useSpring(phaseTarget, {
-    stiffness: 210,
-    damping: 30,
-    mass: 0.45,
+  // Follow the actual scroll position continuously. The spring smooths small
+  // trackpad deltas without making the marker jump between step centers.
+  const phasePosition = useSpring(scrollYProgress, {
+    stiffness: 180,
+    damping: 32,
+    mass: 0.35,
   });
   const cursorTop = useTransform(phasePosition, [0, 1], ["0%", "100%"]);
 
-  useEffect(() => {
-    const position = activeIndex / (phases.length - 1);
-    phaseTarget.set(position);
-    if (reduced) phasePosition.jump(position);
-  }, [activeIndex, phasePosition, phaseTarget, reduced]);
-
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
-    const nextIndex = Math.min(
-      phases.length - 1,
-      Math.floor(progress * phases.length),
-    );
+    const nextIndex = Math.round(progress * (phases.length - 1));
     setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
   });
 
@@ -187,7 +179,7 @@ function ScrollJourney() {
   };
 
   return (
-    <div ref={trackRef} className="process-scroll-story relative hidden h-[260svh] lg:block motion-reduce:hidden">
+    <div ref={trackRef} className="process-scroll-story relative hidden h-[220svh] lg:block motion-reduce:hidden">
       <div className="sticky top-16 flex min-h-[calc(100svh-4rem)] flex-col justify-center py-5">
         <div className="mb-4 flex shrink-0 items-end justify-between gap-4 border-b border-border-subtle/70 pb-3 sm:mb-5">
           <div>

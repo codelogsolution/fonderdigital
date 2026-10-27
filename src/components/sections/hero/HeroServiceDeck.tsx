@@ -9,10 +9,9 @@ import { cn } from "@/lib/utils";
    glanceable proof panel, not readable body copy — labels stay short and the
    type stays in the 8–11px range the other mock screens already use. */
 
-/* AI Development shares the app-development row in this compact phone view;
-   the hero copy labels that slide separately. Branding and UI/UX also share a
-   row because they lead to the same service page. */
-export const slideToServiceIndex = [1, 0, 1, 2, 3, 4, 4, 5];
+/* Branding and UI/UX share a row because they lead to the same service page.
+   AI Development has its own row and detail panel. */
+export const slideToServiceIndex = [6, 0, 1, 2, 3, 4, 4, 5];
 
 export function serviceIndexForSlide(slide: number): number {
   return slideToServiceIndex[slide] ?? 0;
@@ -22,9 +21,7 @@ export function serviceIndexForSlide(slide: number): number {
    "Branding & UI/UX" while the interfaces word is up, so the highlighted row
    always matches the copy the reader is looking at on the left. */
 export function serviceLabelFor(slide: number): string {
-  return slide === 0
-    ? "AI Development"
-    : slide === 6
+  return slide === 6
     ? "Branding & UI/UX"
     : heroServices[serviceIndexForSlide(slide)].label;
 }
@@ -82,6 +79,14 @@ const DETAIL: Detail[] = [
       { label: "Copy", value: "Conversion-led" },
     ],
   },
+  {
+    headline: "Grounded AI workflows",
+    rows: [
+      { label: "Knowledge", value: "RAG + sources" },
+      { label: "Workflow", value: "Reviewed" },
+      { label: "API", value: "FastAPI" },
+    ],
+  },
 ];
 export default function HeroServiceDeck({ activeSlide }: { activeSlide: number }) {
   const reduced = useReducedMotionSafe();
@@ -101,7 +106,7 @@ export default function HeroServiceDeck({ activeSlide }: { activeSlide: number }
        height, and the frame is 17/9 of its width, so anything under ~157px wide
        clips. Dropping it to 136px overflowed by 29px at a 141px phone.
 
-       The six rows themselves never drop: they are the point of the panel. */
+       The service rows themselves never drop: they are the point of the panel. */
 const ROW_PAD = "px-1.5 py-[3px] @min-[112px]:py-[4px] @min-[157px]:py-[5px]";
 const ROW_TEXT = "truncate text-[8px] @min-[112px]:text-[9px]";
 
@@ -126,7 +131,7 @@ return (
         </AnimatePresence>
       </div>
 
-      {/* One row per service — six, matching heroServices exactly. */}
+      {/* One row per service, matching heroServices exactly. */}
       <ul className="flex flex-col gap-0.5 @min-[112px]:gap-1">
         {heroServices.map((service, i) => {
           const isActive = i === serviceIndex;

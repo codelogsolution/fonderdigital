@@ -132,15 +132,15 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
               {tiles.map((s) => (
                 <div
                   key={s.k}
-                  className="rounded-xl border border-border-subtle bg-white/80 px-2 py-2.5"
+                  className="flex h-full min-w-0 flex-col rounded-xl border border-border-subtle bg-white/80 px-1.5 py-2.5"
                 >
-                  <p className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted">
+                  <p className="min-h-4 truncate whitespace-nowrap text-[0.5rem] font-semibold uppercase leading-4 tracking-[0.08em] text-muted">
                     {s.k}
                   </p>
-                  <p className="mt-0.5 text-sm font-bold tabular-nums text-foreground">
+                  <p className="mt-0.5 whitespace-nowrap text-xs font-bold leading-5 tabular-nums text-foreground">
                     {s.v}
                   </p>
-                  <p className="text-[0.6rem] font-semibold text-emerald-700">{s.d}</p>
+                  <p className="mt-0.5 text-[0.55rem] font-semibold leading-[1.1rem] text-emerald-700">{s.d}</p>
                 </div>
               ))}
             </div>

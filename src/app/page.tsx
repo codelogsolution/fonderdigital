@@ -3,9 +3,7 @@ import Hero from "@/components/sections/Hero";
 import TrustMetrics from "@/components/sections/TrustMetrics";
 import Pillars from "@/components/sections/Pillars";
 import MarqueeStrip from "@/components/sections/MarqueeStrip";
-import RecentWins from "@/components/sections/RecentWins";
 import CallToAction from "@/components/sections/CallToAction";
-import AIStudio from "@/components/sections/AIStudio";
 import type { Metadata } from "next";
 
 const homeTitle = "Fonder Digital | Web, App & AI Development";
@@ -37,8 +35,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <AIStudio />
-      <RecentWins />
       <TrustMetrics />
       <Pillars />
       <MarqueeStrip />

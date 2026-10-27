@@ -52,7 +52,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-5 flex items-end justify-between border-b border-border-subtle pb-4">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-muted">Capabilities</p>
-            <p className="text-xs text-muted">01 — 06</p>
+            <p className="text-xs text-muted">01 — {String(servicePages.length).padStart(2, "0")}</p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {servicePages.map((service, index) => (
