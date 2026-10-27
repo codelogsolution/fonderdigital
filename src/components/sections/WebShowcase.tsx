@@ -114,7 +114,7 @@ function SiteFooter({ brand, columns }: { brand: string; columns: { heading: str
         ))}
       </div>
       <p className="mt-6 border-t border-white/10 pt-4 text-center text-[9px] text-white/40">
-        © 2022 Sept {brand} · Concept demo · Privacy · Terms
+        © 2023 Apr {brand} · Concept demo · Privacy · Terms
       </p>
     </div>
   );
