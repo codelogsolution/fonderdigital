@@ -724,6 +724,7 @@ h6 {
 
   .hero-title {
     margin-top: 1.25rem;
+    min-height: 7.65rem;
   }
 
   .hero-tagline {
