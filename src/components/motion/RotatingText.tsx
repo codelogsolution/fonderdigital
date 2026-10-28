@@ -9,6 +9,7 @@ type RotatingTextProps = {
   typeSpeed?: number;
   deleteSpeed?: number;
   holdPause?: number;
+  initialHoldPause?: number;
   delay?: number;
   className?: string;
   onWordChange?: (index: number) => void;
@@ -19,6 +20,7 @@ function RotatingText({
   typeSpeed = 95,
   deleteSpeed = 70,
   holdPause = 1800,
+  initialHoldPause = holdPause,
   delay = 0,
   className,
   onWordChange,
@@ -29,6 +31,7 @@ function RotatingText({
   const [phase, setPhase] = useState<"waiting" | "typing" | "deleting">(
     "waiting",
   );
+  const hasRotatedRef = useRef(false);
   const onWordChangeRef = useRef(onWordChange);
   useEffect(() => {
     onWordChangeRef.current = onWordChange;
@@ -49,13 +52,18 @@ function RotatingText({
           typeSpeed,
         );
       } else {
-        timer = setTimeout(() => setPhase("deleting"), holdPause);
+        const visiblePause = hasRotatedRef.current
+          ? holdPause
+          : initialHoldPause;
+        timer = setTimeout(() => {
+          hasRotatedRef.current = true;
+          setPhase("deleting");
+        }, visiblePause);
       }
     } else {
       if (text.length > 0) {
         timer = setTimeout(() => setText(text.slice(0, -1)), deleteSpeed);
       } else {
-
         timer = setTimeout(() => {
           const next = (wordIndex + 1) % words.length;
           setWordIndex(next);
@@ -68,14 +76,23 @@ function RotatingText({
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [phase, text, wordIndex, words, typeSpeed, deleteSpeed, holdPause, delay, reduced]);
+  }, [
+    phase,
+    text,
+    wordIndex,
+    words,
+    typeSpeed,
+    deleteSpeed,
+    holdPause,
+    initialHoldPause,
+    delay,
+    reduced,
+  ]);
 
   return (
-    <span
-      className={cn("relative inline-block", className)}
-      aria-label={words[wordIndex] ?? ""}
-    >
-      <span aria-hidden>
+    <span className={cn("relative inline-block", className)}>
+      <span className="sr-only">{words[wordIndex] ?? ""}</span>
+      <span aria-hidden="true">
         {reduced ? words[wordIndex] ?? "" : text}
 
         {!reduced && (

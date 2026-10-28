@@ -73,7 +73,7 @@ function SiteRail({ title, children }: { title: string; children: React.ReactNod
   return (
     <div className="py-5">
       <div className="flex items-center justify-between px-6">
-        <h5 className="text-sm font-extrabold text-slate-900">{title}</h5>
+        <p className="text-sm font-extrabold text-slate-900">{title}</p>
         <span className="flex items-center gap-1 text-[10px] font-bold text-sky-600">
           View all <ArrowRight aria-hidden className="h-3 w-3" />
         </span>

@@ -2,10 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import {
-  AnimatePresence,
-  motion,
-} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowDown,
   ArrowRight,
@@ -37,11 +34,10 @@ function AINetworkVideo() {
   const frameRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(false);
   const reduced = useReducedMotionSafe();
 
   useEffect(() => {
-    if (reduced) return;
     const frame = frameRef.current;
     if (!frame) return;
     if (!("IntersectionObserver" in window)) return;
@@ -49,8 +45,20 @@ function AINetworkVideo() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setReady(true);
-          observer.disconnect();
+          const connection = (
+            navigator as Navigator & {
+              connection?: { effectiveType?: string; saveData?: boolean };
+            }
+          ).connection;
+          const slowConnection = ["slow-2g", "2g"].includes(
+            connection?.effectiveType ?? "",
+          );
+          if (!reduced && !connection?.saveData && !slowConnection) {
+            setReady(true);
+            setPlaying(true);
+          }
+        } else {
+          setPlaying(false);
         }
       },
       { rootMargin: "160px", threshold: 0.1 },
@@ -62,12 +70,12 @@ function AINetworkVideo() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (reduced || !playing || !ready) {
+    if (!playing || !ready) {
       video.pause();
       return;
     }
     void video.play().catch(() => setPlaying(false));
-  }, [playing, ready, reduced]);
+  }, [playing, ready]);
 
   const toggleVideo = () => {
     if (!playing) setReady(true);
@@ -105,7 +113,7 @@ function AINetworkVideo() {
           aria-label={playing ? "Pause AI visualization" : "Play AI visualization"}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-black/35 text-white backdrop-blur-md transition-colors hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          {playing && !reduced ? (
+          {playing ? (
             <span aria-hidden="true" className="flex gap-1">
               <span className="h-3.5 w-0.5 rounded-full bg-current" />
               <span className="h-3.5 w-0.5 rounded-full bg-current" />

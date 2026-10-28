@@ -35,17 +35,12 @@ export default function Hero() {
   });
 
   return (
-    /* Use the full-screen layout on desktop widths. In a phone browser's
-       desktop-site mode, the wider layout viewport can otherwise stretch the
-       hero and leave oversized blank bands around its content. */
+
     <section
       id="home"
       className="home-hero relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
     >
-      {/* Atmosphere: one soft mesh wash plus a fine dot field, masked so they
-          fade before reaching the section edges. The top/bottom fades use the
-          page background token so they blend with the warm neutral — a literal
-          white here showed as a grey band against the new tint. */}
+
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh" />
         <div
@@ -60,7 +55,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-grid mx-auto flex w-full max-w-7xl flex-1 flex-col items-center gap-10 px-4 pb-8 pt-24 sm:px-6 lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:px-8 lg:pb-6 lg:pt-28">
-        {/* ---------------- Copy column ---------------- */}
+
         <div className="relative">
           <motion.div
             {...fade(0.05)}
@@ -82,10 +77,13 @@ export default function Hero() {
             <span className="block">
               <RotatingText
                 words={heroWords}
+                initialHoldPause={6500}
                 className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent"
                 onWordChange={setActiveSlide}
               />
-              <span className="animate-pulse text-primary">|</span>
+              <span aria-hidden="true" className="animate-pulse text-primary">
+                |
+              </span>
             </span>
           </h1>
 
@@ -119,7 +117,6 @@ export default function Hero() {
             </Button>
           </motion.div>
 
-          {/* Trust row */}
           <motion.div
             {...fade(0.34)}
             className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border-subtle pt-7"
@@ -142,27 +139,12 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* ---------------- 3D stage column ---------------- */}
-        {/* The stage follows the same index the headline does, so the phone
-            deck and the floating chips always argue the active service.
-
-            Capped on lg: uncapped it filled its column at ~580px, which made
-            the 5:6 stage 696px tall and set the floor for the whole hero. */}
         <HeroStage
           className="hero-stage mx-auto w-full max-w-[288px] sm:max-w-[420px] lg:max-w-[500px]"
           activeSlide={activeSlide}
         />
       </div>
 
-      {/* ---------------- Bottom bar ----------------
-          Spans the full width so the section ends on a single horizontal
-          rule rather than a ragged column edge. `pb` matters here: the bar
-          previously had top padding only, so the pill row sat flush against
-          the section boundary and the dark band below crowded it. */}
-      {/* `lg:pr-24` reserves a lane for the fixed chat launcher (bottom-5
-          right-5, ~56px wide + 20px inset). Without it the rail's scroll link
-          ran under the launcher on 1280x720 and 1366x768, where max-w-7xl
-          stops constraining the rail and its right edge hits the viewport. */}
       <div className="hero-rail mx-auto w-full max-w-7xl shrink-0 px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10 lg:pr-24">
         <div className="flex flex-col gap-6 border-t border-border-subtle pt-7 lg:flex-row lg:items-center lg:justify-between">
           <ul className="flex flex-wrap gap-2">

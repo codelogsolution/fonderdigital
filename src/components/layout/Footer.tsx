@@ -6,15 +6,6 @@ import { InstagramIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import NewsletterForm from "@/components/layout/NewsletterForm";
 import BrandMark from "@/components/ui/BrandMark";
 
-/* The footer is a dark band, so it re-tunes the semantic tokens via the
-   `.band-dark` class rather than forcing light-mode values onto near-black.
-   Those tokens now live in globals.css and are theme-aware, so the footer
-   follows the active theme instead of hard-coding one copper.
-
-   It used to pass an inline `--primary: #38bdf8`, which silently recoloured
-   every `text-primary` / `bg-primary` in this subtree — most visibly the
-   newsletter button. Keeping the override in CSS means a theme switch moves
-   the footer and the page together. */
 const socialIcons: Record<
   SocialLink["icon"],
   ComponentType<{ className?: string }>

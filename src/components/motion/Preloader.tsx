@@ -11,10 +11,7 @@ const EXIT_DELAY = 220;
 
 export default function Preloader() {
   const reduced = useReducedMotionSafe();
-  // Returning visitors are marked by the inline script in the document body
-  // before hydration. Reading the class during the initial render keeps the
-  // first client render identical to the server's, avoiding a hydration
-  // mismatch, and means the intro markup is never painted for them.
+
   const [skipped] = useState(
     () =>
       typeof document !== "undefined" &&
@@ -48,7 +45,7 @@ export default function Preloader() {
       try {
         sessionStorage.setItem("fd-intro-seen", "1");
       } catch {
-        // Storage can be unavailable in privacy-restricted browser contexts.
+        void 0;
       }
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         finish();

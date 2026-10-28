@@ -7,7 +7,7 @@ type SectionHeadingProps = {
   eyebrow: string;
   title: ReactNode;
   lede?: ReactNode;
-  /** "left" sits above the copy; "split" puts the copy in a right-hand column. */
+
   layout?: "left" | "split";
   align?: "left" | "center";
   className?: string;
@@ -15,11 +15,6 @@ type SectionHeadingProps = {
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-/**
- * One heading treatment for the whole site. Sections that hand-roll their own
- * h2 are the main reason the page reads as inconsistent, so the eyebrow,
- * tracking, scale and reveal rhythm all live here.
- */
 export default function SectionHeading({
   eyebrow,
   title,

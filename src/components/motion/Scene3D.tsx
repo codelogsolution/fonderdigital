@@ -14,27 +14,18 @@ import { cn } from "@/lib/utils";
 type Scene3DProps = {
   children: ReactNode;
   className?: string;
-  /** Maximum rotation in degrees at the edge of the pointer range. */
+
   intensity?: number;
-  /** Pixels the stage shifts toward the pointer. */
+
   shift?: number;
-  /** Adds a slow constant float on top of the pointer tilt. */
+
   float?: boolean;
-  /** Resting rotation applied before any pointer input. */
+
   resting?: { x?: number; y?: number };
 };
 
 const SPRING = { stiffness: 120, damping: 18, mass: 0.6 };
 
-/**
- * A true 3D stage: the parent establishes perspective and the inner layer is
- * rotated in 3D space toward the pointer, with a spring so it settles rather
- * than snapping. This is what makes a flat card read as a physical object
- * tilted toward the reader.
- *
- * Touch devices and reduced-motion readers get a static, upright composition —
- * a hover-only tilt would otherwise leave the layout frozen mid-rotation.
- */
 export default function Scene3D({
   children,
   className,
@@ -47,17 +38,12 @@ export default function Scene3D({
   const sectionRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
 
-  // Normalised pointer position, -0.5 (left/top) to 0.5 (right/bottom).
   const px = useMotionValue(0);
   const py = useMotionValue(0);
 
   const springPx = useSpring(px, SPRING);
   const springPy = useSpring(py, SPRING);
 
-  // Pointer left/right drives Y rotation, top/bottom drives X rotation, so the
-  // stage always turns *toward* the cursor like a real object on a hinge.
-  // `resting` is folded into the output range so the two never contend for the
-  // same transform value.
   const rotateY = useTransform(
     springPx,
     [-0.5, 0.5],
@@ -84,9 +70,7 @@ export default function Scene3D({
       if (!active) return;
       const rect = sectionRef.current?.getBoundingClientRect();
       if (!rect) return;
-      // clientX/Y are viewport-absolute, so the element's own offset has to be
-      // removed before dividing by its size. Without this the tilt is skewed by
-      // however far down the page the stage sits.
+
       px.set((event.clientX - rect.left) / rect.width - 0.5);
       py.set((event.clientY - rect.top) / rect.height - 0.5);
     },
@@ -115,10 +99,7 @@ export default function Scene3D({
       style={{ perspective: 1400, perspectiveOrigin: "50% 50%" }}
       className={cn("relative", className)}
     >
-      {/* Outer layer owns the pointer rotation (framer-motion writes
-          `transform`), inner layer owns the idle float (a CSS keyframe also
-          writes `transform`). Keeping them on separate elements stops one from
-          silently clobbering the other. */}
+
       <motion.div
         style={{
           rotateX,

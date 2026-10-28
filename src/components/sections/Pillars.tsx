@@ -65,8 +65,8 @@ export default function Pillars() {
 
         <ol className="mt-2">
           {pillars.map(({ title, icon: Icon, description, href, capabilities }, index) => (
-            <Reveal key={title} delay={index * 0.055}>
-              <li className="group relative border-b border-border-subtle">
+            <li key={title} className="group relative border-b border-border-subtle">
+              <Reveal delay={index * 0.055}>
                 <Link
                   href={href}
                   className="relative grid gap-x-5 gap-y-4 py-7 outline-none transition-colors duration-300 hover:bg-primary/[0.025] focus-visible:bg-primary/[0.035] sm:py-8 lg:grid-cols-[4rem_minmax(13rem,0.9fr)_minmax(16rem,1.25fr)_minmax(15rem,1fr)_2.5rem] lg:items-center lg:gap-x-7 lg:py-9"
@@ -96,8 +96,8 @@ export default function Pillars() {
 
                   <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-primary/70 via-primary/20 to-transparent transition-transform duration-500 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
                 </Link>
-              </li>
-            </Reveal>
+              </Reveal>
+            </li>
           ))}
         </ol>
 

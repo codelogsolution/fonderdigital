@@ -25,10 +25,6 @@ type OrbitCard = {
   delay: number;
 };
 
-/* Orbit anchors are percentages of the stage box, placed to keep clear of the
-   centre column where the device sits. This mirrors the reference composition
-   — a device in the middle with results floating around it — using our own
-   markup, tokens and motion. */
 const orbitCards: OrbitCard[] = [
   {
     icon: TrendingUp,
@@ -84,8 +80,6 @@ const orbitCards: OrbitCard[] = [
   },
 ];
 
-
-/** Illustrative dashboard device, not a live product. */
 function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
   const reduced = useReducedMotionSafe();
   const lift = useTransform(progress, [0, 1], [0, -18]);
@@ -104,7 +98,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
       style={reduced ? undefined : { y: lift }}
       className="relative z-10 mx-auto w-[17rem] sm:w-[19rem]"
     >
-      {/* Contact shadow grounds the device instead of letting it float flat. */}
+
       <div
         aria-hidden
         className="contact-shadow absolute -bottom-10 left-1/2 h-16 w-[130%] -translate-x-1/2"
@@ -112,7 +106,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
 
       <div className="edge-shine relative rounded-[2.1rem] border border-border-subtle bg-white/85 p-2 shadow-[0_40px_90px_-40px_rgba(11,18,32,0.45)] backdrop-blur-xl">
         <div className="rounded-[1.7rem] border border-border-subtle bg-white/70 p-4">
-          {/* Window chrome — reads as a real tool, not a generic rectangle. */}
+
           <div className="flex items-center gap-1.5 pb-3">
             <span className="h-2 w-2 rounded-full bg-rose-400/70" />
             <span className="h-2 w-2 rounded-full bg-amber-400/70" />
@@ -145,7 +139,6 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
               ))}
             </div>
 
-            {/* Sparkline drawn as a gradient stroke — no chart library needed. */}
             <div className="mt-3 rounded-xl border border-border-subtle bg-white/80 px-3 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted">
@@ -193,8 +186,6 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
         </div>
       </div>
 
-      {/* Progress-linked bloom behind the device. Alpha stays low so it never
-          competes with the numbers inside the frame. */}
       <motion.div
         aria-hidden
         style={reduced ? { opacity: 0.4 } : { opacity: glow }}
@@ -209,8 +200,6 @@ const stages = [
   { label: "Build", detail: "Design, code, ship" },
   { label: "Grow", detail: "Measure & compound" },
 ];
-
-
 
 function OrbitCardBody({ card }: { card: OrbitCard }) {
   const Icon = card.icon;
@@ -245,7 +234,6 @@ export default function DeliveryShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Drives a restrained device lift and bloom as the section enters view.
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
@@ -261,14 +249,11 @@ export default function DeliveryShowcase() {
         align="center"
       />
 
-      {/* Keep the dashboard in normal document flow so trackpad and wheel
-          scrolling never pause while the visual changes. */}
       <div ref={trackRef} className="relative mt-10 sm:mt-14">
         <div>
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="relative mx-auto h-[26rem] max-w-5xl sm:h-[30rem]">
-              {/* Painted from the theme's own accent tokens, so the bloom
-                  stays inside whichever palette is active. */}
+
               <AuroraOrb
                 className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                 size={520}
@@ -293,7 +278,6 @@ export default function DeliveryShowcase() {
               ))}
             </div>
 
-            {/* Keep the delivery stages visible below the illustrative dashboard. */}
             <Reveal delay={0.1}>
               <ol className="mt-10 grid gap-3 sm:grid-cols-3">
                 {stages.map((stage, i) => (

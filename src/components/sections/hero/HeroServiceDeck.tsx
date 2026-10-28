@@ -5,21 +5,12 @@ import { heroServices } from "@/config/site";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 import { cn } from "@/lib/utils";
 
-/* The phone renders at roughly a third of the stage width, so this is a
-   glanceable proof panel, not readable body copy — labels stay short and the
-   type stays in the 8–11px range the other mock screens already use. */
-
-/* Branding and UI/UX share a row because they lead to the same service page.
-   AI Development has its own row and detail panel. */
 export const slideToServiceIndex = [6, 0, 1, 2, 3, 4, 4, 5];
 
 export function serviceIndexForSlide(slide: number): number {
   return slideToServiceIndex[slide] ?? 0;
 }
 
-/* The shared Branding row is called "Branding" on its own slide and
-   "Branding & UI/UX" while the interfaces word is up, so the highlighted row
-   always matches the copy the reader is looking at on the left. */
 export function serviceLabelFor(slide: number): string {
   return slide === 6
     ? "Branding & UI/UX"
@@ -28,8 +19,6 @@ export function serviceLabelFor(slide: number): string {
 
 type Detail = { headline: string; rows: { label: string; value: string }[] };
 
-/* Capability highlights for each service. Keep this panel descriptive until
-   verified client outcomes are available to publish. */
 const DETAIL: Detail[] = [
   {
     headline: "Conversion-focused builds",
@@ -93,28 +82,14 @@ export default function HeroServiceDeck({ activeSlide }: { activeSlide: number }
   const serviceIndex = serviceIndexForSlide(activeSlide);
   const detail = DETAIL[serviceIndex];
 
-  /* The phone is a percentage of the stage, so its width swings from ~158px on a
-       1440-wide desktop down to ~89px on a phone. Fixed px sizing overflows the
-       frame at the small end, so the deck is a container-query component and
-       sheds detail as the frame narrows:
-
-         >= 157px  full — 3 metrics under the list
-         >= 112px  list only
-         <  112px  list only, tighter rows
-
-       The 157px floor is measured, not guessed: the full panel needs ~296px of
-       height, and the frame is 17/9 of its width, so anything under ~157px wide
-       clips. Dropping it to 136px overflowed by 29px at a 141px phone.
-
-       The service rows themselves never drop: they are the point of the panel. */
 const ROW_PAD = "px-1.5 py-[3px] @min-[112px]:py-[4px] @min-[157px]:py-[5px]";
 const ROW_TEXT = "truncate text-[8px] @min-[112px]:text-[9px]";
 
 return (
     <div className="flex h-full flex-col gap-1.5 bg-[#0f1220] p-1.5 @min-[112px]:gap-2 @min-[112px]:p-2">
-      {/* Header echoes the word currently typing on the left. */}
+
       <div className="flex items-center justify-between">
-        <span className="text-[7px] font-bold uppercase tracking-[0.16em] text-slate-500 @min-[112px]:text-[8px]">
+        <span className="text-[7px] font-bold uppercase tracking-[0.16em] text-slate-300 @min-[112px]:text-[8px]">
           Services
         </span>
         <AnimatePresence mode="wait" initial={false}>
@@ -124,24 +99,20 @@ return (
             animate={{ opacity: 1, y: 0 }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: -4 }}
             transition={{ duration: reduced ? 0.12 : 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-md bg-primary/20 px-1.5 py-0.5 text-[7px] font-bold text-primary @min-[112px]:text-[8px]"
+            className="rounded-md bg-primary/20 px-1.5 py-0.5 text-[7px] font-bold text-primary-on-dark @min-[112px]:text-[8px]"
           >
             {serviceLabelFor(activeSlide)}
           </motion.span>
         </AnimatePresence>
       </div>
 
-      {/* One row per service, matching heroServices exactly. */}
       <ul className="flex flex-col gap-0.5 @min-[112px]:gap-1">
         {heroServices.map((service, i) => {
           const isActive = i === serviceIndex;
           return (
             <li key={service.label}>
               <motion.div
-                /* layoutId slides the copper pill between rows instead of
-                   cross-fading two backgrounds. It must go on the ACTIVE row
-                   only — tagging every row with the same id makes Framer
-                   treat all six as one shared element and hide five of them. */
+
                 layoutId={isActive && !reduced ? "heroDeckActive" : undefined}
                 transition={{ duration: reduced ? 0 : 0.34, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
@@ -153,7 +124,7 @@ return (
                 <service.icon
                   className={cn(
                     "h-2.5 w-2.5 shrink-0",
-                    isActive ? "text-white" : "text-slate-500",
+                    isActive ? "text-white" : "text-slate-300",
                   )}
                 />
                 <span
@@ -175,8 +146,6 @@ return (
         })}
       </ul>
 
-      {/* Detail swaps with the row; AnimatePresence keeps it from popping.
-          Dropped on narrow frames — it is supporting proof, not the list. */}
       <div className="mt-auto hidden rounded-lg bg-white/[0.06] p-1.5 @min-[157px]:block @min-[157px]:p-2">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -190,8 +159,8 @@ return (
             <div className="mt-1 flex flex-col gap-0.5 @min-[157px]:mt-1.5 @min-[157px]:gap-1">
               {detail.rows.map((row) => (
                 <div key={row.label} className="flex items-baseline justify-between gap-1">
-                  <span className="truncate text-[8px] text-slate-500">{row.label}</span>
-                  <span className="shrink-0 text-[8px] font-bold text-primary @min-[157px]:text-[9px]">
+                  <span className="truncate text-[8px] text-slate-300">{row.label}</span>
+                  <span className="shrink-0 text-[8px] font-bold text-primary-on-dark @min-[157px]:text-[9px]">
                     {row.value}
                   </span>
                 </div>

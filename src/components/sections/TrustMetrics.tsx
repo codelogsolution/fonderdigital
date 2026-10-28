@@ -40,10 +40,6 @@ const metrics: {
   },
 ];
 
-/**
- * A stat card that lights up as it enters the viewport and follows the cursor
- * with a soft spotlight, so the row feels alive instead of printed on the page.
- */
 function StatCard({
   icon: Icon,
   step,
@@ -66,15 +62,8 @@ function StatCard({
 
   const spotlight = useMotionTemplate`radial-gradient(260px circle at ${x}% ${y}%, var(--primary-soft), transparent 68%)`;
 
-  // Card rises and rotates to a flat, front-facing pose as it enters view.
   const enter = useTransform(progress, [0, 0.75], [0, 1]);
 
-  // The reduced-motion preference is routed through the same MotionValue
-  // channel instead of dropping the `style` prop. Framer Motion attaches these
-  // values to the DOM node on first paint and keeps writing to them, so
-  // switching to `undefined` when the preference resolves after hydration
-  // leaves the card stuck at `opacity: 0`. Expressing it here guarantees the
-  // card lands fully visible for reduced-motion users.
   const calm = useMotionValue(reduced ? 1 : 0);
 
   useEffect(() => {
@@ -148,21 +137,15 @@ export default function TrustMetrics() {
       aria-label="How we work"
       className="band-dark relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24"
     >
-      {/* A dark band in the middle of an otherwise light page. It gives the
-          scroll a clear tonal beat and lets the numbers carry the colour.
-          Everything is painted from the band's own tokens so the wash tracks
-          whichever theme is active. */}
+
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div
           className="absolute inset-0"
           style={{
-            /* Painted from the band's own tokens rather than fixed copper
-               rgba, so the wash tracks whichever theme is active. */
             background:
               "radial-gradient(60rem 30rem at 18% 0%, var(--primary-soft), transparent 62%), radial-gradient(50rem 28rem at 85% 90%, var(--accent-2-soft), transparent 60%)",
           }}
         />
-        {/* Fine dot lattice reads as depth rather than as texture. */}
         <div
           className="absolute inset-0 bg-dots opacity-[0.16]"
           style={{
@@ -173,13 +156,7 @@ export default function TrustMetrics() {
         <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background/70 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background/70 to-transparent" />
       </div>
-            {/* One sphere per card, sitting behind each panel. They give the band
-          the same lit-3D quality the rest of the page uses, so the strip
-          between the hero and the pillars does not read as a flat black slab.
 
-          The wrapper clips: the section only sets overflow-x, so the orb
-          bloom previously spilled past the band and left a grey haze on the
-          light sections above and below. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 overflow-hidden"

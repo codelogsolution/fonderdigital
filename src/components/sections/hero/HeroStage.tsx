@@ -35,18 +35,12 @@ import HeroServiceDeck, {
 } from "@/components/sections/hero/HeroServiceDeck";
 import { cn } from "@/lib/utils";
 
-/* ------------------------------------------------------------------
-   Mock screens. Hand-built rather than reused from the showcase
-   sliders so the hero reads as one deliberate composition at a glance —
-   the shapes and densities are tuned to survive being seen for 2 seconds.
-------------------------------------------------------------------- */
-
 function DashboardScreen() {
   return (
     <div className="flex h-full flex-col gap-3 bg-[#0c111b] p-4 text-white">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/15 text-primary-on-dark">
             <BrainCircuit className="h-4 w-4" />
           </span>
           <div>
@@ -70,7 +64,7 @@ function DashboardScreen() {
           { icon: ShieldCheck, label: "Human\nreview" },
         ].map(({ icon: Icon, label }, index) => (
           <div key={label} className="relative z-10 flex min-w-0 flex-col items-center gap-1.5 text-center">
-            <span className={`flex h-7 w-7 items-center justify-center rounded-lg border ${index === 2 ? "border-primary/35 bg-primary/20 text-primary" : "border-white/10 bg-[#151d2a] text-slate-300"}`}>
+            <span className={`flex h-7 w-7 items-center justify-center rounded-lg border ${index === 2 ? "border-primary/35 bg-primary/20 text-primary-on-dark" : "border-white/10 bg-[#151d2a] text-slate-300"}`}>
               <Icon className="h-3.5 w-3.5" />
             </span>
             <span className="whitespace-pre-line text-[7px] font-semibold leading-tight text-slate-400">{label}</span>
@@ -80,27 +74,20 @@ function DashboardScreen() {
 
       <div className="flex-1 rounded-xl border border-white/10 bg-white/[0.035] p-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/15 text-primary"><Users className="h-3 w-3" /></span>
+          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-primary/15 text-primary-on-dark"><Users className="h-3 w-3" /></span>
           <p className="text-[8px] font-bold uppercase tracking-[0.12em] text-slate-400">Workspace request</p>
         </div>
         <p className="mt-2 text-[10px] font-semibold leading-relaxed text-slate-200">“Find the right next step from our approved service guide.”</p>
         <div className="mt-2 rounded-lg border border-primary/20 bg-primary/[0.08] p-2">
-          <div className="flex items-center gap-1.5 text-[8px] font-bold text-primary"><Sparkles className="h-2.5 w-2.5" /> Context-aware response</div>
+          <div className="flex items-center gap-1.5 text-[8px] font-bold text-primary-on-dark"><Sparkles className="h-2.5 w-2.5" /> Context-aware response</div>
           <p className="mt-1 text-[8px] leading-relaxed text-slate-300">A grounded answer with a source reference, ready for a person to review.</p>
         </div>
-        <div className="mt-2 flex items-center gap-1.5 text-[7px] text-slate-500"><Workflow className="h-2.5 w-2.5" /> Retrieval, model, and review steps are project-specific.</div>
+        <div className="mt-2 flex items-center gap-1.5 text-[7px] text-slate-300"><Workflow className="h-2.5 w-2.5" /> Retrieval, model, and review steps are project-specific.</div>
       </div>
     </div>
   );
 }
 
-/* The stage is 5:6, so the browser occupies roughly the top 42% and the phone
-   the lower right. Chips are placed in the two genuinely empty quadrants —
-   lower-left and upper-right — so none of them ever sit on a mockup.
-
-   Chip copy follows the active slide so the whole 3D composition argues the
-   same point as the rotating word on the left, instead of showing a fixed set
-   of three while the headline talks about something else. */
 const CHIP_SLOTS = [
   "left-[1%] top-[54%]",
   "right-[-4%] top-[18%]",
@@ -110,37 +97,31 @@ const CHIP_SLOTS = [
 type Chip = { icon: LucideIcon; label: string };
 
 const CHIPS_BY_SERVICE: Chip[][] = [
-  // Web Development
   [
     { icon: Code2, label: "Next.js" },
     { icon: Gauge, label: "Performance" },
     { icon: MousePointerClick, label: "Conversion-led" },
   ],
-  // App Development
   [
     { icon: Smartphone, label: "React Native" },
     { icon: Download, label: "Store-ready" },
     { icon: ShieldCheck, label: "Monitored" },
   ],
-  // SEO
   [
     { icon: Search, label: "Technical SEO" },
     { icon: TrendingUp, label: "Intent-led" },
     { icon: Link2, label: "Search reporting" },
   ],
-  // Social Marketing
   [
     { icon: Megaphone, label: "Paid + social" },
     { icon: Users, label: "Audience-led" },
     { icon: CalendarDays, label: "Always-on" },
   ],
-  // Branding
   [
     { icon: Palette, label: "Brand kit" },
     { icon: Layers, label: "Design system" },
     { icon: PenTool, label: "Logo suite" },
   ],
-  // Content Writing
   [
     { icon: FileText, label: "Search-ready" },
     { icon: PenLine, label: "SEO briefs" },
@@ -167,8 +148,6 @@ export default function HeroStage({
     ? AI_CHIPS
     : CHIPS_BY_SERVICE[serviceIndexForSlide(activeSlide)] ?? CHIPS_BY_SERVICE[0];
 
-  // Slow parallax: the orb sinks as the hero scrolls away while the devices
-  // lift, which separates the two depth planes instead of moving them together.
   const { scrollYProgress } = useScroll({
     target: stageRef,
     offset: ["start end", "end start"],
@@ -177,23 +156,19 @@ export default function HeroStage({
   const stageY = useTransform(scrollYProgress, [0, 1], ["5%", "-7%"]);
 
   return (
-    /* The whole stage is decorative artwork: a dashboard and a phone rendered
-       from primitives. Its inner labels are part of the illustration, not
-       content a reader has to read, so the root carries `aria-hidden` and
-       `data-device-mock` (the latter marks it for contrast tooling). */
+
     <div
       ref={stageRef}
       aria-hidden
       data-device-mock
       className={cn("relative", className)}
     >
-      {/* Contact shadow anchors the composition to an implied floor. */}
+
       <div
         aria-hidden
         className="contact-shadow pointer-events-none absolute bottom-[6%] left-1/2 h-24 w-[72%] -translate-x-1/2 blur-xl"
       />
 
-      {/* The glow sphere the devices sit in front of. */}
       <motion.div
         aria-hidden
         style={reduced ? undefined : { y: orbY }}
@@ -205,7 +180,7 @@ export default function HeroStage({
       <motion.div style={reduced ? undefined : { y: stageY }} className="relative">
         <Scene3D intensity={5} shift={10} float={false}>
           <div className="relative aspect-[5/6] w-full">
-            {/* Browser — pushed back and turned away from the reader. */}
+
             <div
               className="absolute left-0 top-[4%] w-[74%] overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-[0_40px_80px_-30px_rgba(15,23,42,0.4)]"
               style={{ transform: "rotateY(15deg) rotateX(3deg) translateZ(-70px)" }}
@@ -216,9 +191,6 @@ export default function HeroStage({
               </div>
             </div>
 
-            {/* Phone — pulled forward and turned the opposite way. Sits low
-                and right so it overlaps the browser's lower corner without
-                hiding the metrics that give the mockup its detail. */}
             <div
               className="absolute right-0 top-[44%] w-[33%] overflow-hidden rounded-[1.4rem] border-[3px] border-slate-800 bg-[#0f1220] shadow-[0_50px_90px_-30px_rgba(15,23,42,0.55)]"
               style={{ transform: "rotateY(-17deg) rotateX(4deg) translateZ(60px)" }}
@@ -236,8 +208,6 @@ export default function HeroStage({
               </div>
             </div>
 
-            {/* Glass chips that drift around the stage. Keyed by the service
-                so they re-mount and re-animate whenever the word changes. */}
             {chips.map((chip, i) => (
               <motion.div
                 key={`${serviceIndexForSlide(activeSlide)}-${chip.label}`}
@@ -256,7 +226,7 @@ export default function HeroStage({
                   CHIP_SLOTS[i],
                 )}
               >
-                <chip.icon className="h-3 w-3 text-primary" />
+                <chip.icon className="h-3 w-3 text-primary-on-dark" />
                 {chip.label}
               </motion.div>
             ))}

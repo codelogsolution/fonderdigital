@@ -12,8 +12,6 @@ export default function ThemeSwitcher() {
   const btnRef = useRef<HTMLButtonElement>(null);
   const active = THEMES.find((t) => t.id === theme) ?? THEMES[0];
 
-  // Close on outside click and on Escape — a bare toggle with no dismiss
-  // leaves the menu stranded over the nav on desktop.
   useEffect(() => {
     if (!open) return;
     const onDown = (e: MouseEvent) => {

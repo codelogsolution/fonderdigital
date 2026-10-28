@@ -7,11 +7,6 @@ type PageHeaderProps = {
   description?: string;
 };
 
-/**
- * Shared by every inner page, so it carries the site's depth treatment:
- * layered colour fields, a fading technical grid and film grain behind the
- * title, plus a rule that ties the header back to the content below.
- */
 export default function PageHeader({
   eyebrow,
   title,

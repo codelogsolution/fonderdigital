@@ -152,8 +152,7 @@ function ScrollJourney() {
     target: trackRef,
     offset: ["start start", "end end"],
   });
-  // Follow the actual scroll position continuously. The spring smooths small
-  // trackpad deltas without making the marker jump between step centers.
+
   const phasePosition = useSpring(scrollYProgress, {
     stiffness: 180,
     damping: 32,

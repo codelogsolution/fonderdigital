@@ -7,27 +7,14 @@ type SectionProps = {
   className?: string;
   id?: string;
   labelledBy?: string;
-  /** "aurora" paints soft colour fields, "grid" paints a technical grid. */
+
   backdrop?: "aurora" | "grid" | "none";
-  /** Slight desaturation of the backdrop while the section is off-screen. */
+
   tone?: "light" | "muted";
-  /** Opt into the dot lattice + film grain. Off by default so most sections
-   *  carry one quiet wash instead of four stacked layers behind body copy. */
+
   rich?: boolean;
 };
 
-/**
- * The shared frame every section on the site sits inside: consistent vertical
- * rhythm and one container width.
- *
- * Note on the backdrop: it is deliberately a *single* soft wash. An earlier
- * version stacked a mesh, a dot lattice, a noise layer and a top vignette —
- * four treatments per section, which meant most pages had eight or nine
- * translucent layers stacked behind body copy and every section competed for
- * attention. Clean reading comes from fewer layers, not prettier ones, so the
- * noise and dot treatments now live only on the few sections that opt into
- * them via the `rich` prop.
- */
 export default function Section({
   children,
   className = "",
@@ -52,7 +39,7 @@ export default function Section({
           />
           {rich && (
             <>
-              {/* Dot lattice gives the flat areas a sense of scale. */}
+
               <div
                 className="absolute inset-0 bg-dots opacity-20"
                 style={{
@@ -66,7 +53,6 @@ export default function Section({
         </div>
       )}
 
-      {/* Soft vignette pulls the eye to the centre of the composition. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-background/80 to-transparent"

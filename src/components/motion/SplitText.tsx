@@ -29,47 +29,49 @@ function SplitText({
   let unitIndex = 0;
 
   return (
-    <span className={className} aria-label={text}>
-      {words.map((word, wordIdx) => {
-        const units =
-          by === "char"
-            ? word.split("")
-            : [
-                word +
-                  (wordIdx < words.length - 1 ? "\u00A0" : ""),
-              ];
+    <span className={className}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {words.map((word, wordIdx) => {
+          const units =
+            by === "char"
+              ? word.split("")
+              : [
+                  word +
+                    (wordIdx < words.length - 1 ? "\u00A0" : ""),
+                ];
 
-        return (
-          <span
-            key={`${word}-${wordIdx}`}
-            aria-hidden
-            className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom"
-          >
-            {units.map((unit, unitIdx) => {
-              const current = unitIndex++;
-              return (
-                <motion.span
-                  key={unitIdx}
-                  className={`inline-block ${wordClassName ?? ""}`}
-                  initial={false}
-                  animate={{ y: 0 }}
-                  transition={{
-                    duration: reduced ? 0 : 0.52,
-                    delay: reduced ? 0 : delay + current * step,
-                    ease: [0.21, 0.47, 0.32, 0.98],
-                  }}
-                >
-                  {unit}
-                </motion.span>
-              );
-            })}
+          return (
+            <span
+              key={`${word}-${wordIdx}`}
+              className="inline-block overflow-hidden pb-[0.12em] -mb-[0.12em] align-bottom"
+            >
+              {units.map((unit, unitIdx) => {
+                const current = unitIndex++;
+                return (
+                  <motion.span
+                    key={unitIdx}
+                    className={`inline-block ${wordClassName ?? ""}`}
+                    initial={false}
+                    animate={{ y: 0 }}
+                    transition={{
+                      duration: reduced ? 0 : 0.52,
+                      delay: reduced ? 0 : delay + current * step,
+                      ease: [0.21, 0.47, 0.32, 0.98],
+                    }}
+                  >
+                    {unit}
+                  </motion.span>
+                );
+              })}
 
-            {by === "char" && wordIdx < words.length - 1 ? (
-              <span className="inline-block">&nbsp;</span>
-            ) : null}
-          </span>
-        );
-      })}
+              {by === "char" && wordIdx < words.length - 1 ? (
+                <span className="inline-block">&nbsp;</span>
+              ) : null}
+            </span>
+          );
+        })}
+      </span>
     </span>
   );
 }

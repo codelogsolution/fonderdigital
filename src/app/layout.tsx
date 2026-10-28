@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import {
   Instrument_Sans,
-  JetBrains_Mono,
   Outfit,
 } from "next/font/google";
 import { serviceAreas, siteConfig } from "@/config/site";
@@ -14,19 +13,8 @@ import CustomCursor from "@/components/motion/CustomCursor";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import "./globals.css";
 
-/* Applies the stored theme before first paint.
-   This has to run synchronously in <head>, ahead of any CSS paint —
-   doing it from a React effect means the page renders once in the default
-   palette and then snaps to the chosen one. Kept in sync with the theme list
-   in ThemeProvider; unknown ids fall back to the default rather than
-   leaving the attribute unset. */
 const themeBootScript = `(function(){try{var t=localStorage.getItem('fd-theme');var ok=['copper','azure','noir'];document.documentElement.setAttribute('data-theme',ok.indexOf(t)>-1?t:'copper')}catch(e){document.documentElement.setAttribute('data-theme','copper')}})();`;
 
-/**
- * Display face: geometric, confident and tightly spaced at large sizes — the
- * premium-studio read. Body copy stays on Instrument Sans, which is neutral
- * and highly legible at small sizes, so the two never compete.
- */
 const display = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -35,12 +23,6 @@ const display = Outfit({
 
 const sans = Instrument_Sans({
   variable: "--font-instrument",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const mono = JetBrains_Mono({
-  variable: "--font-jetbrains",
   subsets: ["latin"],
   display: "swap",
 });
@@ -111,7 +93,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

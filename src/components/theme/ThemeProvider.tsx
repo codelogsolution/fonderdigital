@@ -24,11 +24,6 @@ function isThemeId(value: unknown): value is ThemeId {
   return THEMES.some((t) => t.id === value);
 }
 
-/* The <html> attribute is the single source of truth, not React state.
-   The boot script in layout.tsx writes it before first paint, so reading it
-   back keeps the server render and the client in step — a useState seeded
-   from localStorage would either flash the default palette or trip a
-   hydration mismatch. */
 const listeners = new Set<() => void>();
 
 function emit() {
@@ -52,8 +47,6 @@ function getSnapshot(): ThemeId {
   return isThemeId(attr) ? attr : DEFAULT_THEME;
 }
 
-/* Server render always claims the default; React swaps to the client
-   snapshot immediately after hydration. */
 function getServerSnapshot(): ThemeId {
   return DEFAULT_THEME;
 }
@@ -74,8 +67,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
-      /* Private mode or storage disabled — the theme still applies for this
-         page view, it just will not persist. */
+      void 0;
     }
     emit();
   }, []);
