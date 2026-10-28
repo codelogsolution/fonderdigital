@@ -9,9 +9,7 @@ import { useEffect, useState } from "react";
 import Reveal from "@/components/motion/Reveal";
 import Tilt3D from "@/components/motion/Tilt3D";
 import HeroPreview from "@/components/sections/HeroPreview";
-import styles from "@/components/sections/Showcase.module.css";
 import { heroSlides } from "@/config/site";
-import { cn } from "@/lib/utils";
 
 const ROTATE_MS = 5500;
 
@@ -74,19 +72,19 @@ export default function HomeShowcase() {
         <div className="mt-12 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
 
           <div className="flex min-w-0 flex-col min-h-[424px] sm:min-h-[332px]">
-            <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/[0.08] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/[0.08] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-primary-accessible">
               {slide.service}
             </span>
             <div className="mt-4">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`copy-${active}`}
-                  initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={prefersReducedMotion ? false : { y: 14 }}
+                  animate={{ y: 0 }}
                   exit={
                     prefersReducedMotion
-                      ? { opacity: 0, transition: { duration: 0.18 } }
-                      : { opacity: 0, y: -12, transition: { duration: 0.18 } }
+                      ? { transition: { duration: 0.18 } }
+                      : { y: -12, transition: { duration: 0.18 } }
                   }
                   transition={{ duration: SWAP_S, ease: [0.21, 0.47, 0.32, 0.98] }}
                 >
@@ -94,17 +92,17 @@ export default function HomeShowcase() {
                   <Link href={slide.href} className="group mt-4 block">
                     <h3 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
                       {slide.long}{" "}
-                      <span className="text-muted transition-colors duration-300 group-hover:text-primary">
+                      <span className="text-muted-accessible transition-colors duration-300 group-hover:text-primary-accessible">
                         {slide.tagline}
                       </span>
                     </h3>
                   </Link>
-                  <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted sm:text-base">
+                  <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-accessible sm:text-base">
                     {slide.blurb}
                   </p>
                   <p className="mt-4 text-sm font-semibold">
-                    <span className="text-primary">{slide.stat}</span>{" "}
-                    <span className="font-normal text-muted">{slide.caption}</span>
+                    <span className="text-primary-accessible">{slide.stat}</span>{" "}
+                    <span className="font-normal text-muted-accessible">{slide.caption}</span>
                   </p>
                   <div className="mt-6 flex gap-1.5" role="group" aria-label="Choose a service preview">
                     {heroSlides.map((item, index) => (
@@ -119,7 +117,7 @@ export default function HomeShowcase() {
                         <span className="relative block h-1 w-full overflow-hidden rounded-full bg-border-subtle transition-colors group-hover/indicator:bg-primary/30">
                           {index === active && (
                             <span
-                              className={cn("block h-full rounded-full bg-primary", styles.homeProgress)}
+                              className="home-showcase-progress block h-full rounded-full bg-primary"
                               style={{
                                 animationDuration: `${ROTATE_MS}ms`,
                                 animationPlayState: isPlaying && !isEngaged && !prefersReducedMotion ? "running" : "paused",
@@ -152,7 +150,7 @@ export default function HomeShowcase() {
                 >
                   <ChevronLeft aria-hidden className="h-4 w-4" />
                 </button>
-                <span className="min-w-14 text-center font-mono text-xs text-muted">
+                <span className="min-w-14 text-center font-mono text-xs text-muted-accessible">
                   {String(active + 1).padStart(2, "0")} /{" "}
                   {String(heroSlides.length).padStart(2, "0")}
                 </span>
@@ -183,9 +181,9 @@ export default function HomeShowcase() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={`preview-${active}`}
-                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.98 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.99, transition: { duration: 0.18 } }}
+                initial={prefersReducedMotion ? false : { scale: 0.98 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.99, transition: { duration: 0.18 } }}
                 transition={{ duration: SWAP_S, ease: [0.21, 0.47, 0.32, 0.98] }}
               >
                 <HeroPreview slide={active % heroSlides.length} />

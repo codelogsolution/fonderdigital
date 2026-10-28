@@ -29,7 +29,7 @@ import {
 import Scene3D from "@/components/motion/Scene3D";
 import AuroraOrb from "@/components/motion/AuroraOrb";
 import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
-import { BrowserBar } from "@/components/sections/WebShowcase";
+import BrowserBar from "@/components/sections/BrowserBar";
 import HeroServiceDeck, {
   serviceIndexForSlide,
 } from "@/components/sections/hero/HeroServiceDeck";
@@ -211,10 +211,8 @@ export default function HeroStage({
             {chips.map((chip, i) => (
               <motion.div
                 key={`${serviceIndexForSlide(activeSlide)}-${chip.label}`}
-                initial={
-                  reduced ? false : { opacity: 0, scale: 0.96, y: 8 }
-                }
-                animate={{ opacity: 1, scale: 1, y: 0 }}
+                initial={reduced ? false : { scale: 0.96, y: 8 }}
+                animate={{ scale: 1, y: 0 }}
                 transition={{
                   duration: reduced ? 0 : 0.32,
                   delay: reduced ? 0 : 0.06 + i * 0.05,

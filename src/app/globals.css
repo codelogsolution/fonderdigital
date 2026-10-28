@@ -10,8 +10,10 @@
 
   --primary: #b45309;
   --primary-on-dark: #ffbd8a;
+  --primary-accessible: #8a3a05;
   --primary-foreground: #ffffff;
   --muted: #6b6055;
+  --muted-accessible: #554b41;
 
   --primary-soft: rgba(180, 83, 9, 0.08);
   --primary-line: rgba(180, 83, 9, 0.22);
@@ -40,8 +42,10 @@
   --border-subtle: rgba(23, 19, 15, 0.11);
   --primary: #b45309;
   --primary-on-dark: #ffbd8a;
+  --primary-accessible: #8a3a05;
   --primary-foreground: #ffffff;
   --muted: #6b6055;
+  --muted-accessible: #554b41;
   --primary-soft: rgba(180, 83, 9, 0.08);
   --primary-line: rgba(180, 83, 9, 0.22);
   --primary-glow: rgba(180, 83, 9, 0.45);
@@ -59,9 +63,11 @@
 
   --primary: #0284c7;
   --primary-on-dark: #7dd3fc;
+  --primary-accessible: #075985;
   --primary-deep: #0a6399;
   --primary-foreground: #ffffff;
   --muted: #46586b;
+  --muted-accessible: #34485d;
   --primary-soft: rgba(2, 132, 199, 0.09);
   --primary-line: rgba(2, 132, 199, 0.22);
   --primary-glow: rgba(2, 132, 199, 0.42);
@@ -79,8 +85,10 @@
   --border-subtle: rgba(255, 255, 255, 0.14);
   --primary: #a78bfa;
   --primary-on-dark: #c4b5fd;
+  --primary-accessible: #c4b5fd;
   --primary-foreground: #180c2e;
   --muted: #a2a2b4;
+  --muted-accessible: #b4b4c6;
   --primary-soft: rgba(167, 139, 250, 0.16);
   --primary-line: rgba(167, 139, 250, 0.36);
   --primary-glow: rgba(167, 139, 250, 0.42);
@@ -98,6 +106,8 @@
   --surface-2: rgba(255, 255, 255, 0.08);
   --primary: #d97757;
   --primary-foreground: #2a1509;
+  --primary-accessible: #ffbd8a;
+  --muted-accessible: #cbd5e1;
   --primary-soft: rgba(217, 119, 87, 0.14);
   --primary-line: rgba(217, 119, 87, 0.3);
   --band-bg: #120c07;
@@ -107,6 +117,8 @@
 [data-theme="azure"] .band-dark {
   --primary: #38bdf8;
   --primary-foreground: #082f49;
+  --primary-accessible: #7dd3fc;
+  --muted-accessible: #cbd5e1;
   --primary-soft: rgba(56, 189, 248, 0.14);
   --primary-line: rgba(56, 189, 248, 0.32);
   --band-bg: #08131f;
@@ -116,6 +128,8 @@
   --muted: #b4b4c6;
   --primary: #c4b5fd;
   --primary-foreground: #1c1036;
+  --primary-accessible: #c4b5fd;
+  --muted-accessible: #d4d4e2;
   --primary-soft: rgba(196, 181, 253, 0.16);
   --primary-line: rgba(196, 181, 253, 0.32);
   --band-bg: #05050a;
@@ -130,6 +144,26 @@ html.theme-ready footer {
     border-color 260ms ease;
 }
 
+.home-showcase-progress {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: home-showcase-progress 5.5s linear forwards;
+}
+
+@keyframes home-showcase-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-showcase-progress {
+    animation: none;
+    transform: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -137,6 +171,7 @@ html.theme-ready footer {
   --color-surface-2: var(--surface-2);
   --color-border-subtle: var(--border-subtle);
   --color-primary: var(--primary);
+  --color-primary-accessible: var(--primary-accessible);
   --color-primary-on-dark: var(--primary-on-dark);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
@@ -144,6 +179,7 @@ html.theme-ready footer {
   --color-primary-glow: var(--primary-glow);
   --color-primary-glow-strong: var(--primary-glow-strong);
   --color-muted: var(--muted);
+  --color-muted-accessible: var(--muted-accessible);
   --color-accent-2: var(--accent-2);
   --color-accent-2-soft: var(--accent-2-soft);
 

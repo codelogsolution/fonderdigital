@@ -95,9 +95,9 @@ return (
         <AnimatePresence mode="wait" initial={false}>
           <motion.span
             key={serviceIndex}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -4 }}
+            initial={reduced ? false : { y: 4 }}
+            animate={{ y: 0 }}
+            exit={reduced ? undefined : { y: -4 }}
             transition={{ duration: reduced ? 0.12 : 0.24, ease: [0.16, 1, 0.3, 1] }}
             className="rounded-md bg-primary/20 px-1.5 py-0.5 text-[7px] font-bold text-primary-on-dark @min-[112px]:text-[8px]"
           >
@@ -150,9 +150,9 @@ return (
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={serviceIndex}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -6 }}
+            initial={reduced ? false : { y: 6 }}
+            animate={{ y: 0 }}
+            exit={reduced ? undefined : { y: -6 }}
             transition={{ duration: reduced ? 0.12 : 0.26, ease: [0.16, 1, 0.3, 1] }}
           >
             <p className="truncate text-[8px] font-bold text-slate-300">{detail.headline}</p>

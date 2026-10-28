@@ -1,9 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import { heroSlides } from "@/config/site";
-import { ShowcaseFallback } from "@/components/sections/ShowcaseCard";
 
 const FRAME_HEIGHT = 410;
 
@@ -38,7 +36,6 @@ if (process.env.NODE_ENV !== "production" && SLOT_BY_SLIDE.length !== heroSlides
     `[HeroPreview] SLOT_BY_SLIDE length (${SLOT_BY_SLIDE.length}) does not match heroSlides length (${heroSlides.length}). Falling back per-slide.`,
   );
 }
-
 function normalizeSlide(slide: number, length: number): number {
   if (!Number.isFinite(slide) || length <= 0) return 0;
   const index = Math.trunc(slide) % length;
@@ -58,17 +55,7 @@ export default function HeroPreview({ slide }: { slide: number }) {
   const index = normalizeSlide(slide, heroSlides.length);
   const slot: PreviewSlot = SLOT_BY_SLIDE[index] ?? FALLBACK_SLOT;
 
-  useEffect(() => {
-    void loadAppPhone();
-    void loadWebPage();
-    void loadServiceCard();
-  }, []);
-
   if (slot.kind === "app") return <AppPhone index={slot.screen} height={300} frameHeight={FRAME_HEIGHT} />;
   if (slot.kind === "web") return <WebPage index={slot.screen} height={300} frameHeight={FRAME_HEIGHT} />;
   return <ServiceCard slug={slot.slug} height={300} frameHeight={FRAME_HEIGHT} />;
-}
-
-export function HeroPreviewFallback() {
-  return <ShowcaseFallback cards={1} height={FRAME_HEIGHT} />;
 }

@@ -119,7 +119,7 @@ function WorkflowVisual() {
             <Icon className="h-4 w-4" aria-hidden="true" />
           </span>
           <span className="min-w-0">
-            <span className="block font-mono text-[9px] font-bold tracking-[0.16em] text-primary/80">{number}</span>
+            <span className="block font-mono text-[9px] font-bold tracking-[0.16em] text-primary-accessible">{number}</span>
             <span className="mt-0.5 block truncate text-xs font-bold text-foreground">{title}</span>
             <span className="mt-0.5 block truncate text-[10px] text-muted">{detail}</span>
           </span>

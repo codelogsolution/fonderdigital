@@ -72,7 +72,7 @@ export default function Pillars() {
                   className="relative grid gap-x-5 gap-y-4 py-7 outline-none transition-colors duration-300 hover:bg-primary/[0.025] focus-visible:bg-primary/[0.035] sm:py-8 lg:grid-cols-[4rem_minmax(13rem,0.9fr)_minmax(16rem,1.25fr)_minmax(15rem,1fr)_2.5rem] lg:items-center lg:gap-x-7 lg:py-9"
                 >
                   <span className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-semibold tracking-[0.18em] text-primary/75">0{index + 1}</span>
+                    <span className="font-mono text-xs font-semibold tracking-[0.18em] text-primary-accessible">0{index + 1}</span>
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-background/70 text-primary transition-all duration-300 group-hover:border-primary/30 group-hover:bg-primary/10 group-hover:-rotate-3">
                       <Icon className="h-4 w-4" aria-hidden="true" />
                     </span>

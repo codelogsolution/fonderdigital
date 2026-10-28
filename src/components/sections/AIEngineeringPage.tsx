@@ -241,11 +241,11 @@ function PipelineSection() {
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-primary/25 bg-primary/10 text-primary transition-transform duration-300 group-hover:-translate-y-0.5">
                       <Icon className="h-4.5 w-4.5" aria-hidden="true" />
                     </span>
-                    <span className="font-mono text-[11px] font-semibold tracking-[0.15em] text-primary/75">{number}</span>
+                    <span className="font-mono text-[11px] font-semibold tracking-[0.15em] text-primary-accessible">{number}</span>
                   </div>
                   <h3 className="relative mt-6 text-base font-bold tracking-tight sm:text-lg">{name}</h3>
                   <p className="relative mt-2 text-sm leading-relaxed text-muted">{detail}</p>
-                  <p className="relative mt-auto pt-5 text-[9px] font-semibold uppercase tracking-[0.13em] text-primary/80">{tools}</p>
+                  <p className="relative mt-auto pt-5 text-[9px] font-semibold uppercase tracking-[0.13em] text-primary-accessible">{tools}</p>
                 </li>
               </Reveal>
             ))}

@@ -1,5 +1,6 @@
 import ShowcaseCard from "@/components/sections/ShowcaseCard";
-import { AureliaPage, BrowserBar, OrbitPage } from "@/components/sections/WebShowcase";
+import { AureliaPage, OrbitPage } from "@/components/sections/WebShowcase";
+import BrowserBar from "@/components/sections/BrowserBar";
 
 const SITES = [
   { page: <AureliaPage />, eyebrow: "Storefront concept", title: "Retail UI concept", url: "storefront.demo" },

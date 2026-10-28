@@ -225,7 +225,7 @@ function ScrollJourney() {
                       <Icon className="h-4 w-4" aria-hidden="true" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-primary/80">
+                      <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-primary-accessible">
                         STEP 0{index + 1}
                       </span>
                       <span className="mt-0.5 block text-sm font-bold text-foreground">

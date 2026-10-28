@@ -25,9 +25,9 @@ export default function Reveal({
       initial={
         prefersReducedMotion
           ? false
-          : { opacity: 0, x: offset, y: direction === "up" ? 14 : 0 }
+          : { x: offset, y: direction === "up" ? 14 : 0 }
       }
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
+      whileInView={{ x: 0, y: 0 }}
       viewport={{ once: true, margin: "-72px" }}
       transition={{
         duration: prefersReducedMotion ? 0 : 0.48,

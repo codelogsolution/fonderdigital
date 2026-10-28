@@ -93,7 +93,7 @@ export default function Hero() {
                 key={slide.word}
                 initial={false}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
+                exit={{ y: -8 }}
                 transition={{ duration: 0.4, ease: EASE }}
                 className="text-lg leading-relaxed text-muted"
               >
