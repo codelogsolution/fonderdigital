@@ -708,6 +708,10 @@ h6 {
 }
 
 @media (max-width: 639px) {
+  .hero-stage-parallax {
+    transform: translateY(0) !important;
+  }
+
   .hero-stage {
     max-width: 288px;
   }

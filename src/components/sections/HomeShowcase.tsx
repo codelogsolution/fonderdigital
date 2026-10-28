@@ -55,7 +55,7 @@ export default function HomeShowcase() {
       />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
             The studio, in motion
           </span>
           <h2

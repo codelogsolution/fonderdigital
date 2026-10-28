@@ -152,7 +152,6 @@ export default function HeroStage({
     target: stageRef,
     offset: ["start end", "end start"],
   });
-  const orbY = useTransform(scrollYProgress, [0, 1], ["-6%", "12%"]);
   const stageY = useTransform(scrollYProgress, [0, 1], ["5%", "-7%"]);
 
   return (
@@ -169,15 +168,14 @@ export default function HeroStage({
         className="contact-shadow pointer-events-none absolute bottom-[6%] left-1/2 h-24 w-[72%] -translate-x-1/2 blur-xl"
       />
 
-      <motion.div
+      <div
         aria-hidden
-        style={reduced ? undefined : { y: orbY }}
         className="pointer-events-none absolute left-1/2 top-[40%] aspect-square h-[70%] -translate-x-1/2 -translate-y-1/2"
       >
         <AuroraOrb size="100%" rings />
-      </motion.div>
+      </div>
 
-      <motion.div style={reduced ? undefined : { y: stageY }} className="relative">
+      <motion.div style={reduced ? undefined : { y: stageY }} className="hero-stage-parallax relative">
         <Scene3D intensity={5} shift={10} float={false}>
           <div className="relative aspect-[5/6] w-full">
 
