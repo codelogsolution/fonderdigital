@@ -607,7 +607,7 @@ export interface ServicePreviewItem {
   title: string;
   subtitle: string;
   domain: string;
-  kind: "app" | "web" | "seo" | "brand" | "marketing" | "content";
+  kind: "app" | "web" | "ai" | "seo" | "brand" | "marketing" | "content";
   entries: string[];
 }
 
@@ -622,6 +622,14 @@ export interface ServicePreviewCopy {
 }
 
 const servicePreviewCopy: Record<string, ServicePreviewCopy> = {
+  "ai-development": {
+    eyebrow: "Knowledge assistant",
+    heading: "Answers grounded",
+    accent: "in your sources",
+    description:
+      "An illustrative AI assistant flow: retrieve relevant approved material, answer with source context, and route uncertain requests for human review. It is a concept preview, not a client system or measured result.",
+    cardNote: "Illustrative concept · sample knowledge flow",
+  },
   seo: {
     eyebrow: "Search performance",
     heading: "Where growth",
@@ -669,6 +677,9 @@ export function getServicePreviewCopy(slug: string): ServicePreviewCopy {
 }
 
 const servicePreviewSeeds: Record<string, PreviewSeed[]> = {
+  "ai-development": [
+    ["ai", "Knowledge assistant", "RAG assistant concept", ["Ask about approved company information", "Retrieve relevant source passages", "Draft a grounded answer with citations", "Escalate uncertain requests for human review"]],
+  ],
   "app-dev": [
     ["app", "Daily rhythm", "Wellness app", ["Good morning, Alex", "Your daily goal · 6,000 steps", "Morning stretch · 12 minutes", "Mindful break · 5 minutes", "Evening walk · 20 minutes"]],
     ["app", "Pocket studio", "Creator app", ["Make something today", "Your workspace", "Moodboard · 12 saved ideas", "New collection · Summer light", "Drafts · Ready when you are"]],

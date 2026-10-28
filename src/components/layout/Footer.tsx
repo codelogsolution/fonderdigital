@@ -138,7 +138,7 @@ export default function Footer() {
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
           <p className="text-sm text-muted">
-            © 2023–{new Date().getFullYear()} <span aria-hidden="true">·</span> {siteConfig.name}. All rights reserved.
+            © 2023–{new Date().getFullYear()} &nbsp;&nbsp;<span aria-hidden="true">·&nbsp;</span> {siteConfig.name}. &nbsp;All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">
             <Link href="/privacy" className="transition-colors hover:text-primary">

@@ -1,296 +1,110 @@
-"use client";
-
 import Link from "next/link";
-import { useRef } from "react";
-import { ArrowRight, BrainCircuit, Code2, Search, type LucideIcon } from "lucide-react";
-import {
-  motion,
-  useMotionValue,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
-import AuroraOrb from "@/components/motion/AuroraOrb";
+import { ArrowUpRight, BrainCircuit, Code2, Search, type LucideIcon } from "lucide-react";
 import Reveal from "@/components/motion/Reveal";
 
 type Pillar = {
   title: string;
   icon: LucideIcon;
   description: string;
-  /** Second gradient stop, as a CSS colour (usually a theme token). */
-  tone: string;
-  cta: string;
   href: string;
   capabilities: string[];
 };
 
-/* `tone` varies the second gradient stop per card so the three read as
-   distinct disciplines rather than one repeated panel. Both stops are theme
-   tokens — literal hexes here pinned the whole section to the copper
-   palette regardless of which theme was active. */
 const pillars: Pillar[] = [
   {
-    title: "Development",
+    title: "Digital products",
     icon: Code2,
     description:
-      "Next.js web platforms and cross-platform mobile apps — engineered for speed, scale, and measurable outcomes.",
-    tone: "var(--accent-2)",
-    cta: "See engineering",
+      "Websites and mobile apps planned around the people who use them, the systems they connect to, and the team that will maintain them.",
     href: "/services/web-dev",
-    capabilities: ["Next.js platforms", "Mobile apps", "Core Web Vitals"],
+    capabilities: ["Next.js & React", "Mobile apps", "Product UX"],
   },
   {
-    title: "AI & automation",
+    title: "AI engineering",
     icon: BrainCircuit,
     description:
-      "AI assistants, product features, and workflow integrations shaped around approved data and useful human review.",
-    tone: "var(--primary)",
-    cta: "Explore AI development",
+      "RAG assistants, AI product features, and workflow integrations shaped around approved information, evaluation, and human review.",
     href: "/services/ai-development",
-    capabilities: ["RAG assistants", "AI workflows", "Human review"],
+    capabilities: ["RAG & chatbots", "AI workflows", "Human review"],
   },
   {
-    title: "SEO",
+    title: "Search & growth",
     icon: Search,
     description:
-      "Technical foundations and intent-mapped content that compound organic traffic quarter over quarter.",
-    tone: "var(--accent-2)",
-    cta: "See organic growth",
+      "Technical SEO, useful content, and campaign measurement aligned with your audience and business goals.",
     href: "/services/seo",
-    capabilities: ["Technical audits", "Keyword mapping", "Content strategy"],
+    capabilities: ["Technical SEO", "Content strategy", "Measurement"],
   },
 ];
 
-/**
- * A pillar card that scales and lifts itself as the reader scrolls it to the
- * centre. Every card stays mounted and visible, so the section never blanks
- * out and the reader can take in all three disciplines at a glance.
- */
-function PillarCard({
-  pillar,
-  scrollYProgress,
-  index,
-}: {
-  pillar: Pillar;
-  scrollYProgress: MotionValue<number>;
-  index: number;
-}) {
-  // Distance from this card being centred in the viewport.
-  const distance = useTransform(scrollYProgress, [0, 1], [index, index - 2]);
-
-  /* The depth cues stay strong, but opacity barely moves. An earlier pass ran
-     opacity down to 0.45 at the extremes, which left the two outer cards
-     greyed to the point of being hard to read — the effect looked better in
-     isolation than it did with body copy sitting on top of it. Scale, lift
-     and glow carry the spotlight now; text contrast never drops. */
-  const opacity = useTransform(distance, [-1, 0, 1], [0.88, 1, 0.88]);
-  const scale = useTransform(distance, [-1, 0, 1], [0.95, 1, 0.95]);
-  const lift = useTransform(distance, [-1, 0, 1], [18, 0, 18]);
-  const glow = useTransform(distance, [-1, 0, 1], [0.3, 0.85, 0.3]);
-
-  const reduced = useReducedMotionSafe();
-
-  // Hover tilt. The card turns toward the cursor on both axes so it reads as a
-  // physical panel rather than a flat rectangle. `transformPerspective` is set
-  // inline because a CSS `perspective` on an ancestor would flatten the
-  // section's own scroll-driven transforms.
-  const tiltX = useMotionValue(0);
-  const tiltY = useMotionValue(0);
-  const rotateX = useSpring(tiltX, { stiffness: 200, damping: 22 });
-  const rotateY = useSpring(tiltY, { stiffness: 200, damping: 22 });
-
-  const handleMove = (event: React.PointerEvent<HTMLElement>) => {
-    if (reduced) return;
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const px = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const py = (event.clientY - bounds.top) / bounds.height - 0.5;
-    tiltY.set(px * 12);
-    tiltX.set(-py * 12);
-  };
-
-  const resetTilt = () => {
-    tiltX.set(0);
-    tiltY.set(0);
-  };
-
-  return (
-    <motion.article
-      onPointerMove={handleMove}
-      onPointerLeave={resetTilt}
-      style={{
-        opacity,
-        scale,
-        y: lift,
-        rotateX,
-        rotateY,
-        transformPerspective: 1100,
-      }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-border-subtle bg-background/90 p-7 shadow-[0_20px_50px_-32px_rgba(2,6,23,0.55)] backdrop-blur-xl transition-colors duration-500 hover:border-primary/40 sm:p-8"
-    >
-      {/* Per-card colour wash so the three pillars never read as the same box.
-          This sits above the card's own background, so it tints the panel
-          rather than bleeding through from the section sphere behind it —
-          with the two stacked, the outer cards picked up a visible cast
-          while the middle one stayed neutral. */}
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-mesh-tight opacity-55"
-      />
-      <motion.span
-        aria-hidden
-        style={{ opacity: glow }}
-        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
-      >
-        <span
-          className="block h-full w-full rounded-full"
-          style={{ backgroundColor: pillar.tone }}
-        />
-      </motion.span>
-
-      <div className="relative flex items-start justify-between gap-4">
-        <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border-subtle bg-background/80 text-primary transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-105">
-          <pillar.icon className="h-5 w-5" />
-        </span>
-        {/* Oversized index — an editorial detail that stops the three cards
-            from reading as a generic icon row. */}
-        <span
-          aria-hidden
-          className="font-display text-5xl font-extrabold leading-none tracking-tighter text-foreground/[0.07] transition-colors duration-500 group-hover:text-primary/15"
-        >
-          0{index + 1}
-        </span>
-      </div>
-
-      <h3 className="relative mt-6 text-xl font-extrabold tracking-tight sm:text-2xl">
-        {pillar.title}
-      </h3>
-      <p className="relative mt-3 text-sm leading-relaxed text-muted">
-        {pillar.description}
-      </p>
-
-      <ul className="relative mt-6 flex flex-wrap gap-2">
-        {pillar.capabilities.map((capability) => (
-          <li
-            key={capability}
-            className="rounded-full border border-border-subtle bg-background/70 px-3 py-1 text-xs font-semibold text-muted"
-          >
-            {capability}
-          </li>
-        ))}
-      </ul>
-
-      <Link
-        href={pillar.href}
-        className="relative mt-7 inline-flex items-center gap-2 text-sm font-bold text-primary"
-      >
-        {pillar.cta}
-        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-      </Link>
-    </motion.article>
-  );
-}
-
 export default function Pillars() {
-  const reduced = useReducedMotionSafe();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // A short scroll window drives the spotlight. It is deliberately brief so the
-  // reader never has to scroll through empty space to reach the next section.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24"
-    >
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-mesh opacity-70" />
-        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-multiply" />
-      </div>
-      {/* One large sphere anchors the three cards to a single light source
-          instead of three unrelated blobs. It sits behind the card row and is
-          large enough that its lit core still reads past the panels — the
-          earlier version was tucked above the fold with the glow off, which
-          left the section looking like flat mesh.
-
-          Opacity is deliberately modest. The lit core is near-white, so at
-          full strength it washed out the muted paragraph beside the heading
-          and the card body copy. `blur-3xl` in the ring below is what makes it
-          read as a soft glow rather than a hard disc. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 overflow-hidden"
-      >
-        <AuroraOrb
-          size={620}
-          className="left-1/2 top-[58%] -translate-x-1/2 -translate-y-1/2 opacity-45 blur-3xl"
-        />
-        {/* A smaller counterweight low on the left keeps the corner from
-            reading empty once the cards cover the main sphere. */}
-        <AuroraOrb
-          size={240}
-          className="-left-20 bottom-[4%] opacity-35"
-          glow={false}
-        />
+    <section id="capabilities" className="relative isolate overflow-hidden py-16 sm:py-20 lg:py-24">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-mesh opacity-50" />
+        <div className="absolute -right-48 top-1/3 h-[28rem] w-[28rem] rounded-full bg-primary/[0.055] blur-[120px]" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-end lg:gap-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-6 border-b border-border-subtle pb-8 sm:gap-8 sm:pb-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(18rem,0.75fr)] lg:items-end">
           <Reveal>
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Core pillars
+            <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
+              What we bring together
             </span>
-            <h2 className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-[3.25rem] lg:leading-[1.06]">
-              AI, digital products, and growth.
+            <h2 className="mt-4 max-w-3xl text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
+              Connected capabilities. <span className="text-gradient">One clear direction.</span>
             </h2>
           </Reveal>
-
-          <Reveal delay={0.1} className="lg:pb-2">
-            <p className="text-base leading-relaxed text-muted sm:text-lg">
-              We bring AI engineering, web and app development, and search-led
-              growth into one considered plan, so every part supports the same
-              business goal.
+          <Reveal delay={0.08}>
+            <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-base">
+              Choose the expertise your next step needs. We shape the scope together, keep reviews visible, and bring in the right disciplines without making the work feel fragmented.
             </p>
           </Reveal>
         </div>
 
-        <div className="mt-11 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-3">
-          {pillars.map((pillar, index) =>
-            reduced ? (
-              <PillarCard
-                key={pillar.title}
-                pillar={pillar}
-                index={index}
-                scrollYProgress={scrollYProgress}
-              />
-            ) : (
-              <Reveal key={pillar.title} delay={index * 0.09}>
-                <div className="h-full">
-                  <PillarCard
-                    pillar={pillar}
-                    index={index}
-                    scrollYProgress={scrollYProgress}
-                  />
-                </div>
-              </Reveal>
-            )
-          )}
-        </div>
+        <ol className="mt-2">
+          {pillars.map(({ title, icon: Icon, description, href, capabilities }, index) => (
+            <Reveal key={title} delay={index * 0.055}>
+              <li className="group relative border-b border-border-subtle">
+                <Link
+                  href={href}
+                  className="relative grid gap-x-5 gap-y-4 py-7 outline-none transition-colors duration-300 hover:bg-primary/[0.025] focus-visible:bg-primary/[0.035] sm:py-8 lg:grid-cols-[4rem_minmax(13rem,0.9fr)_minmax(16rem,1.25fr)_minmax(15rem,1fr)_2.5rem] lg:items-center lg:gap-x-7 lg:py-9"
+                >
+                  <span className="flex items-center gap-3">
+                    <span className="font-mono text-xs font-semibold tracking-[0.18em] text-primary/75">0{index + 1}</span>
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border-subtle bg-background/70 text-primary transition-all duration-300 group-hover:border-primary/30 group-hover:bg-primary/10 group-hover:-rotate-3">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                  </span>
 
-        <Reveal delay={0.15}>
-          <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-3 rounded-2xl border border-border-subtle bg-surface/70 px-6 py-5">
-            <span className="text-sm font-bold tracking-tight">
-              One team, one plan, one invoice.
-            </span>
-            <span className="text-sm text-muted">
-              No handoffs between separate agencies — strategy, build and
-              marketing stay in the same room.
-            </span>
+                  <h3 className="text-xl font-bold tracking-tight text-foreground transition-transform duration-300 group-hover:translate-x-1 sm:text-2xl">{title}</h3>
+
+                  <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-base">{description}</p>
+
+                  <ul className="flex flex-wrap gap-2 lg:justify-start">
+                    {capabilities.map((capability) => (
+                      <li key={capability} className="rounded-full border border-border-subtle bg-background/70 px-2.5 py-1 text-[10px] font-semibold text-muted sm:text-[11px]">
+                        {capability}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <span className="absolute right-0 top-8 flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-muted transition-all duration-300 group-hover:border-primary/35 group-hover:bg-primary group-hover:text-primary-foreground group-focus-visible:border-primary/35 group-focus-visible:bg-primary group-focus-visible:text-primary-foreground lg:static">
+                    <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+                  </span>
+
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-primary/70 via-primary/20 to-transparent transition-transform duration-500 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+                </Link>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+
+        <Reveal delay={0.12}>
+          <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 border-l-2 border-primary/50 pl-4 text-sm">
+            <span className="font-bold tracking-tight text-foreground">One joined-up team.</span>
+            <span className="text-muted">Strategy, design, engineering, and growth scoped around the same goal.</span>
           </div>
         </Reveal>
       </div>

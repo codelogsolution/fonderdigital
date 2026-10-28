@@ -23,6 +23,7 @@ type PreviewSlot =
 const FALLBACK_SLOT: PreviewSlot = { kind: "web", screen: 0 };
 
 const SLOT_BY_SLIDE: PreviewSlot[] = [
+  { kind: "service", slug: "ai-development" },
   { kind: "web", screen: 0 },
   { kind: "app", screen: 0 },
   { kind: "service", slug: "seo" },
