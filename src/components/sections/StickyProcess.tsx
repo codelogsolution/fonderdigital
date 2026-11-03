@@ -183,10 +183,10 @@ function ScrollJourney() {
         <div className="mb-4 flex shrink-0 items-end justify-between gap-4 border-b border-border-subtle/70 pb-3 sm:mb-5">
           <div>
             <p aria-hidden="true" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
-              A clear way to work
+              Delivery framework
             </p>
             <p aria-hidden="true" className="mt-1 text-base font-semibold tracking-tight text-foreground sm:text-lg">
-              From first brief to a better launch.
+              Discover · Plan · Create · Launch
             </p>
           </div>
           <span className="shrink-0 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted">
@@ -225,7 +225,7 @@ function ScrollJourney() {
                       <Icon className="h-4 w-4" aria-hidden="true" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-primary-accessible">
+                      <span className="block font-mono text-[10px] font-semibold tracking-[0.16em] text-primary">
                         STEP 0{index + 1}
                       </span>
                       <span className="mt-0.5 block text-sm font-bold text-foreground">
@@ -306,7 +306,7 @@ export default function StickyProcess() {
     <section
       id="process"
       aria-labelledby="process-heading"
-      className="relative isolate overflow-x-clip border-y border-border-subtle py-16 sm:py-20 lg:py-24"
+      className="relative isolate overflow-x-clip border-y border-border-subtle py-10 sm:py-14 lg:py-14"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh opacity-80" />
@@ -316,7 +316,7 @@ export default function StickyProcess() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="flex flex-col gap-6 border-b border-border-subtle pb-8 sm:flex-row sm:items-end sm:justify-between sm:pb-10">
+          <div className="flex flex-col gap-6 border-border-subtle pb-4 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
@@ -331,13 +331,14 @@ export default function StickyProcess() {
               </h2>
             </div>
             <p className="max-w-md text-sm leading-relaxed text-muted sm:text-base">
-              Good work should feel clear while it is happening. Scroll through
-              each stage to see what you can expect.
+              From discovery and approved scope through iterative delivery,
+              quality checks, and launch handover, each phase has clear
+              checkpoints and reviewable outcomes.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-8 lg:mt-10">
+        <div className="mt-6 lg:mt-8">
           <ScrollJourney />
 
           <div className="process-flow space-y-4 lg:hidden motion-reduce:block">
@@ -364,7 +365,7 @@ export default function StickyProcess() {
         </div>
 
         <Reveal delay={0.12}>
-          <div className="mt-7 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-border-subtle pt-5">
+          <div className="mt-7 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-border-subtle pt-5">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
               Strategy <span className="px-2 text-primary">→</span> Design &amp; build{" "}
               <span className="px-2 text-primary">→</span> Launch &amp; learn

@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Button from "@/components/ui/Button";
@@ -167,15 +167,6 @@ export default function Hero() {
             ))}
           </ul>
 
-          <a
-            href="#metrics"
-            className="group inline-flex shrink-0 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-muted transition-colors hover:text-primary"
-          >
-            Scroll to explore
-            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-border-subtle transition-all duration-300 group-hover:border-primary/60 group-hover:translate-y-0.5">
-              <ChevronDown className="h-3.5 w-3.5" />
-            </span>
-          </a>
         </div>
       </div>
     </section>

@@ -1,274 +1,231 @@
 "use client";
 
-import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
-
-import Link from "next/link";
-import { useState, useRef, useEffect, useCallback } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Pause,
-  Play,
-  Star,
-  ArrowUpRight,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { testimonials } from "@/config/site";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { testimonials, type Testimonial } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
 
-const INTERVAL = 6000;
+const previewReviews: Testimonial[] = [
+  { name: "Jordan", quote: "Clear communication and a thoughtful process helped turn our early ideas into a polished experience for our customers.", rating: 4.5 },
+  { name: "Akira", quote: "The team brought structure to a complex brief, shared progress at each milestone, and made collaboration straightforward.", rating: 4 },
+  { name: "Vicc", quote: "From the first concepts through final refinements, the work felt considered, responsive, and aligned with our goals.", rating: 5 },
+  { name: "Thomson", quote: "They connected the design and development details into a cohesive product and kept decisions clear throughout.", rating: 4 },
+  { name: "Seth Braddock", quote: "We appreciated the practical recommendations, quick feedback loops, and the care taken to make the final experience intuitive for our team and customers.", rating: 5 },
+  { name: "Jerry", quote: "A collaborative team translated our early ideas into a clear digital experience. They kept feedback organized, explained decisions, and made the handoff easy for our team to continue.", rating: 3.8 },
+];
+
+function getVisibleCount() {
+  if (window.matchMedia("(min-width: 1280px)").matches) return 3;
+  if (window.matchMedia("(min-width: 768px)").matches) return 2;
+  return 1;
+}
 
 export default function Testimonials() {
-  const [current, setCurrent] = useState(0);
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const prefersReducedMotion = useReducedMotionSafe();
-  const total = testimonials.length;
-  const showControls = total > 1;
-  const [playing, setPlaying] = useState(!prefersReducedMotion);
+  const [visibleCount, setVisibleCount] = useState(1);
+  const [firstVisible, setFirstVisible] = useState(0);
+  const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
+  const [longReviews, setLongReviews] = useState<Record<string, boolean>>({});
+  const quoteRefs = useRef<Record<string, HTMLParagraphElement | null>>({});
+  const isPreview = testimonials.length === 0;
+  const reviews = isPreview ? previewReviews : testimonials;
+  const total = reviews.length;
+  const maxFirstVisible = Math.max(0, total - visibleCount);
 
   useEffect(() => {
-    if (!playing || !showControls || prefersReducedMotion) return;
-    const handle = setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % total);
-    }, INTERVAL);
-    return () => clearTimeout(handle);
-  }, [playing, current, showControls, prefersReducedMotion, total]);
-
-  const goTo = useCallback(
-    (index: number) => {
-      const nextIndex = ((index % total) + total) % total;
-      setCurrent(nextIndex);
-      setPlaying(false);
-    },
-    [total],
-  );
-  const togglePlay = () => setPlaying((p) => !p);
-
-  useEffect(() => {
-    if (!showControls) return;
-    const onKey = (e: globalThis.KeyboardEvent) => {
-      if (!sliderRef.current?.contains(e.target as Node)) return;
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        goTo(current - 1);
-      }
-      if (e.key === "ArrowRight") {
-        e.preventDefault();
-        goTo(current + 1);
-      }
-      if (e.key === " " || e.key === "Spacebar") {
-        e.preventDefault();
-        togglePlay();
-      }
+    const updateVisibleCount = () => {
+      const nextCount = getVisibleCount();
+      setVisibleCount(nextCount);
+      setFirstVisible((current) => Math.min(current, Math.max(0, total - nextCount)));
     };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-    }, [current, showControls, goTo]);
+    updateVisibleCount();
+    window.addEventListener("resize", updateVisibleCount, { passive: true });
+    return () => window.removeEventListener("resize", updateVisibleCount);
+  }, [total]);
 
-  if (total === 0) return null;
-  const t = testimonials[current];
+  useEffect(() => {
+    const measureQuotes = () => {
+      const measured: Record<string, boolean> = {};
+      reviews
+        .slice(firstVisible, firstVisible + visibleCount)
+        .forEach((review) => {
+          const key = `${review.name}-${review.company ?? "client"}`;
+          const quote = quoteRefs.current[key];
+          if (!quote || expandedReviews[key]) return;
+          measured[key] = quote.scrollHeight > quote.clientHeight + 1;
+        });
+      setLongReviews((current) => ({ ...current, ...measured }));
+    };
+
+    const frame = window.requestAnimationFrame(measureQuotes);
+    window.addEventListener("resize", measureQuotes, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", measureQuotes);
+    };
+  }, [expandedReviews, firstVisible, reviews, visibleCount]);
+
+  if (isPreview && process.env.NODE_ENV === "production") return null;
+
+  const move = (direction: -1 | 1) => {
+    setFirstVisible((current) =>
+      Math.min(maxFirstVisible, Math.max(0, current + direction * visibleCount)),
+    );
+  };
+  const endVisible = Math.min(firstVisible + visibleCount, total);
+  const canMove = total > visibleCount;
 
   return (
     <section
       id="testimonials"
-      className="relative isolate overflow-hidden border-y border-border-subtle py-20 sm:py-28"
+      aria-labelledby="testimonials-heading"
+      className="band-dark relative isolate overflow-hidden border-y border-border-subtle py-14 sm:py-18 lg:py-20"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-aurora opacity-55" />
-        <div className="absolute inset-0 bg-noise opacity-[0.025] mix-blend-multiply" />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-dots opacity-[0.12] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]" />
+        <div className="absolute -left-40 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-primary/[0.12] blur-[110px]" />
+        <div className="absolute -right-40 top-0 h-96 w-96 rounded-full bg-accent-2/[0.1] blur-[110px]" />
       </div>
-
-      <div
-        aria-hidden
-        className="absolute -top-40 -right-40 -z-10 h-96 w-96 rounded-full bg-gradient-to-br from-primary/8 to-transparent blur-3xl"
-      />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-              Testimonials
-            </span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl">
-              Words that moved the needle
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
-              Hear what clients say and see the number each one actually moved.
-              One story at a time, on rotation.
-            </p>
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-2xl">
+              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
+                <span aria-hidden="true" className="h-px w-7 bg-primary/60" />
+                {isPreview ? "Demo review content" : "Client perspectives"}
+              </span>
+              <h2
+                id="testimonials-heading"
+                className="mt-4 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+              >
+                Good work, told in their words.
+              </h2>
+            </div>
+            {canMove && (
+              <div className="flex items-center gap-3">
+                <span className="mr-1 font-mono text-xs text-muted-accessible" aria-live="polite">
+                  {String(firstVisible + 1).padStart(2, "0")}–{String(endVisible).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => move(-1)}
+                  disabled={firstVisible === 0}
+                  aria-label="Show previous client reviews"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => move(1)}
+                  disabled={firstVisible >= maxFirstVisible}
+                  aria-label="Show more client reviews"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </div>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-16">
+        <Reveal delay={0.08} className="mt-8 sm:mt-10">
           <div
-            ref={sliderRef}
             role="region"
             aria-roledescription="carousel"
-            aria-label="Client testimonials"
-            tabIndex={-1}
+            aria-label="Client reviews"
+            className="overflow-hidden"
           >
-            <div className="relative mx-auto max-w-3xl rounded-3xl border border-border-subtle bg-background p-8 shadow-[0_40px_80px_-60px_rgba(11,18,32,0.06)] sm:p-10">
-              <span
-                aria-hidden
-                className="bg-spotlight pointer-events-none absolute -top-14 -right-14 h-52 w-52"
-              />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={firstVisible}
+                initial={{ opacity: 0, x: 18 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -18 }}
+                transition={{ duration: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
+              >
+                {reviews
+                  .slice(firstVisible, firstVisible + visibleCount)
+                  .map((review) => {
+                    const reviewKey = `${review.name}-${review.company ?? "client"}`;
+                    const expanded = Boolean(expandedReviews[reviewKey]);
+                    const hasMore = Boolean(longReviews[reviewKey]);
 
-              <AnimatePresence mode="wait">
-                <motion.figure
-                  key={current}
-                  initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -16 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0 }
-                      : { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }
-                  }
-                  className="flex h-full flex-col"
-                >
-                  <div className="mb-6 text-center">
-                    <span className="text-gradient text-4xl font-extrabold tracking-tight sm:text-5xl">
-                      {t.metric}
-                    </span>
-                    <p className="mt-1.5 text-[0.66rem] font-semibold uppercase tracking-[0.16em] text-muted">
-                      {t.metricLabel}
-                    </p>
-                  </div>
-
-                  <div
-                    className="mb-5 flex justify-center gap-0.5"
-                    aria-label="5 out of 5 stars"
-                    role="img"
-                  >
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className="h-4 w-4 fill-primary text-primary"
-                      />
-                    ))}
-                  </div>
-
-                  <blockquote className="flex-1 text-center">
-                    <p
-                      className="text-[1.35rem] leading-snug font-medium text-foreground sm:text-[1.5rem]"
-                      aria-live="polite"
-                      aria-atomic
-                    >
-                      &ldquo;{t.quote}&rdquo;
-                    </p>
-                  </blockquote>
-
-                  <figcaption className="mt-7 flex flex-col items-center gap-4 border-t border-border-subtle pt-5">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-[#d97706] text-sm font-bold text-white">
-                        {t.initials}
-                      </span>
-                      <div className="min-w-0 text-center">
-                        <p className="text-sm font-bold leading-tight">
-                          {t.name}
-                        </p>
-                        <p className="mt-0.5 text-xs text-muted">{t.role}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2.5">
-                      <span className="text-xs font-extrabold tracking-[0.25em] text-foreground/75">
-                        {t.company}
-                      </span>
-                      <span className="rounded-full border border-border-subtle px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-muted">
-                        {t.sector}
-                      </span>
-                    </div>
-
-                    <Link
-                      href="/work"
-                      className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-primary hover:underline"
-                    >
-                      See the case study
-                      <ArrowUpRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </figcaption>
-                </motion.figure>
-              </AnimatePresence>
-            </div>
+                    return (
+                      <figure
+                        key={reviewKey}
+                        className="relative flex min-h-64 flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur-xl sm:p-7"
+                      >
+                        <span aria-hidden="true" className="absolute -right-5 -top-10 font-display text-8xl font-black leading-none text-white/[0.045]">“</span>
+                        <div className="relative flex flex-wrap items-center gap-2">
+                          <span
+                            className="flex items-center gap-1"
+                            role="img"
+                            aria-label={review.rating !== undefined ? `${review.rating} out of 5 stars` : "Rating not provided"}
+                          >
+                            {Array.from({ length: 5 }, (_, index) => (
+                              <span key={index} className="relative h-4 w-4">
+                                <Star aria-hidden="true" className="absolute inset-0 h-4 w-4 text-white/25" />
+                                {review.rating !== undefined && review.rating > index && (
+                                  <Star
+                                    aria-hidden="true"
+                                    className="absolute inset-0 h-4 w-4 fill-primary text-primary"
+                                    style={{ clipPath: `inset(0 ${100 - Math.min(1, review.rating - index) * 100}% 0 0)` }}
+                                  />
+                                )}
+                              </span>
+                            ))}
+                          </span>
+                          {review.rating !== undefined && <span className="ml-auto text-xs font-bold tabular-nums text-foreground">{review.rating}/5</span>}
+                          {/* {isPreview && <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-primary-accessible">Demo</span>} */}
+                        </div>
+                        <blockquote className="relative mt-5 flex-1 text-base leading-relaxed text-foreground sm:text-lg">
+                          <p
+                            id={`review-quote-${reviewKey}`}
+                            ref={(element) => { quoteRefs.current[reviewKey] = element; }}
+                            className={expanded ? "" : "line-clamp-3"}
+                          >
+                            {isPreview ? review.quote : <>&ldquo;{review.quote}&rdquo;</>}
+                          </p>
+                          {hasMore && (
+                            <button
+                              type="button"
+                              aria-expanded={expanded}
+                              aria-controls={`review-quote-${reviewKey}`}
+                              onClick={() => setExpandedReviews((current) => ({ ...current, [reviewKey]: !current[reviewKey] }))}
+                              className="mt-2 text-sm font-bold text-primary-accessible underline decoration-primary/50 underline-offset-4 hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                            >
+                              {expanded ? "Read less" : "Read more"}
+                            </button>
+                          )}
+                        </blockquote>
+                        <figcaption className="relative mt-7 flex items-center gap-3 border-t border-white/10 pt-5">
+                          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-xs font-bold text-primary-accessible">
+                            {review.name
+                              .split(/\s+/)
+                              .map((part) => part[0])
+                              .join("")
+                              .slice(0, 2)
+                              .toUpperCase()}
+                          </span>
+                          <span className="min-w-0">
+                            <span className="block truncate text-sm font-bold text-foreground">{review.name}</span>
+                            {(review.role || review.company) && (
+                              <span className="mt-0.5 block truncate text-xs text-muted-accessible">
+                                {[review.role, review.company].filter(Boolean).join(" · ")}
+                              </span>
+                            )}
+                          </span>
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </Reveal>
-
-        {showControls && (
-          <div className="mt-8 flex items-center justify-center gap-5">
-            <button
-              type="button"
-              onClick={togglePlay}
-              aria-label={playing ? "Pause testimonials" : "Play testimonials"}
-              className="appearance-none rounded-full border border-border-subtle bg-background px-3.5 py-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-            >
-              {playing ? (
-                <Pause className="h-4 w-4" />
-              ) : (
-                <Play className="h-4 w-4" />
-              )}
-            </button>
-
-            <div
-              className="flex items-center gap-1.5"
-              role="tablist"
-              aria-label="Testimonial navigation"
-            >
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  aria-label={`Go to testimonial ${i + 1}`}
-                  aria-selected={i === current}
-                  role="tab"
-                  className="relative h-2 appearance-none rounded-full transition-all duration-300"
-                  style={{
-                    width: i === current ? 24 : 8,
-                    backgroundColor:
-                      i === current
-                        ? "var(--primary)"
-                        : "var(--border-subtle)",
-                  }}
-                />
-              ))}
-            </div>
-
-            <div className="flex gap-1.5">
-              <button
-                type="button"
-                onClick={() => goTo(current - 1)}
-                aria-label="Previous testimonial"
-                className="appearance-none rounded-full border border-border-subtle bg-background p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-              >
-                <ArrowLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => goTo(current + 1)}
-                aria-label="Next testimonial"
-                className="appearance-none rounded-full border border-border-subtle bg-background p-2 text-foreground/60 transition-colors hover:bg-primary/5 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-              >
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {showControls && playing && !prefersReducedMotion && (
-          <div className="mt-4 h-1 w-80 max-w-3xl overflow-hidden rounded-full bg-border-subtle">
-            <motion.div
-              key={current}
-              className="h-full w-full bg-primary"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{
-                duration: INTERVAL / 1000,
-                ease: "linear",
-              }}
-              style={{ transformOrigin: "left" }}
-            />
-          </div>
-        )}
       </div>
     </section>
   );

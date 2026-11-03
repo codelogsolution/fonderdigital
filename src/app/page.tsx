@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import Hero from "@/components/sections/Hero";
-import Pillars from "@/components/sections/Pillars";
 import MarqueeStrip from "@/components/sections/MarqueeStrip";
 import CallToAction from "@/components/sections/CallToAction";
 import type { Metadata } from "next";
@@ -27,16 +26,19 @@ export const metadata: Metadata = {
 const HomeShowcase = dynamic(() => import("@/components/sections/HomeShowcase"));
 const StickyProcess = dynamic(() => import("@/components/sections/StickyProcess"));
 const AIHomeStory = dynamic(() => import("@/components/sections/AIHomeStory"));
+const TrustMetrics = dynamic(() => import("@/components/sections/TrustMetrics"));
+const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
 
 export default function Home() {
   return (
     <>
       <Hero />
+      <TrustMetrics />
       <AIHomeStory />
-      <Pillars />
       <MarqueeStrip />
       <HomeShowcase />
       <StickyProcess />
+      <Testimonials />
       <CallToAction />
     </>
   );

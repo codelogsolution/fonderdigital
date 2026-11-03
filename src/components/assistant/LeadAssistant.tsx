@@ -190,7 +190,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
                       className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-all hover:brightness-110"
                     >
                       <Send className="h-4 w-4" />
-                      Fill the contact form
+                      Contact us
                     </a>
                     <a
                       href={service.href}

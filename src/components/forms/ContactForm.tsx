@@ -2,12 +2,12 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Send, AlertCircle } from "lucide-react";
+import { AlertCircle, ArrowUpRight, Check, ChevronDown, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
 const inputBaseClasses =
-  "h-11 w-full rounded-xl bg-surface-2/60 px-4 text-sm text-foreground placeholder:text-muted/60 transition-all duration-300 focus:outline-none";
+  "h-12 w-full rounded-2xl bg-background/70 px-4 text-sm text-foreground placeholder:text-muted/60 transition-all duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/10";
 
 const inputIdleClasses =
   "border border-border-subtle focus:border-primary/60 focus:shadow-[0_0_20px_var(--primary-line)]";
@@ -15,7 +15,7 @@ const inputIdleClasses =
 const inputErrorClasses =
   "border-2 border-rose-500 focus:border-rose-500 focus:shadow-[0_0_20px_rgba(225,29,72,0.18)]";
 
-const labelClasses = "mb-2 block text-sm font-semibold";
+const labelClasses = "mb-2 block text-sm font-semibold tracking-tight text-foreground";
 
 const errorTextClasses =
   "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-400";
@@ -31,11 +31,12 @@ const serviceOptions = [
 
 const ease: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
 
-type FormField = "name" | "email" | "service" | "website" | "message";
+type FormField = "name" | "email" | "phone" | "service" | "website" | "message";
 
 interface FormData {
   name: string;
   email: string;
+  phone: string;
   service: string;
   website: string;
   message: string;
@@ -44,6 +45,7 @@ interface FormData {
 interface FieldErrors {
   name?: string;
   email?: string;
+  phone?: string;
   service?: string;
   website?: string;
   message?: string;
@@ -59,6 +61,12 @@ const validateField = (field: FormField, value: string): string | undefined => {
       if (!/^[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(value.trim()))
         return "Enter a valid email address";
       return undefined;
+    case "phone": {
+      if (!value.trim()) return undefined;
+      const digits = value.replace(/\D/g, "");
+      if (digits.length < 7 || digits.length > 15) return "Enter a valid phone number";
+      return undefined;
+    }
     case "service":
       if (!value) return "Please select a service";
       return undefined;
@@ -80,6 +88,7 @@ export default function ContactForm({ className }: { className?: string }) {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
+    phone: "",
     service: "",
     website: "",
     message: "",
@@ -88,6 +97,7 @@ export default function ContactForm({ className }: { className?: string }) {
   const [touched, setTouched] = useState<Record<FormField, boolean>>({
     name: false,
     email: false,
+    phone: false,
     service: false,
     website: false,
     message: false,
@@ -113,13 +123,13 @@ export default function ContactForm({ className }: { className?: string }) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const fields: FormField[] = ["name", "email", "service", "website", "message"];
+    const fields: FormField[] = ["name", "email", "phone", "service", "website", "message"];
     const newErrors: FieldErrors = {};
     fields.forEach((field) => {
       const err = validateField(field, formData[field]);
       if (err) newErrors[field] = err;
     });
-    setTouched({ name: true, email: true, service: true, website: true, message: true });
+    setTouched({ name: true, email: true, phone: true, service: true, website: true, message: true });
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       const serviceLabel = serviceOptions.find(
@@ -128,6 +138,7 @@ export default function ContactForm({ className }: { className?: string }) {
       const body = [
         `Name: ${formData.name.trim()}`,
         `Email: ${formData.email.trim()}`,
+        `Phone: ${formData.phone.trim() || "Not provided"}`,
         `Service: ${serviceLabel ?? formData.service}`,
         `Website: ${formData.website.trim() || "Not provided"}`,
         "",
@@ -210,8 +221,13 @@ export default function ContactForm({ className }: { className?: string }) {
             transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             noValidate
-            className="flex flex-col gap-5 rounded-[1.75rem] glass-premium ring-gradient p-6 sm:p-8"
+            className="flex flex-col gap-5 rounded-[1.75rem] border border-border-subtle bg-surface/80 p-5 shadow-[0_24px_70px_-48px_var(--primary-glow-strong)] backdrop-blur-xl sm:p-8"
           >
+            <div className="border-b border-border-subtle pb-5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Project enquiry</p>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">Tell us what you’re building.</h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">A few details will help us understand your goals and prepare a useful next step.</p>
+            </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="contact-name" className={labelClasses}>
@@ -257,34 +273,45 @@ export default function ContactForm({ className }: { className?: string }) {
               </div>
             </div>
 
-            <div>
-              <label htmlFor="contact-service" className={labelClasses}>
-                What service do you need?
-              </label>
-              <select
-                id="contact-service"
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className={fieldClassName("service")}
-                aria-invalid={!!(errors.service && touched.service)}
-                aria-describedby={
-                  errors.service && touched.service
-                    ? errorId("service")
-                    : undefined
-                }
-              >
-                <option value="" disabled>
-                  Select a service
-                </option>
-                {serviceOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {renderError("service")}
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <label htmlFor="contact-service" className={labelClasses}>What service do you need?</label>
+                <div className="relative">
+                  <select
+                    id="contact-service"
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={fieldClassName("service", `appearance-none cursor-pointer pr-12 ${formData.service ? "text-foreground" : "text-muted"}`)}
+                    aria-invalid={!!(errors.service && touched.service)}
+                    aria-describedby={errors.service && touched.service ? errorId("service") : undefined}
+                  >
+                    <option value="" disabled>Select a service</option>
+                    {serviceOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
+                </div>
+                {renderError("service")}
+              </div>
+              <div>
+                <label htmlFor="contact-phone" className={labelClasses}>Phone number <span className="font-normal text-muted">(optional)</span></label>
+                <input
+                  id="contact-phone"
+                  name="phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  placeholder="+91 98765-43210"
+                  className={fieldClassName("phone")}
+                  aria-invalid={!!(errors.phone && touched.phone)}
+                  aria-describedby={errors.phone && touched.phone ? errorId("phone") : undefined}
+                />
+                {renderError("phone")}
+              </div>
             </div>
 
             <div>
@@ -326,7 +353,7 @@ export default function ContactForm({ className }: { className?: string }) {
                 placeholder="Tell us about your project, goals, and timeline..."
                 className={cn(
                   inputBaseClasses,
-                  "h-auto py-3 resize-y",
+                  "h-auto min-h-36 rounded-2xl py-3 resize-y",
                   errors.message && touched.message
                     ? inputErrorClasses
                     : inputIdleClasses,
@@ -343,9 +370,9 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <button
               type="submit"
-              className="mt-2 inline-flex h-12 appearance-none items-center justify-center gap-2 rounded-full bg-primary px-8 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:shadow-[0_0_32px_var(--primary-glow)]"
+              className="mt-1 inline-flex h-12 w-full appearance-none items-center justify-center gap-2 rounded-2xl bg-primary px-7 text-sm font-bold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 sm:w-fit sm:min-w-52"
             >
-              Send Message <Send className="h-4 w-4" />
+              Open email draft <Send className="h-4 w-4" /> <ArrowUpRight className="h-4 w-4" />
             </button>
           </motion.form>
         )}

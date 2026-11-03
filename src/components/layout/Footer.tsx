@@ -17,7 +17,7 @@ const socialIcons: Record<
 export default function Footer() {
   return (
     <footer className="band-dark relative text-slate-300">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20 lg:pb-10">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
 
           <div className="lg:col-span-4">
@@ -117,7 +117,9 @@ export default function Footer() {
               </li>
               {siteConfig.phone && <li className="flex items-center gap-2.5">
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
-                {siteConfig.phone}
+                <a href={`tel:${siteConfig.phone}`} className="transition-colors hover:text-primary">
+                  {siteConfig.phoneDisplay}
+                </a>
               </li>}
               {siteConfig.location && <li className="flex items-center gap-2.5">
                 <MapPin className="h-4 w-4 shrink-0 text-primary" />

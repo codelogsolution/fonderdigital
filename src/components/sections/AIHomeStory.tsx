@@ -157,7 +157,7 @@ function WorkflowVisual() {
 
 export default function AIHomeStory() {
   return (
-    <section id="ai-workflow" className="relative isolate overflow-hidden border-y border-border-subtle py-16 sm:py-20 lg:py-24">
+    <section id="ai-workflow" className="relative isolate overflow-hidden border-t border-border-subtle py-6 sm:py-10">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh opacity-65" />
         <div className="absolute -right-48 top-1/2 h-[32rem] w-[32rem] -translate-y-1/2 rounded-full bg-primary/[0.07] blur-[120px]" />
@@ -169,8 +169,8 @@ export default function AIHomeStory() {
             <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
             Applied AI &amp; product engineering
           </span>
-          <h2 className="mt-5 max-w-2xl text-balance text-4xl font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-            AI that fits the way your business works.
+          <h2 className="mt-5 max-w-2xl text-balance text-3xl font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-4xl lg:text-5xl">
+            AI that fits the way your <span className="text-gradient">business works.</span>
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             We design AI features for websites, apps, and internal tools—from assistants grounded in approved business knowledge to workflow integrations. Each project starts with a clear use case, data boundaries, and review steps suited to the work.

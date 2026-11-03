@@ -32,9 +32,8 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
   return (
     <div className="flex overflow-hidden" style={{ maskImage: MASK, WebkitMaskImage: MASK }}>
       <div
-        className={`flex w-max shrink-0 items-center ${
-          reduced ? "" : "animate-marquee group-hover/row:[animation-play-state:paused]"
-        } ${reverse ? "[animation-direction:reverse]" : ""}`}
+        className={`flex w-max shrink-0 items-center ${reduced ? "" : "animate-marquee group-hover/row:[animation-play-state:paused]"
+          } ${reverse ? "[animation-direction:reverse]" : ""}`}
       >
         {[0, 1].map((copy) => (
           <div key={copy} aria-hidden={copy === 1} className="flex items-center">
@@ -66,13 +65,13 @@ export default function MarqueeStrip() {
     offset: ["start end", "end start"],
   });
 
-  const rowATranslate = useTransform(scrollYProgress, [0, 1], [10, -10]);
-  const rowBTranslate = useTransform(scrollYProgress, [0, 1], [-10, 10]);
+  const rowATranslate = useTransform(scrollYProgress, [0, 0.7], [4, -4]);
+  const rowBTranslate = useTransform(scrollYProgress, [0, 0.7], [-4, 4]);
 
-  const calm = useMotionValue(reduced ? 1 : 0);
+  const calm = useMotionValue(reduced ? 0.7 : 0);
 
   useEffect(() => {
-    calm.set(reduced ? 1 : 0);
+    calm.set(reduced ? 0.7 : 0);
   }, [calm, reduced]);
 
   const rowAY = useTransform(
@@ -87,7 +86,7 @@ export default function MarqueeStrip() {
   return (
     <section
       aria-hidden
-      className="relative isolate overflow-x-clip border-y border-border-subtle select-none py-9 sm:py-10"
+      className="relative isolate overflow-x-clip border-border-subtle select-none py-2 sm:py-5"
     >
 
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
@@ -99,14 +98,14 @@ export default function MarqueeStrip() {
       <motion.div
         ref={bandRef}
         style={{ y: rowAY }}
-        className="flex flex-col gap-8 sm:gap-10"
+        className="flex flex-col gap-5 sm:gap-7"
       >
         <Row items={rowA} />
       </motion.div>
 
       <motion.div
         style={{ y: rowBY }}
-        className="mt-8 flex flex-col sm:mt-10"
+        className="mt-5 flex flex-col sm:mt-7"
       >
         <Row items={rowB} reverse />
       </motion.div>

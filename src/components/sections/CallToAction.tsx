@@ -25,10 +25,16 @@ export default function CallToAction() {
   const beam = useMotionTemplate`${x}%`;
 
   const trackPointer = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse") return;
     const bounds = panel.current?.getBoundingClientRect();
     if (!bounds) return;
     pointerX.set(((event.clientX - bounds.left) / bounds.width) * 100);
     pointerY.set(((event.clientY - bounds.top) / bounds.height) * 100);
+  };
+
+  const resetPointer = () => {
+    pointerX.set(50);
+    pointerY.set(50);
   };
 
   return (
@@ -39,6 +45,7 @@ export default function CallToAction() {
             <motion.div
               ref={panel}
               onPointerMove={trackPointer}
+              onPointerLeave={resetPointer}
               style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
               className="relative isolate overflow-hidden rounded-[2rem] border border-border-subtle bg-surface px-6 py-16 text-center sm:px-16 sm:py-24"
             >

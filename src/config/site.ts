@@ -30,7 +30,8 @@ export const siteConfig = {
     "FonderDigital provides AI assistant development, website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
   email: "hello@fonderdigital.com",
-  phone: "",
+  phone: "+917042620665",
+  phoneDisplay: "+91 70426-20665",
   location: "",
   nav: [
     { label: "Home", href: "/" },
@@ -67,6 +68,7 @@ export type HeroSlide = {
   caption: string;
   blurb?: string;
   label?: string;
+  icon: LucideIcon;
 };
 
 export const heroSlides: HeroSlide[] = [
@@ -81,6 +83,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Plan AI assistants, product features, and workflow integrations around approved data, useful safeguards, and the people who use them.",
     label: "AI Development",
+    icon: BrainCircuit
   },
   {
     word: "websites",
@@ -93,6 +96,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "FonderDigital builds fast, conversion-focused websites designed to help visitors understand your offer and take a clear next step.",
     label: "Websites",
+    icon: Code2
   },
   {
     word: "apps",
@@ -105,6 +109,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Plan and build iOS and Android apps with a cross-platform or native stack chosen for the product.",
     label: "Apps",
+    icon: Smartphone
   },
   {
     word: "rankings",
@@ -117,6 +122,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Technical and content SEO focused on crawlability, useful pages, and measurement. Search visibility and results depend on your market and search engines.",
     label: "SEO",
+    icon: Search
   },
   {
     word: "campaigns",
@@ -129,6 +135,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Full-funnel campaigns across paid search, social, and email, planned around your audience and business goals.",
     label: "Marketing",
+    icon: Megaphone
   },
   {
     word: "brands",
@@ -141,6 +148,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Brand foundations — visual identity, voice and design system — built to stand out and last.",
     label: "Branding",
+    icon: Palette
   },
   {
     word: "interfaces",
@@ -153,6 +161,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Interfaces and prototypes designed for clarity, with usability testing available when included in the project scope.",
     label: "Design",
+    icon: FileText
   },
   {
     word: "content",
@@ -165,18 +174,19 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Content strategy, SEO copy, and long-form writing shaped around your audience, subject matter, and search intent. Rankings and enquiries are not guaranteed.",
     label: "Content",
+    icon: FileText
   },
 ];
 
 export const heroServices: { label: string; href: string; icon: LucideIcon }[] =
   [
+    { label: "AI Development", href: "/services/ai-development", icon: BrainCircuit },
     { label: "Web Development", href: "/services/web-dev", icon: Code2 },
     { label: "App Development", href: "/services/app-dev", icon: Smartphone },
     { label: "SEO", href: "/services/seo", icon: Search },
     { label: "Social Marketing", href: "/services/marketing", icon: Megaphone },
     { label: "Branding", href: "/services/branding", icon: Palette },
     { label: "Content Writing", href: "/services/content", icon: FileText },
-    { label: "AI Development", href: "/services/ai-development", icon: BrainCircuit },
   ];
 
 export type ProcessStep = { step: string; title: string; description: string };
@@ -770,12 +780,9 @@ export const caseStudies: CaseStudy[] = [
 export type Testimonial = {
   quote: string;
   name: string;
-  role: string;
-  initials: string;
-  company: string;
-  sector: string;
-  metric: string;
-  metricLabel: string;
+  rating?: number;
+  role?: string;
+  company?: string;
 };
 
 export const testimonials: Testimonial[] = [];
