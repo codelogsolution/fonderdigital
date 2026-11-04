@@ -38,7 +38,7 @@ export default function CallToAction() {
   };
 
   return (
-    <section id="contact" className="relative py-16 sm:py-20">
+    <section id="contact" className="relative py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div style={{ perspective: 1600 }}>

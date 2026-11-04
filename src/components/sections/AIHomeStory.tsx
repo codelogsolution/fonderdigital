@@ -157,7 +157,7 @@ function WorkflowVisual() {
 
 export default function AIHomeStory() {
   return (
-    <section id="ai-workflow" className="relative isolate overflow-hidden border-t border-border-subtle py-6 sm:py-10">
+    <section id="ai-workflow" className="relative isolate overflow-hidden border-t border-border-subtle py-5 sm:py-10">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh opacity-65" />
         <div className="absolute -right-48 top-1/2 h-[32rem] w-[32rem] -translate-y-1/2 rounded-full bg-primary/[0.07] blur-[120px]" />
@@ -175,7 +175,7 @@ export default function AIHomeStory() {
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             We design AI features for websites, apps, and internal tools—from assistants grounded in approved business knowledge to workflow integrations. Each project starts with a clear use case, data boundaries, and review steps suited to the work.
           </p>
-        <div className="mt-5 flex flex-wrap gap-2 sm:mt-7" aria-label="AI engineering capabilities">
+          <div className="mt-5 flex flex-wrap gap-2 sm:mt-7" aria-label="AI engineering capabilities">
             {["RAG", "FastAPI", "LangChain", "LangGraph", "PostgreSQL + pgvector"].map((item) => (
               <span key={item} className="rounded-full border border-border-subtle bg-background/70 px-3 py-1.5 text-[10px] font-semibold text-foreground/80">{item}</span>
             ))}

@@ -151,7 +151,7 @@ export default function Hero() {
       </div>
 
       <div className="hero-rail mx-auto w-full max-w-7xl shrink-0 px-4 pb-8 sm:px-6 lg:px-8 lg:pb-10 lg:pr-24">
-        <div className="flex flex-col gap-6 border-t border-border-subtle pt-7 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-6 border-t border-border-subtle pt-6 pb-3 lg:flex-row lg:items-center lg:justify-between">
           <ul className="flex flex-wrap gap-2">
             {heroServices.map((service, i) => (
               <motion.li

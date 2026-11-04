@@ -62,7 +62,7 @@ export default function Testimonials() {
     <section
       id="testimonials"
       aria-labelledby="testimonials-heading"
-      className="band-dark relative isolate overflow-hidden border-y border-border-subtle py-14 sm:py-18 lg:py-20"
+      className="band-dark relative isolate overflow-hidden border-y border-border-subtle py-8 sm:py-10 lg:py-12"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-dots opacity-[0.12] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]" />
@@ -146,10 +146,23 @@ export default function Testimonials() {
                   return (
                     <figure
                       key={reviewKey}
-                      className="relative flex h-[22rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur-xl sm:h-[23rem] sm:p-7"
+                      onPointerMove={(event) => {
+                        const bounds = event.currentTarget.getBoundingClientRect();
+                        event.currentTarget.style.setProperty("--spotlight-x", `${event.clientX - bounds.left}px`);
+                        event.currentTarget.style.setProperty("--spotlight-y", `${event.clientY - bounds.top}px`);
+                      }}
+                      className="group relative flex h-[22rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:bg-white/[0.075] hover:shadow-[0_30px_60px_-30px_var(--primary-glow)] sm:h-[23rem] sm:p-7"
                     >
-                      <span aria-hidden="true" className="absolute -right-5 -top-10 font-display text-8xl font-black leading-none text-white/[0.045]">“</span>
-                      <div className="relative flex flex-wrap items-center gap-2">
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        style={{
+                          background:
+                            "radial-gradient(260px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 68%)",
+                        }}
+                      />
+                      <span aria-hidden="true" className="pointer-events-none absolute -right-5 -top-10 z-0 font-display text-8xl font-black leading-none text-white/[0.045]">“</span>
+                      <div className="relative z-10 flex flex-wrap items-center gap-2">
                         <span
                           className="flex items-center gap-1"
                           role="img"
@@ -170,23 +183,10 @@ export default function Testimonials() {
                         </span>
                         {review.rating !== undefined && <span className="ml-auto text-xs font-bold tabular-nums text-foreground">{review.rating}/5</span>}
                       </div>
-                      <blockquote className="relative mt-5 flex h-36 shrink-0 flex-col text-[15px] leading-7 text-foreground sm:h-40 sm:text-base">
+                      <blockquote className="relative z-10 mt-5 flex h-36 shrink-0 flex-col text-[15px] leading-7 text-foreground sm:h-40 sm:text-base">
                         <p
                           id={`review-quote-${reviewKey}`}
-                          onWheel={(event) => {
-                            if (!expanded) return;
-                            const element = event.currentTarget;
-                            const canScrollUp = element.scrollTop > 0 && event.deltaY < 0;
-                            const canScrollDown =
-                              element.scrollTop + element.clientHeight < element.scrollHeight - 1 &&
-                              event.deltaY > 0;
-                            if (canScrollUp || canScrollDown) {
-                              event.preventDefault();
-                              event.stopPropagation();
-                              element.scrollTop += event.deltaY;
-                            }
-                          }}
-                          className={expanded ? "testimonial-quote-scrollbar min-h-0 flex-1 overflow-y-auto pr-1" : "line-clamp-3 pr-1"}
+                          className={expanded ? "testimonial-quote-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1" : "line-clamp-3 pr-1"}
                         >
                           {isPreview && hasMore && !expanded
                             ? `${review.quote.slice(0, 112).trimEnd()}…`
@@ -198,13 +198,13 @@ export default function Testimonials() {
                             aria-expanded={false}
                             aria-controls={`review-quote-${reviewKey}`}
                             onClick={() => setExpandedReviews((current) => ({ ...current, [reviewKey]: true }))}
-                            className="mt-1 w-fit rounded-sm text-sm font-bold text-primary-accessible underline decoration-primary/50 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                            className="mt-1 w-fit rounded-sm text-sm font-bold text-primary-accessible decoration-primary/50 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                           >
                             Read more <span aria-hidden="true">→</span>
                           </button>
                         )}
                       </blockquote>
-                      <figcaption className="relative mt-auto flex shrink-0 items-center gap-3 border-t border-white/10 pt-5">
+                      <figcaption className="relative z-10 mt-auto flex shrink-0 items-center gap-3 border-t border-white/10 pt-3">
                         <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-xs font-bold text-primary-accessible">
                           {review.name
                             .split(/\s+/)

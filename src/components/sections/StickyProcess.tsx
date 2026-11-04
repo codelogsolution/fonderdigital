@@ -306,7 +306,7 @@ export default function StickyProcess() {
     <section
       id="process"
       aria-labelledby="process-heading"
-      className="relative isolate overflow-x-clip border-y border-border-subtle py-7 sm:py-10 lg:py-12"
+      className="relative isolate overflow-x-clip border-y border-border-subtle py-6 sm:py-8 lg:py-10"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh opacity-80" />

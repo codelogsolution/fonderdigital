@@ -37,7 +37,7 @@ export default function HomeShowcase() {
   return (
     <section
       aria-labelledby="home-showcase"
-      className="relative overflow-hidden py-9 sm:py-13 pb-3 sm:pb-6 lg:py-16 lg:pb-8"
+      className="relative overflow-hidden py-6 sm:py-8 pb-3 sm:pb-6 lg:py-12 lg:pb-8"
     >
       <div
         aria-hidden
@@ -47,13 +47,13 @@ export default function HomeShowcase() {
         <Reveal>
           <div className="flex flex-col gap-6 border-border-subtle pb-4 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
             <div className="max-w-2xl">
-              <span className="inline-flex w-fit items-center gap-2.5 rounded-full border border-primary/20 bg-background/90 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible shadow-sm backdrop-blur-sm">
+              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
                 The studio, in motion
               </span>
               <h2
                 id="home-showcase"
-                className="mt-4 text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl"
+                className="mt-5 text-balance text-3xl font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-4xl lg:text-5xl"
               >
                 One brief. The right&nbsp;
                 <span className="text-gradient">digital pieces.</span>
@@ -130,7 +130,7 @@ export default function HomeShowcase() {
               </AnimatePresence>
             </div>
 
-            <div className="mt-4 flex flex-row flex-wrap items-center gap-3 sm:mt-5 sm:gap-5">
+            <div className="mt-4 flex flex-col items-start gap-7 sm:mt-5">
               <Link
                 href={slide.href}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_32px_-12px_var(--primary-glow-strong)] transition-transform duration-300 hover:-translate-y-0.5"

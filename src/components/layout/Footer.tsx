@@ -17,7 +17,7 @@ const socialIcons: Record<
 export default function Footer() {
   return (
     <footer className="band-dark relative text-slate-300">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20 lg:pb-10">
+      <div className="mx-auto max-w-7xl px-4 py-13 sm:px-5 lg:px-8 lg:py-16 lg:pb-9">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
 
           <div className="lg:col-span-4">
@@ -130,7 +130,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
-          <p className="text-sm text-muted">
+          <p className="text-sm text-muted text-center">
             © 2023–{new Date().getFullYear()} &nbsp;&nbsp;<span aria-hidden="true">·&nbsp;</span> {siteConfig.name}. &nbsp;All rights reserved.
           </p>
           <div className="flex gap-6 text-sm text-muted">

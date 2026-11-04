@@ -237,7 +237,7 @@ export default function DeliveryShowcase() {
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section !py-7 sm:!py-10 lg:!py-16">
+    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section py-6 sm:py-8 lg:py-12">
       <SectionHeading
         eyebrow="How the work ships"
         title={<span id="delivery-heading">A clearer view of <span className="text-gradient">what matters.</span></span>}
@@ -285,10 +285,10 @@ export default function DeliveryShowcase() {
                       {i + 1}
                     </span>
                     <span>
-                      <span className="block text-sm font-bold tracking-tight text-foreground">
+                      <span className="block text-sm font-bold tracking-tight text-[#17130f]">
                         {stage.label}
                       </span>
-                      <span className="block text-xs text-muted">{stage.detail}</span>
+                      <span className="block text-xs text-[#6b6055]">{stage.detail}</span>
                     </span>
                   </li>
                 ))}

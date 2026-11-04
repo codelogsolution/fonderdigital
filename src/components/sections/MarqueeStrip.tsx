@@ -40,7 +40,7 @@ function Row({ items, reverse = false }: { items: string[]; reverse?: boolean })
             {items.map((item, index) => (
               <span key={`${item}-${index}`} className="flex items-center">
 
-                <span className="whitespace-nowrap px-10 text-lg font-semibold tracking-tight text-foreground/85 sm:px-12 sm:text-xl">
+                <span className="whitespace-nowrap px-10 text-lg font-semibold tracking-tight text-white sm:px-12 sm:text-xl">
                   {item}
                 </span>
 
