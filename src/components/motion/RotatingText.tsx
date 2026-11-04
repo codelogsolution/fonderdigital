@@ -26,6 +26,10 @@ function RotatingText({
   onWordChange,
 }: RotatingTextProps) {
   const reduced = useReducedMotionSafe();
+  const widestWord = words.reduce(
+    (widest, word) => (word.length > widest.length ? word : widest),
+    "",
+  );
   const [wordIndex, setWordIndex] = useState(0);
   const [text, setText] = useState(words[0] ?? "");
   const [phase, setPhase] = useState<"waiting" | "typing" | "deleting">(
@@ -90,9 +94,12 @@ function RotatingText({
   ]);
 
   return (
-    <span className={cn("relative inline-block", className)}>
+    <span className={cn("relative inline-grid align-baseline whitespace-nowrap", className)}>
       <span className="sr-only">{words[wordIndex] ?? ""}</span>
-      <span aria-hidden="true">
+      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
+        {widestWord}
+      </span>
+      <span aria-hidden="true" className="col-start-1 row-start-1 justify-self-start whitespace-nowrap">
         {reduced ? words[wordIndex] ?? "" : text}
 
         {!reduced && (

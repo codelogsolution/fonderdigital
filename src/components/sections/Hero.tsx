@@ -87,7 +87,7 @@ export default function Hero() {
             </span>
           </h1>
 
-          <div className="hero-tagline mt-6 min-h-[3.5rem] max-w-xl">
+          <div className="hero-tagline mt-6 min-h-[4rem] max-w-xl sm:min-h-[3.5rem]">
             <AnimatePresence mode="wait">
               <motion.p
                 key={slide.word}

@@ -26,7 +26,7 @@ function SiteNav({ brand, links, cta, dark }: { brand: string; links: string[]; 
           <span key={link} className={dark ? "text-white/60" : "text-slate-500"}>{link}</span>
         ))}
       </nav>
-      <span className="rounded-full bg-sky-500 px-3 py-1.5 text-[10px] font-semibold text-white">{cta}</span>
+      <span className="rounded-full bg-sky-700 px-3 py-1.5 text-[10px] font-semibold text-white">{cta}</span>
     </div>
   );
 }
@@ -60,7 +60,7 @@ function SiteRail({ title, children }: { title: string; children: React.ReactNod
     <div className="py-5">
       <div className="flex items-center justify-between px-6">
         <p className="text-sm font-extrabold text-slate-900">{title}</p>
-        <span className="flex items-center gap-1 text-[10px] font-bold text-sky-600">
+        <span className="flex items-center gap-1 text-[10px] font-bold text-sky-700">
           View all <ArrowRight aria-hidden className="h-3 w-3" />
         </span>
       </div>

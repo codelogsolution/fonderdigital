@@ -3,23 +3,36 @@ import Hero from "@/components/sections/Hero";
 import MarqueeStrip from "@/components/sections/MarqueeStrip";
 import CallToAction from "@/components/sections/CallToAction";
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 
 const homeTitle = "Fonder Digital | Web, App & AI Development";
-const homeDescription =
-  "FonderDigital plans and builds websites, mobile apps, and AI features, alongside SEO and digital marketing for businesses in the US and UK.";
+const homeDescription = siteConfig.description;
 
 export const metadata: Metadata = {
   title: homeTitle,
   description: homeDescription,
   alternates: { canonical: "/" },
   openGraph: {
+    type: "website",
+    siteName: siteConfig.name,
     title: homeTitle,
     description: homeDescription,
-    url: "/",
+    url: siteConfig.url,
+    locale: "en_US",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
   },
   twitter: {
+    card: "summary_large_image",
     title: homeTitle,
     description: homeDescription,
+    images: ["/opengraph-image"],
   },
 };
 

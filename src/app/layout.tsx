@@ -67,7 +67,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     url: siteConfig.url,
     logo: `${siteConfig.url}/images/fonderdigital-logo.svg`,
     email: siteConfig.email,
+    telephone: siteConfig.phone,
+    foundingDate: "2023-04",
     description: siteConfig.description,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      email: siteConfig.email,
+      telephone: siteConfig.phone,
+      url: `${siteConfig.url}/contact`,
+      availableLanguage: ["English"],
+    },
     areaServed: serviceAreas.map(({ city, region, country }) => ({
       "@type": "City",
       name: city,
