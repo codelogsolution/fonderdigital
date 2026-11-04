@@ -115,10 +115,10 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
           </div>
 
           <div className="rounded-2xl bg-mesh-tight p-4">
-            <p className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-muted">
+            <p className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-[#6b6055]">
               Growth overview · sample data
             </p>
-            <p className="mt-1 text-lg font-bold tracking-tight text-foreground">
+            <p className="mt-1 text-lg font-bold tracking-tight text-[#17130f]">
               Sample business
             </p>
 
@@ -128,10 +128,10 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
                   key={s.k}
                   className="flex h-full min-w-0 flex-col rounded-xl border border-border-subtle bg-white/80 px-1.5 py-2.5"
                 >
-                  <p className="min-h-4 truncate whitespace-nowrap text-[0.5rem] font-semibold uppercase leading-4 tracking-[0.08em] text-muted">
+                  <p className="min-h-4 truncate whitespace-nowrap text-[0.5rem] font-semibold uppercase leading-4 tracking-[0.08em] text-[#6b6055]">
                     {s.k}
                   </p>
-                  <p className="mt-0.5 whitespace-nowrap text-xs font-bold leading-5 tabular-nums text-foreground">
+                  <p className="mt-0.5 whitespace-nowrap text-xs font-bold leading-5 tabular-nums text-[#17130f]">
                     {s.v}
                   </p>
                   <p className="mt-0.5 text-[0.55rem] font-semibold leading-[1.1rem] text-emerald-700">{s.d}</p>
@@ -141,7 +141,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
 
             <div className="mt-3 rounded-xl border border-border-subtle bg-white/80 px-3 py-3">
               <div className="flex items-center justify-between">
-                <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted">
+                <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-[#6b6055]">
                   Performance trend · illustrative
                 </span>
                 <Sparkles className="h-3 w-3 text-primary" aria-hidden />
@@ -214,14 +214,14 @@ function OrbitCardBody({ card }: { card: OrbitCard }) {
         <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <Icon className="h-3.5 w-3.5" aria-hidden />
         </span>
-        <span className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-muted">
+        <span className="text-[0.6rem] font-bold uppercase tracking-[0.14em] text-[#6b6055]">
           {card.label}
         </span>
       </div>
-      <p className="mt-2 text-xl font-extrabold tabular-nums tracking-tight text-foreground">
+      <p className="mt-2 text-xl font-extrabold tabular-nums tracking-tight text-[#17130f]">
         {card.value}
       </p>
-      <p className="text-[0.68rem] text-muted">{card.caption}</p>
+      <p className="text-[0.68rem] text-[#6b6055]">{card.caption}</p>
     </div>
   );
 }
