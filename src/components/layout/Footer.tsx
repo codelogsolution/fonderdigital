@@ -129,7 +129,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
           <p className="text-sm text-muted">
             © 2023–{new Date().getFullYear()} &nbsp;&nbsp;<span aria-hidden="true">·&nbsp;</span> {siteConfig.name}. &nbsp;All rights reserved.
           </p>

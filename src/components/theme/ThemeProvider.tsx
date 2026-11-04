@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -60,6 +61,18 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+      if (isThemeId(stored)) {
+        document.documentElement.setAttribute("data-theme", stored);
+        emit();
+      }
+    } catch {
+      document.documentElement.setAttribute("data-theme", DEFAULT_THEME);
+    }
+  }, []);
 
   const setTheme = useCallback((next: ThemeId) => {
     document.documentElement.classList.add("theme-ready");

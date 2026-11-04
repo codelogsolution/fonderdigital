@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Star } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { testimonials, type Testimonial } from "@/config/site";
 import Reveal from "@/components/motion/Reveal";
+import { useReducedMotionSafe } from "@/components/motion/useReducedMotionSafe";
 
 const previewReviews: Testimonial[] = [
   { name: "Jordan", quote: "Clear communication and a thoughtful process helped turn our early ideas into a polished experience for our customers.", rating: 4.5 },
-  { name: "Akira", quote: "The team brought structure to a complex brief, shared progress at each milestone, and made collaboration straightforward.", rating: 4 },
+  { name: "Akira", quote: "The team brought structure to a complex brief and made collaboration feel straightforward from the start. They kept us informed at each milestone, explained the thinking behind important choices, and gave us useful ways to share feedback. The final experience felt clear, considered, and aligned with what we wanted to achieve.", rating: 4 },
   { name: "Vicc", quote: "From the first concepts through final refinements, the work felt considered, responsive, and aligned with our goals.", rating: 5 },
-  { name: "Thomson", quote: "They connected the design and development details into a cohesive product and kept decisions clear throughout.", rating: 4 },
+  { name: "Thomson", quote: "They connected the design and development details into a cohesive product and kept decisions clear throughout. We always understood what was being worked on and why, and the review points made it easy to give timely feedback. The finished experience feels intuitive for our team and gives our customers a clearer way to engage.", rating: 4 },
   { name: "Seth Braddock", quote: "We appreciated the practical recommendations, quick feedback loops, and the care taken to make the final experience intuitive for our team and customers.", rating: 5 },
   { name: "Jerry", quote: "A collaborative team translated our early ideas into a clear digital experience. They kept feedback organized, explained decisions, and made the handoff easy for our team to continue.", rating: 3.8 },
 ];
@@ -25,18 +26,17 @@ export default function Testimonials() {
   const [visibleCount, setVisibleCount] = useState(1);
   const [firstVisible, setFirstVisible] = useState(0);
   const [expandedReviews, setExpandedReviews] = useState<Record<string, boolean>>({});
-  const [longReviews, setLongReviews] = useState<Record<string, boolean>>({});
-  const quoteRefs = useRef<Record<string, HTMLParagraphElement | null>>({});
+  const reducedMotion = useReducedMotionSafe();
+  const [paused, setPaused] = useState(false);
   const isPreview = testimonials.length === 0;
   const reviews = isPreview ? previewReviews : testimonials;
   const total = reviews.length;
-  const maxFirstVisible = Math.max(0, total - visibleCount);
 
   useEffect(() => {
     const updateVisibleCount = () => {
       const nextCount = getVisibleCount();
       setVisibleCount(nextCount);
-      setFirstVisible((current) => Math.min(current, Math.max(0, total - nextCount)));
+      setFirstVisible((current) => Math.min(current, Math.max(0, total - 1)));
     };
     updateVisibleCount();
     window.addEventListener("resize", updateVisibleCount, { passive: true });
@@ -44,35 +44,18 @@ export default function Testimonials() {
   }, [total]);
 
   useEffect(() => {
-    const measureQuotes = () => {
-      const measured: Record<string, boolean> = {};
-      reviews
-        .slice(firstVisible, firstVisible + visibleCount)
-        .forEach((review) => {
-          const key = `${review.name}-${review.company ?? "client"}`;
-          const quote = quoteRefs.current[key];
-          if (!quote || expandedReviews[key]) return;
-          measured[key] = quote.scrollHeight > quote.clientHeight + 1;
-        });
-      setLongReviews((current) => ({ ...current, ...measured }));
-    };
-
-    const frame = window.requestAnimationFrame(measureQuotes);
-    window.addEventListener("resize", measureQuotes, { passive: true });
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("resize", measureQuotes);
-    };
-  }, [expandedReviews, firstVisible, reviews, visibleCount]);
-
-  if (isPreview && process.env.NODE_ENV === "production") return null;
+    if (paused || reducedMotion || total <= visibleCount) return;
+    const timer = window.setInterval(() => {
+      setFirstVisible((current) => (current + visibleCount) % total);
+    }, 4800);
+    return () => window.clearInterval(timer);
+  }, [paused, reducedMotion, total, visibleCount]);
 
   const move = (direction: -1 | 1) => {
-    setFirstVisible((current) =>
-      Math.min(maxFirstVisible, Math.max(0, current + direction * visibleCount)),
-    );
+    setFirstVisible((current) => (current + direction * visibleCount + total) % total);
   };
-  const endVisible = Math.min(firstVisible + visibleCount, total);
+  const visibleReviews = Array.from({ length: Math.min(visibleCount, total) }, (_, index) => reviews[(firstVisible + index) % total]);
+  const endVisible = (firstVisible + visibleReviews.length - 1) % total + 1;
   const canMove = total > visibleCount;
 
   return (
@@ -93,7 +76,7 @@ export default function Testimonials() {
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/60" />
-                {isPreview ? "Demo review content" : "Client perspectives"}
+                {isPreview ? "Illustrative review layout" : "Client perspectives"}
               </span>
               <h2
                 id="testimonials-heading"
@@ -101,6 +84,11 @@ export default function Testimonials() {
               >
                 Good work, told in their words.
               </h2>
+              {isPreview && (
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-accessible">
+                  These sample quotes and ratings are for layout preview only; they are not client endorsements.
+                </p>
+              )}
             </div>
             {canMove && (
               <div className="flex items-center gap-3">
@@ -110,18 +98,16 @@ export default function Testimonials() {
                 <button
                   type="button"
                   onClick={() => move(-1)}
-                  disabled={firstVisible === 0}
                   aria-label="Show previous client reviews"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible"
                 >
                   <ArrowLeft aria-hidden="true" className="h-4 w-4" />
                 </button>
                 <button
                   type="button"
                   onClick={() => move(1)}
-                  disabled={firstVisible >= maxFirstVisible}
                   aria-label="Show more client reviews"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible disabled:cursor-not-allowed disabled:opacity-40"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle text-foreground transition-colors hover:border-primary/60 hover:text-primary-accessible"
                 >
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </button>
@@ -136,6 +122,12 @@ export default function Testimonials() {
             aria-roledescription="carousel"
             aria-label="Client reviews"
             className="overflow-hidden"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onFocusCapture={() => setPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false);
+            }}
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
@@ -146,82 +138,94 @@ export default function Testimonials() {
                 transition={{ duration: 0.28, ease: [0.21, 0.47, 0.32, 0.98] }}
                 className="grid gap-4 md:grid-cols-2 xl:grid-cols-3"
               >
-                {reviews
-                  .slice(firstVisible, firstVisible + visibleCount)
-                  .map((review) => {
-                    const reviewKey = `${review.name}-${review.company ?? "client"}`;
-                    const expanded = Boolean(expandedReviews[reviewKey]);
-                    const hasMore = Boolean(longReviews[reviewKey]);
+                {visibleReviews.map((review) => {
+                  const reviewKey = `${review.name}-${review.company ?? "client"}`;
+                  const expanded = Boolean(expandedReviews[reviewKey]);
+                  const hasMore = isPreview && review.quote.length > 148;
 
-                    return (
-                      <figure
-                        key={reviewKey}
-                        className="relative flex min-h-64 flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur-xl sm:p-7"
-                      >
-                        <span aria-hidden="true" className="absolute -right-5 -top-10 font-display text-8xl font-black leading-none text-white/[0.045]">“</span>
-                        <div className="relative flex flex-wrap items-center gap-2">
-                          <span
-                            className="flex items-center gap-1"
-                            role="img"
-                            aria-label={review.rating !== undefined ? `${review.rating} out of 5 stars` : "Rating not provided"}
+                  return (
+                    <figure
+                      key={reviewKey}
+                      className="relative flex h-[22rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur-xl sm:h-[23rem] sm:p-7"
+                    >
+                      <span aria-hidden="true" className="absolute -right-5 -top-10 font-display text-8xl font-black leading-none text-white/[0.045]">“</span>
+                      <div className="relative flex flex-wrap items-center gap-2">
+                        <span
+                          className="flex items-center gap-1"
+                          role="img"
+                          aria-label={review.rating !== undefined ? `${review.rating} out of 5 stars` : "Rating not provided"}
+                        >
+                          {Array.from({ length: 5 }, (_, index) => (
+                            <span key={index} className="relative h-4 w-4">
+                              <Star aria-hidden="true" className="absolute inset-0 h-4 w-4 text-white/25" />
+                              {review.rating !== undefined && review.rating > index && (
+                                <Star
+                                  aria-hidden="true"
+                                  className="absolute inset-0 h-4 w-4 fill-primary text-primary"
+                                  style={{ clipPath: `inset(0 ${100 - Math.min(1, review.rating - index) * 100}% 0 0)` }}
+                                />
+                              )}
+                            </span>
+                          ))}
+                        </span>
+                        {review.rating !== undefined && <span className="ml-auto text-xs font-bold tabular-nums text-foreground">{review.rating}/5</span>}
+                        {isPreview && <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-primary-accessible">Sample</span>}
+                      </div>
+                      <blockquote className="relative mt-5 flex h-36 shrink-0 flex-col text-[15px] leading-7 text-foreground sm:h-40 sm:text-base">
+                        <p
+                          id={`review-quote-${reviewKey}`}
+                          onWheel={(event) => {
+                            if (!expanded) return;
+                            const element = event.currentTarget;
+                            const canScrollUp = element.scrollTop > 0 && event.deltaY < 0;
+                            const canScrollDown =
+                              element.scrollTop + element.clientHeight < element.scrollHeight - 1 &&
+                              event.deltaY > 0;
+                            if (canScrollUp || canScrollDown) {
+                              event.preventDefault();
+                              event.stopPropagation();
+                              element.scrollTop += event.deltaY;
+                            }
+                          }}
+                          className={expanded ? "testimonial-quote-scrollbar min-h-0 flex-1 overflow-y-auto pr-1" : "line-clamp-3 pr-1"}
+                        >
+                          {isPreview && hasMore && !expanded
+                            ? `${review.quote.slice(0, 112).trimEnd()}…`
+                            : isPreview ? review.quote : <>&ldquo;{review.quote}&rdquo;</>}
+                        </p>
+                        {isPreview && hasMore && !expanded && (
+                          <button
+                            type="button"
+                            aria-expanded={false}
+                            aria-controls={`review-quote-${reviewKey}`}
+                            onClick={() => setExpandedReviews((current) => ({ ...current, [reviewKey]: true }))}
+                            className="mt-1 w-fit rounded-sm text-sm font-bold text-primary-accessible underline decoration-primary/50 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                           >
-                            {Array.from({ length: 5 }, (_, index) => (
-                              <span key={index} className="relative h-4 w-4">
-                                <Star aria-hidden="true" className="absolute inset-0 h-4 w-4 text-white/25" />
-                                {review.rating !== undefined && review.rating > index && (
-                                  <Star
-                                    aria-hidden="true"
-                                    className="absolute inset-0 h-4 w-4 fill-primary text-primary"
-                                    style={{ clipPath: `inset(0 ${100 - Math.min(1, review.rating - index) * 100}% 0 0)` }}
-                                  />
-                                )}
-                              </span>
-                            ))}
-                          </span>
-                          {review.rating !== undefined && <span className="ml-auto text-xs font-bold tabular-nums text-foreground">{review.rating}/5</span>}
-                          {/* {isPreview && <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-primary-accessible">Demo</span>} */}
-                        </div>
-                        <blockquote className="relative mt-5 flex-1 text-base leading-relaxed text-foreground sm:text-lg">
-                          <p
-                            id={`review-quote-${reviewKey}`}
-                            ref={(element) => { quoteRefs.current[reviewKey] = element; }}
-                            className={expanded ? "" : "line-clamp-3"}
-                          >
-                            {isPreview ? review.quote : <>&ldquo;{review.quote}&rdquo;</>}
-                          </p>
-                          {hasMore && (
-                            <button
-                              type="button"
-                              aria-expanded={expanded}
-                              aria-controls={`review-quote-${reviewKey}`}
-                              onClick={() => setExpandedReviews((current) => ({ ...current, [reviewKey]: !current[reviewKey] }))}
-                              className="mt-2 text-sm font-bold text-primary-accessible underline decoration-primary/50 underline-offset-4 hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                            >
-                              {expanded ? "Read less" : "Read more"}
-                            </button>
+                            Read more <span aria-hidden="true">→</span>
+                          </button>
+                        )}
+                      </blockquote>
+                      <figcaption className="relative mt-auto flex shrink-0 items-center gap-3 border-t border-white/10 pt-5">
+                        <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-xs font-bold text-primary-accessible">
+                          {review.name
+                            .split(/\s+/)
+                            .map((part) => part[0])
+                            .join("")
+                            .slice(0, 2)
+                            .toUpperCase()}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block truncate text-sm font-bold text-foreground">{review.name}</span>
+                          {(review.role || review.company) && (
+                            <span className="mt-0.5 block truncate text-xs text-muted-accessible">
+                              {[review.role, review.company].filter(Boolean).join(" · ")}
+                            </span>
                           )}
-                        </blockquote>
-                        <figcaption className="relative mt-7 flex items-center gap-3 border-t border-white/10 pt-5">
-                          <span aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/25 bg-primary/10 text-xs font-bold text-primary-accessible">
-                            {review.name
-                              .split(/\s+/)
-                              .map((part) => part[0])
-                              .join("")
-                              .slice(0, 2)
-                              .toUpperCase()}
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block truncate text-sm font-bold text-foreground">{review.name}</span>
-                            {(review.role || review.company) && (
-                              <span className="mt-0.5 block truncate text-xs text-muted-accessible">
-                                {[review.role, review.company].filter(Boolean).join(" · ")}
-                              </span>
-                            )}
-                          </span>
-                        </figcaption>
-                      </figure>
-                    );
-                  })}
+                        </span>
+                      </figcaption>
+                    </figure>
+                  );
+                })}
               </motion.div>
             </AnimatePresence>
           </div>

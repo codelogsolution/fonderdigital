@@ -13,8 +13,6 @@ import CustomCursor from "@/components/motion/CustomCursor";
 import ThemeProvider from "@/components/theme/ThemeProvider";
 import "./globals.css";
 
-const themeBootScript = `(function(){try{var t=localStorage.getItem('fd-theme');var ok=['copper','azure','noir'];document.documentElement.setAttribute('data-theme',ok.indexOf(t)>-1?t:'copper')}catch(e){document.documentElement.setAttribute('data-theme','copper')}})();`;
-
 const display = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
@@ -97,7 +95,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

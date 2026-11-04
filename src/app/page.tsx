@@ -27,6 +27,7 @@ const HomeShowcase = dynamic(() => import("@/components/sections/HomeShowcase"))
 const StickyProcess = dynamic(() => import("@/components/sections/StickyProcess"));
 const AIHomeStory = dynamic(() => import("@/components/sections/AIHomeStory"));
 const TrustMetrics = dynamic(() => import("@/components/sections/TrustMetrics"));
+const DeliveryShowcase = dynamic(() => import("@/components/sections/DeliveryShowcase"));
 const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
 
 export default function Home() {
@@ -38,6 +39,7 @@ export default function Home() {
       <MarqueeStrip />
       <HomeShowcase />
       <StickyProcess />
+      <DeliveryShowcase />
       <Testimonials />
       <CallToAction />
     </>

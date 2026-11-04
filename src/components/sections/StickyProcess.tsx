@@ -306,7 +306,7 @@ export default function StickyProcess() {
     <section
       id="process"
       aria-labelledby="process-heading"
-      className="relative isolate overflow-x-clip border-y border-border-subtle py-10 sm:py-14 lg:py-14"
+      className="relative isolate overflow-x-clip border-y border-border-subtle py-7 sm:py-10 lg:py-12"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh opacity-80" />
@@ -316,7 +316,7 @@ export default function StickyProcess() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Reveal>
-          <div className="flex flex-col gap-6 border-border-subtle pb-4 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
+          <div className="flex flex-col gap-6 border-border-subtle pb-1 sm:flex-row sm:items-end sm:justify-between sm:pb-4">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
@@ -338,7 +338,7 @@ export default function StickyProcess() {
           </div>
         </Reveal>
 
-        <div className="mt-6 lg:mt-8">
+        <div className="mt-4 sm:mt-5 lg:mt-7">
           <ScrollJourney />
 
           <div className="process-flow space-y-4 lg:hidden motion-reduce:block">

@@ -290,6 +290,15 @@ h6 {
   background: #94a3b8;
 }
 
+.testimonial-quote-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.testimonial-quote-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 @utility bg-grid-accent {
   background-image:
     linear-gradient(to right, var(--primary-line) 1px, transparent 1px),

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { CheckCircle2, Globe, Search, Sparkles, Target, TrendingUp } from "lucide-react";
+import { BarChart3, Globe, Search, Sparkles, Target, TrendingUp } from "lucide-react";
 import Section from "@/components/sections/Section";
 import SectionHeading from "@/components/sections/SectionHeading";
 import AuroraOrb from "@/components/motion/AuroraOrb";
@@ -28,9 +28,9 @@ type OrbitCard = {
 const orbitCards: OrbitCard[] = [
   {
     icon: TrendingUp,
-    label: "Knowledge",
-    value: "RAG",
-    caption: "approved source context",
+    label: "ROAS",
+    value: "+214%",
+    caption: "sample · blended, 90 days",
     x: 20,
     y: 24,
     rotate: -5,
@@ -41,9 +41,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Search,
-    label: "Integrations",
-    value: "API",
-    caption: "connected to chosen tools",
+    label: "Organic clicks",
+    value: "3.1k",
+    caption: "sample · monthly, up 62%",
     x: 78,
     y: 20,
     rotate: 4,
@@ -54,9 +54,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Target,
-    label: "Quality",
-    value: "Tested",
-    caption: "expected and fallback paths",
+    label: "Cost per lead",
+    value: "−38%",
+    caption: "sample · vs. prior quarter",
     x: 15,
     y: 68,
     rotate: 3,
@@ -67,9 +67,9 @@ const orbitCards: OrbitCard[] = [
   },
   {
     icon: Globe,
-    label: "Review",
-    value: "Human",
-    caption: "approval where it matters",
+    label: "Markets live",
+    value: "7",
+    caption: "sample · across 4 regions",
     x: 83,
     y: 72,
     rotate: -4,
@@ -86,12 +86,12 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
   const glow = useTransform(progress, [0, 0.5, 1], [0.35, 0.7, 0.45]);
 
   const tiles = [
-    { k: "Use case", v: "Defined", d: "scope agreed" },
-    { k: "Knowledge", v: "Approved", d: "sources reviewed" },
-    { k: "Release", v: "Prepared", d: "handover planned" },
+    { k: "Revenue", v: "$48.2k", d: "+18%" },
+    { k: "Signups", v: "3,140", d: "+24%" },
+    { k: "Conv.", v: "7.4%", d: "+2%" },
   ];
 
-  const rows = ["Prompt and response checks", "Fallback and privacy review", "Owner handoff and documentation"];
+  const rows = ["Checkout redesign", "Speed improvements", "Winback campaign"];
 
   return (
     <motion.div
@@ -116,10 +116,10 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
 
           <div className="rounded-2xl bg-mesh-tight p-4">
             <p className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-muted">
-              AI delivery workspace
+              Growth overview · sample data
             </p>
             <p className="mt-1 text-lg font-bold tracking-tight text-foreground">
-              Knowledge assistant
+              Sample business
             </p>
 
             <div className="mt-4 grid grid-cols-3 gap-2">
@@ -142,7 +142,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
             <div className="mt-3 rounded-xl border border-border-subtle bg-white/80 px-3 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-[0.55rem] font-semibold uppercase tracking-wider text-muted">
-                  Feature flow
+                  Performance trend · illustrative
                 </span>
                 <Sparkles className="h-3 w-3 text-primary" aria-hidden />
               </div>
@@ -176,7 +176,7 @@ function DeviceFrame({ progress }: { progress: MotionValue<number> }) {
                 key={row}
                 className="flex items-center gap-2 rounded-lg border border-border-subtle bg-white/70 px-3 py-2"
               >
-                <CheckCircle2 className="h-3 w-3 shrink-0 text-primary" aria-hidden />
+                <BarChart3 className="h-3 w-3 shrink-0 text-primary" aria-hidden />
                 <span className="text-[0.7rem] font-medium text-foreground/85">
                   {row}
                 </span>
@@ -237,19 +237,15 @@ export default function DeliveryShowcase() {
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section">
+    <Section id="delivery" labelledBy="delivery-heading" backdrop="aurora" className="delivery-section !py-7 sm:!py-10 lg:!py-16">
       <SectionHeading
-        eyebrow="From AI concept to reliable release"
-        title={
-          <span id="delivery-heading">
-            Useful AI, <span className="text-muted">built around real work.</span>
-          </span>
-        }
-        lede="An illustrative workspace showing how an AI feature can move from a clear use case through source review, testing, and a considered handover. It is a concept interface, not client data or a live product."
-        align="center"
+        eyebrow="How the work ships"
+        title={<span id="delivery-heading">A clearer view of <span className="text-gradient">what matters.</span></span>}
+        lede="An illustrative dashboard concept showing how a project might organize useful signals and decisions. All figures shown are sample data, not client results."
+        layout="split"
       />
 
-      <div ref={trackRef} className="relative mt-10 sm:mt-14">
+      <div ref={trackRef} className="relative mt-6 sm:mt-8 lg:mt-10">
         <div>
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="relative mx-auto h-[26rem] max-w-5xl sm:h-[30rem]">

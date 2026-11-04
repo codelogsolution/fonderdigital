@@ -28,14 +28,13 @@ export default function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={`site-section relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24 ${className}`}
+      className={`site-section relative isolate overflow-x-clip py-12 sm:py-16 lg:py-20 pt-8 lg:pt-14 ${className}`}
     >
       {backdrop !== "none" && (
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div
-            className={`absolute inset-0 transition-opacity duration-700 ${
-              backdrop === "aurora" ? "bg-mesh" : "bg-grid"
-            } ${tone === "muted" ? "opacity-60" : "opacity-100"}`}
+            className={`absolute inset-0 transition-opacity duration-700 ${backdrop === "aurora" ? "bg-mesh" : "bg-grid"
+              } ${tone === "muted" ? "opacity-60" : "opacity-100"}`}
           />
           {rich && (
             <>
