@@ -4,11 +4,12 @@ import PageHeader from "@/components/sections/PageHeader";
 import ContactForm from "@/components/forms/ContactForm";
 import Reveal from "@/components/motion/Reveal";
 import { createPageMetadata } from "@/config/seo";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export const metadata = createPageMetadata({
   title: "Contact Us",
   description:
-    "Tell us where you want to go — we'll engineer the fastest route and build the vehicle to get you there.",
+    "Contact FonderDigital to discuss an AI, website, mobile app, SEO, or digital marketing project. Email hello@fonderdigital.com or call +91 70426-20665.",
   path: "/contact",
 });
 
@@ -18,6 +19,7 @@ const whatsappHref = `https://wa.me/${phoneDigits}`;
 export default function ContactPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
       <PageHeader
         eyebrow="Contact"
         title="Start a conversation"

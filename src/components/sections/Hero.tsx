@@ -72,9 +72,14 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <h1 className="hero-title mt-7 text-[2.6rem] font-extrabold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-[4.35rem]">
-            <SplitText text="Grow your business with" className="block" />
-            <span className="block">
+          <h1 className="hero-title mt-7 text-[clamp(2.15rem,10vw,2.6rem)] font-extrabold leading-[0.98] tracking-[-0.035em] sm:text-6xl lg:text-[4.35rem]">
+            <span className="block whitespace-nowrap">
+              <SplitText text="Grow your" className="block" />
+            </span>
+            <span className="block whitespace-nowrap">
+              <SplitText text="business with" className="block" />
+            </span>
+            <span className="block whitespace-nowrap">
               <RotatingText
                 words={heroWords}
                 initialHoldPause={6500}

@@ -5,17 +5,19 @@ import Reveal from "@/components/motion/Reveal";
 import CallToAction from "@/components/sections/CallToAction";
 import { ServicesGrowthPath, ServicesStartingPoints } from "@/components/sections/ServicesGrowthPath";
 import { createPageMetadata } from "@/config/seo";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export const metadata = createPageMetadata({
   title: "Services",
   description:
-    "Explore FonderDigital's services — web development, app development, SEO, paid media, content & copywriting, and branding.",
+    "Explore FonderDigital services: AI assistant development, React and Next.js websites, mobile apps, SEO, digital marketing, branding, and content.",
   path: "/services",
 });
 
 export default function ServicesPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
       <section className="relative isolate overflow-hidden pb-16 pt-32 sm:pb-20 sm:pt-40 lg:pb-24 lg:pt-44">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-grid opacity-35 [mask-image:linear-gradient(to_bottom,black,transparent_90%)]" />
         <div aria-hidden className="pointer-events-none absolute -right-40 top-20 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-[120px]" />

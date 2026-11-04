@@ -86,9 +86,8 @@ export default function MarqueeStrip() {
   return (
     <section
       aria-hidden
-      className="band-dark relative isolate overflow-x-clip border-y border-border-subtle select-none py-3 sm:py-5"
+      className="band-dark relative isolate overflow-x-clip border-y border-border-subtle select-none py-6 sm:py-8"
     >
-
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--primary-soft),transparent_72%)]" />
       </div>

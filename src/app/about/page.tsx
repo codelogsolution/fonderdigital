@@ -4,6 +4,7 @@ import Story from "@/components/sections/Story";
 import CallToAction from "@/components/sections/CallToAction";
 import { createPageMetadata } from "@/config/seo";
 import { serviceAreas } from "@/config/site";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export const metadata = createPageMetadata({
   title: "About Us",
@@ -15,6 +16,7 @@ export const metadata = createPageMetadata({
 export default function AboutPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
       <PageHeader
         eyebrow="About us"
         title="One connected approach to digital growth"

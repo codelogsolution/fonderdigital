@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import ServiceDetail from "@/components/sections/ServiceDetail";
 import { ShowcaseFallback } from "@/components/sections/ShowcaseCard";
 import { createPageMetadata } from "@/config/seo";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 const WebShowcase = dynamic(() => import("@/components/sections/WebShowcase"), {
   loading: () => <ShowcaseFallback cards={2} height={520} />,
@@ -16,8 +17,11 @@ export const metadata = createPageMetadata({
 
 export default function WebDevPage() {
   return (
-    <ServiceDetail slug="web-dev">
-      <WebShowcase />
-    </ServiceDetail>
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: "Web Development", path: "/services/web-dev" }]} />
+      <ServiceDetail slug="web-dev">
+        <WebShowcase />
+      </ServiceDetail>
+    </>
   );
 }

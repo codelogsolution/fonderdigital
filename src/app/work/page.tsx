@@ -2,6 +2,7 @@ import PageHeader from "@/components/sections/PageHeader";
 import WorkPortfolio from "@/components/sections/WorkPortfolio";
 import CallToAction from "@/components/sections/CallToAction";
 import { createPageMetadata } from "@/config/seo";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export const metadata = createPageMetadata({
   title: "Selected Work & Studio Explorations",
@@ -13,6 +14,7 @@ export const metadata = createPageMetadata({
 export default function WorkPage() {
   return (
     <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Work", path: "/work" }]} />
       <PageHeader
         eyebrow="Selected work · studio explorations"
         title="Useful digital work, made with intent."
