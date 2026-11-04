@@ -169,7 +169,6 @@ export default function Testimonials() {
                           ))}
                         </span>
                         {review.rating !== undefined && <span className="ml-auto text-xs font-bold tabular-nums text-foreground">{review.rating}/5</span>}
-                        {isPreview && <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-primary-accessible">Sample</span>}
                       </div>
                       <blockquote className="relative mt-5 flex h-36 shrink-0 flex-col text-[15px] leading-7 text-foreground sm:h-40 sm:text-base">
                         <p
