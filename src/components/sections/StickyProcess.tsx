@@ -365,7 +365,7 @@ export default function StickyProcess() {
         </div>
 
         <Reveal delay={0.12}>
-          <div className="mt-7 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-border-subtle pt-5">
+          <div className="mt-7 hidden flex-wrap items-center justify-between gap-x-8 gap-y-3 border-border-subtle pt-5 sm:flex">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
               Strategy <span className="px-2 text-primary">→</span> Design &amp; build{" "}
               <span className="px-2 text-primary">→</span> Launch &amp; learn

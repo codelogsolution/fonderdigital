@@ -47,7 +47,7 @@ export default function HomeShowcase() {
         <Reveal>
           <div className="flex flex-col gap-6 border-border-subtle pb-4 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
             <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              <span className="inline-flex w-fit items-center gap-2.5 rounded-full border border-primary/20 bg-background/90 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible shadow-sm backdrop-blur-sm">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
                 The studio, in motion
               </span>
@@ -65,7 +65,7 @@ export default function HomeShowcase() {
             </p>
           </div>
         </Reveal>
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+        <div className="mt-7 grid gap-6 sm:mt-9 sm:gap-8 lg:mt-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
 
           <div className="flex min-w-0 flex-col lg:self-start gap-4">
             <div className="group inline-flex items-center">
@@ -74,7 +74,7 @@ export default function HomeShowcase() {
                 {slide.service}
               </span>
             </div>
-            <div className="mt-4 min-h-[19rem] sm:min-h-[18rem] lg:min-h-[16rem]">
+            <div className="mt-2 min-h-0 sm:mt-4 sm:min-h-[18rem] lg:min-h-[16rem]">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={`copy-${active}`}
@@ -130,7 +130,7 @@ export default function HomeShowcase() {
               </AnimatePresence>
             </div>
 
-            <div className="mt-5 flex flex-col items-start gap-7">
+            <div className="mt-4 flex flex-row flex-wrap items-center gap-3 sm:mt-5 sm:gap-5">
               <Link
                 href={slide.href}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_12px_32px_-12px_var(--primary-glow-strong)] transition-transform duration-300 hover:-translate-y-0.5"

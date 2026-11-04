@@ -248,7 +248,7 @@ export default function DeliveryShowcase() {
       <div ref={trackRef} className="relative mt-6 sm:mt-8 lg:mt-10">
         <div>
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="relative mx-auto h-[26rem] max-w-5xl sm:h-[30rem]">
+            <div className="relative mx-auto h-[33rem] max-w-5xl sm:h-[30rem]">
 
               <AuroraOrb
                 className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
@@ -275,7 +275,7 @@ export default function DeliveryShowcase() {
             </div>
 
             <Reveal delay={0.1}>
-              <ol className="mt-10 grid gap-3 sm:grid-cols-3">
+              <ol className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-3">
                 {stages.map((stage, i) => (
                   <li
                     key={stage.label}

@@ -75,7 +75,7 @@ function WorkflowVisual() {
   return (
     <div
       ref={visualRef}
-      className="relative mx-auto aspect-[1.08] w-full max-w-[38rem] sm:aspect-[1.16]"
+      className="relative mx-auto aspect-[0.82] w-full max-w-[38rem] sm:aspect-[1.16]"
       aria-label="Illustrative AI workflow from approved source material to a reviewed response"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-[7%] rounded-full border border-primary/10" />
@@ -128,18 +128,18 @@ function WorkflowVisual() {
 
       <motion.div
         style={reduced ? undefined : { scale: coreScale }}
-        className="absolute left-1/2 top-1/2 z-20 flex h-48 w-48 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[2.5rem] border border-primary/25 bg-background/90 text-center shadow-[0_28px_90px_-42px_var(--primary-glow-strong)] backdrop-blur-2xl sm:h-56 sm:w-56"
+        className="absolute left-1/2 top-[34%] z-20 flex h-36 w-36 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-[1.75rem] border border-primary/25 bg-background/95 text-center shadow-[0_28px_90px_-42px_var(--primary-glow-strong)] backdrop-blur-2xl sm:top-1/2 sm:h-56 sm:w-56"
       >
-        <div aria-hidden="true" className="pointer-events-none absolute inset-2 rounded-[2rem] border border-border-subtle" />
-        <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-2 rounded-[1.75rem] border border-border-subtle sm:rounded-[2rem]" />
+        <span className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20 sm:h-12 sm:w-12">
           <Sparkles className="h-5 w-5" aria-hidden="true" />
         </span>
-        <p className="relative mt-4 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-primary">Fonder AI flow</p>
-        <p className="relative mt-1 text-lg font-extrabold tracking-tight text-foreground">Useful by design</p>
-        <p className="relative mt-1 max-w-[9rem] text-[10px] leading-relaxed text-muted">RAG · context · review</p>
+        <p className="relative mt-3 font-mono text-[8px] font-bold uppercase tracking-[0.18em] text-primary sm:mt-4 sm:text-[9px] sm:tracking-[0.2em]">Fonder AI flow</p>
+        <p className="relative mt-1 text-base font-extrabold tracking-tight text-foreground sm:text-lg">Useful by design</p>
+        <p className="relative mt-1 max-w-[9rem] text-[9px] leading-relaxed text-muted sm:text-[10px]">RAG · context · review</p>
       </motion.div>
 
-      <div className="absolute inset-x-2 bottom-0 z-20 grid grid-cols-2 gap-x-5 md:hidden">
+      <div className="absolute inset-x-0 bottom-0 z-20 grid grid-cols-2 gap-x-3 md:hidden">
         {workflowNodes.map(({ number, title, detail, icon: Icon }) => (
           <div key={number} className="flex min-w-0 items-center gap-2 border-t border-border-subtle py-3">
             <span className="font-mono text-[9px] font-bold text-primary">{number}</span>
@@ -175,7 +175,7 @@ export default function AIHomeStory() {
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
             We design AI features for websites, apps, and internal tools—from assistants grounded in approved business knowledge to workflow integrations. Each project starts with a clear use case, data boundaries, and review steps suited to the work.
           </p>
-          <div className="mt-7 flex flex-wrap gap-2" aria-label="AI engineering capabilities">
+        <div className="mt-5 flex flex-wrap gap-2 sm:mt-7" aria-label="AI engineering capabilities">
             {["RAG", "FastAPI", "LangChain", "LangGraph", "PostgreSQL + pgvector"].map((item) => (
               <span key={item} className="rounded-full border border-border-subtle bg-background/70 px-3 py-1.5 text-[10px] font-semibold text-foreground/80">{item}</span>
             ))}
@@ -186,7 +186,7 @@ export default function AIHomeStory() {
           </Link>
         </Reveal>
 
-        <Reveal direction="right" delay={0.08} className="relative z-10">
+        <Reveal direction="right" delay={0.08} className="relative z-10 mt-2 sm:mt-0">
           <WorkflowVisual />
         </Reveal>
       </div>
