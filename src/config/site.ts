@@ -1,4 +1,3 @@
-
 import {
   BrainCircuit,
   Code2,
@@ -29,9 +28,9 @@ export const siteConfig = {
   description:
     "FonderDigital provides AI assistant development, website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
-  email: "hello@fonderdigital.com",
-  phone: "+917042620665",
-  phoneDisplay: "+91 70426-20665",
+  infoEmail: "info@fonderdigital.com",
+  supportEmail: "support@fonderdigital.com",
+  whatsappNumber: "+917042620665",
   location: "",
   nav: [
     { label: "Home", href: "/" },
@@ -83,7 +82,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Plan AI assistants, product features, and workflow integrations around approved data, useful safeguards, and the people who use them.",
     label: "AI Development",
-    icon: BrainCircuit
+    icon: BrainCircuit,
   },
   {
     word: "websites",
@@ -96,7 +95,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "FonderDigital builds fast, conversion-focused websites designed to help visitors understand your offer and take a clear next step.",
     label: "Websites",
-    icon: Code2
+    icon: Code2,
   },
   {
     word: "apps",
@@ -109,7 +108,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Plan and build iOS and Android apps with a cross-platform or native stack chosen for the product.",
     label: "Apps",
-    icon: Smartphone
+    icon: Smartphone,
   },
   {
     word: "rankings",
@@ -122,7 +121,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Technical and content SEO focused on crawlability, useful pages, and measurement. Search visibility and results depend on your market and search engines.",
     label: "SEO",
-    icon: Search
+    icon: Search,
   },
   {
     word: "campaigns",
@@ -135,7 +134,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Full-funnel campaigns across paid search, social, and email, planned around your audience and business goals.",
     label: "Marketing",
-    icon: Megaphone
+    icon: Megaphone,
   },
   {
     word: "brands",
@@ -148,7 +147,7 @@ export const heroSlides: HeroSlide[] = [
     blurb:
       "Brand foundations — visual identity, voice and design system — built to stand out and last.",
     label: "Branding",
-    icon: Palette
+    icon: Palette,
   },
   {
     word: "interfaces",
@@ -156,12 +155,12 @@ export const heroSlides: HeroSlide[] = [
     tagline: "designed around user needs.",
     service: "UI/UX Design",
     href: "/services/branding",
-    stat: "User-centred",
+    stat: "User-centered",
     caption: "digital experiences",
     blurb:
       "Interfaces and prototypes designed for clarity, with usability testing available when included in the project scope.",
     label: "Design",
-    icon: FileText
+    icon: FileText,
   },
   {
     word: "content",
@@ -172,15 +171,19 @@ export const heroSlides: HeroSlide[] = [
     stat: "Useful",
     caption: "search-ready content",
     blurb:
-      "Content strategy, SEO copy, and long-form writing shaped around your audience, subject matter, and search intent. Rankings and enquiries are not guaranteed.",
+      "Content strategy, SEO copy, and long-form writing shaped around your audience, subject matter, and search intent. Rankings and inquiries are not guaranteed.",
     label: "Content",
-    icon: FileText
+    icon: FileText,
   },
 ];
 
 export const heroServices: { label: string; href: string; icon: LucideIcon }[] =
   [
-    { label: "AI Development", href: "/services/ai-development", icon: BrainCircuit },
+    {
+      label: "AI Development",
+      href: "/services/ai-development",
+      icon: BrainCircuit,
+    },
     { label: "Web Development", href: "/services/web-dev", icon: Code2 },
     { label: "App Development", href: "/services/app-dev", icon: Smartphone },
     { label: "SEO", href: "/services/seo", icon: Search },
@@ -213,11 +216,10 @@ export const servicePages: ServicePage[] = [
     description:
       "From React interfaces to full Next.js websites and platforms, we take the work from requirements and architecture through component-based development, QA, and a controlled production release.",
     icon: Code2,
-    image:
-      "/images/photo-1461749280684.webp",
+    image: "/images/photo-1461749280684.webp",
     imageAlt: "Developer writing code across dual monitors",
     fitFor: [
-      "Your current website is slow, hard to update, or not turning visits into enquiries.",
+      "Your current website is slow, hard to update, or not turning visits into inquiries.",
       "You are launching a new digital product and need a strong technical foundation.",
       "Your business needs a site that connects content, commerce, and useful integrations.",
     ],
@@ -269,8 +271,7 @@ export const servicePages: ServicePage[] = [
     description:
       "We plan and build Android and iOS apps from requirements through production release. React Native with TypeScript/JavaScript is a common cross-platform choice; Flutter with Dart or native Kotlin and Swift may fit better when the product calls for them.",
     icon: Smartphone,
-    image:
-      "/images/photo-1512941937669.webp",
+    image: "/images/photo-1512941937669.webp",
     imageAlt: "Smartphone running a mobile application",
     fitFor: [
       "You have a mobile product idea and want to validate it before committing to a full build.",
@@ -290,7 +291,10 @@ export const servicePages: ServicePage[] = [
     ],
     stats: [
       { value: "React Native", label: "common cross-platform choice" },
-      { value: "Flutter or native", label: "when the requirements call for it" },
+      {
+        value: "Flutter or native",
+        label: "when the requirements call for it",
+      },
       { value: "QA → CI/CD", label: "tested release workflow" },
     ],
     process: [
@@ -328,14 +332,15 @@ export const servicePages: ServicePage[] = [
         step: "Support",
         title: "Monitor and plan the next iteration",
         description:
-          "Agree handover, crash monitoring, analytics, and post-launch support in the project scope. Use real product feedback to prioritize future fixes and features.",
+          "Agree on handoff, crash monitoring, analytics, and post-launch support in the project scope. Use real product feedback to prioritize future fixes and features.",
       },
     ],
   },
   {
     slug: "ai-development",
     title: "AI Development",
-    tagline: "Grounded chatbots and AI workflows, built around your business data.",
+    tagline:
+      "Grounded chatbots and AI workflows, built around your business data.",
     description:
       "Plan and build retrieval-augmented assistants and AI product features with an architecture scoped to your data, workflow, and review needs. Example technologies can include Python, FastAPI, LangChain, LangGraph, embeddings, chunking, PostgreSQL, and pgvector; the final stack depends on the project.",
     icon: BrainCircuit,
@@ -357,7 +362,10 @@ export const servicePages: ServicePage[] = [
     stats: [
       { value: "RAG", label: "retrieve from approved knowledge" },
       { value: "FastAPI", label: "serve scoped application endpoints" },
-      { value: "LangGraph", label: "orchestrate stateful workflows when useful" },
+      {
+        value: "LangGraph",
+        label: "orchestrate stateful workflows when useful",
+      },
     ],
     process: [
       {
@@ -393,26 +401,31 @@ export const servicePages: ServicePage[] = [
     description:
       "Practical search work across crawlability, page quality, useful content, and measurement. We use Search Console and analytics to find issues and track changes; search visibility and business outcomes depend on many factors and are never guaranteed.",
     icon: Search,
-    image:
-      "/images/photo-1460925895917.webp",
+    image: "/images/photo-1460925895917.webp",
     imageAlt: "Analytics dashboard with growth charts on a laptop",
     fitFor: [
       "The right customers are not finding your business through search.",
       "You need a clear technical and content plan instead of a list of disconnected SEO tasks.",
-      "You want reporting that connects search activity to meaningful enquiries and sales.",
+      "You want reporting that connects search activity to meaningful inquiries and sales.",
     ],
     features: [
       "Crawl and indexation checks: robots directives, sitemaps, canonical URLs, redirects, status codes, and internal links",
       "Page-level improvements to titles, headings, descriptions, image text, structured data, and mobile experience where appropriate",
       "Search query and audience research turned into useful topic briefs, page plans, and content refresh priorities",
       "Local search support when relevant: accurate business details, location pages, and Google Business Profile upkeep",
-      "Search Console and analytics setup or review, with a baseline for impressions, clicks, landing pages, and agreed enquiry actions",
+      "Search Console and analytics setup or review, with a baseline for impressions, clicks, landing pages, and agreed inquiry actions",
       "Prioritized technical recommendations, implementation coordination, and follow-up checks after changes ship",
     ],
     stats: [
       { value: "Crawl & index", label: "help search engines access key pages" },
-      { value: "Useful content", label: "answer the audience’s real questions" },
-      { value: "Measure & refine", label: "use Search Console and analytics data" },
+      {
+        value: "Useful content",
+        label: "answer the audience’s real questions",
+      },
+      {
+        value: "Measure & refine",
+        label: "use Search Console and analytics data",
+      },
     ],
     process: [
       {
@@ -437,19 +450,19 @@ export const servicePages: ServicePage[] = [
         step: "Optimization",
         title: "Review evidence and choose next steps",
         description:
-          "Use Search Console and analytics to review impressions, clicks, landing-page engagement, and tracked enquiries. Separate measured changes from assumptions, then revise priorities. Search engines control crawling, indexing, and ranking; no provider can promise a position.",
+          "Use Search Console and analytics to review impressions, clicks, landing-page engagement, and tracked inquiries. Separate measured changes from assumptions, then revise priorities. Search engines control crawling, indexing, and ranking; no provider can promise a position.",
       },
     ],
   },
   {
     slug: "marketing",
     title: "Performance Marketing",
-    tagline: "Coordinate paid campaigns, social content, and email around a clear goal.",
+    tagline:
+      "Coordinate paid campaigns, social content, and email around a clear goal.",
     description:
       "Campaign planning and execution across the channels included in your scope. We align the audience, offer, creative, landing page, budget, and measurement, then use observed results to guide the next test rather than promise a specific return.",
     icon: Megaphone,
-    image:
-      "/images/photo-1552664730.webp",
+    image: "/images/photo-1552664730.webp",
     imageAlt: "Marketing analytics workspace with campaign charts",
     fitFor: [
       "You are investing in ads but cannot clearly see what is driving qualified leads.",
@@ -466,8 +479,14 @@ export const servicePages: ServicePage[] = [
     ],
     stats: [
       { value: "Goal first", label: "define the action that matters" },
-      { value: "Test with a reason", label: "change one meaningful variable at a time" },
-      { value: "Read the data", label: "report results and limitations clearly" },
+      {
+        value: "Test with a reason",
+        label: "change one meaningful variable at a time",
+      },
+      {
+        value: "Read the data",
+        label: "report results and limitations clearly",
+      },
     ],
     process: [
       {
@@ -499,12 +518,12 @@ export const servicePages: ServicePage[] = [
   {
     slug: "content",
     title: "Content & Copywriting",
-    tagline: "Clear, useful writing shaped around your audience and brand voice.",
+    tagline:
+      "Clear, useful writing shaped around your audience and brand voice.",
     description:
       "Website copy, campaign messages, and editorial content that explain your offer clearly and help readers decide what to do next. We build drafts from your expertise and source material, verify factual claims, and agree review and approval before publishing.",
     icon: FileText,
-    image:
-      "/images/photo-1434030216411.webp",
+    image: "/images/photo-1434030216411.webp",
     imageAlt: "Writer drafting copy in a notebook",
     fitFor: [
       "Your website does not explain your value clearly enough to the right buyers.",
@@ -554,12 +573,12 @@ export const servicePages: ServicePage[] = [
   {
     slug: "branding",
     title: "Branding & Design",
-    tagline: "A coherent visual and verbal identity your team can use consistently.",
+    tagline:
+      "A coherent visual and verbal identity your team can use consistently.",
     description:
       "Brand discovery, positioning, messaging, and visual identity brought together in a usable system. The work is grounded in your business, audience, category, and goals rather than claims of guaranteed market perception.",
     icon: Palette,
-    image:
-      "/images/photo-1561070791.webp",
+    image: "/images/photo-1561070791.webp",
     imageAlt: "Designer's desk with color swatches and brand sketches",
     fitFor: [
       "Your visual identity feels inconsistent across your website, product, and marketing.",
@@ -678,7 +697,8 @@ const defaultPreviewCopy: ServicePreviewCopy = {
   eyebrow: "Inside the work",
   heading: "What we build,",
   accent: "in action",
-  description: "Concept screens for this service — headers, panels and data — scrolling slowly. Hover a card to pause.",
+  description:
+    "Concept screens for this service — headers, panels and data — scrolling slowly. Hover a card to pause.",
   cardNote: "",
 };
 
@@ -688,50 +708,260 @@ export function getServicePreviewCopy(slug: string): ServicePreviewCopy {
 
 const servicePreviewSeeds: Record<string, PreviewSeed[]> = {
   "ai-development": [
-    ["ai", "Knowledge assistant", "RAG assistant concept", ["Ask about approved company information", "Retrieve relevant source passages", "Draft a grounded answer with citations", "Escalate uncertain requests for human review"]],
+    [
+      "ai",
+      "Knowledge assistant",
+      "RAG assistant concept",
+      [
+        "Ask about approved company information",
+        "Retrieve relevant source passages",
+        "Draft a grounded answer with citations",
+        "Escalate uncertain requests for human review",
+      ],
+    ],
   ],
   "app-dev": [
-    ["app", "Daily rhythm", "Wellness app", ["Good morning, Alex", "Your daily goal · 6,000 steps", "Morning stretch · 12 minutes", "Mindful break · 5 minutes", "Evening walk · 20 minutes"]],
-    ["app", "Pocket studio", "Creator app", ["Make something today", "Your workspace", "Moodboard · 12 saved ideas", "New collection · Summer light", "Drafts · Ready when you are"]],
-    ["app", "Local table", "Food ordering app", ["A little closer to delicious", "Nearby favourites", "Harvest bowl · Fresh & seasonal", "Weekend brunch · Book a table", "Your order · On its way"]],
+    [
+      "app",
+      "Daily rhythm",
+      "Wellness app",
+      [
+        "Good morning, Alex",
+        "Your daily goal · 6,000 steps",
+        "Morning stretch · 12 minutes",
+        "Mindful break · 5 minutes",
+        "Evening walk · 20 minutes",
+      ],
+    ],
+    [
+      "app",
+      "Pocket studio",
+      "Creator app",
+      [
+        "Make something today",
+        "Your workspace",
+        "Moodboard · 12 saved ideas",
+        "New collection · Summer light",
+        "Drafts · Ready when you are",
+      ],
+    ],
+    [
+      "app",
+      "Local table",
+      "Food ordering app",
+      [
+        "A little closer to delicious",
+        "Nearby favourites",
+        "Harvest bowl · Fresh & seasonal",
+        "Weekend brunch · Book a table",
+        "Your order · On its way",
+      ],
+    ],
   ],
   "web-dev": [
-    ["web", "Retail concept", "Editorial storefront", ["Everyday rituals. Beautifully made.", "Explore the collection", "The everyday essential", "Made with intention", "Find your next favourite"]],
-    ["web", "Forma", "Architecture website", ["Spaces for a slower life.", "Selected spaces", "Courtyard house · Residential", "Studio 04 · Workplace", "Start a conversation"]],
-    ["web", "Product concept", "SaaS landing page", ["Less busywork. More momentum.", "One workspace for your team", "Plan the week", "See the bigger picture", "Build your next chapter"]],
+    [
+      "web",
+      "Retail concept",
+      "Editorial storefront",
+      [
+        "Everyday rituals. Beautifully made.",
+        "Explore the collection",
+        "The everyday essential",
+        "Made with intention",
+        "Find your next favourite",
+      ],
+    ],
+    [
+      "web",
+      "Forma",
+      "Architecture website",
+      [
+        "Spaces for a slower life.",
+        "Selected spaces",
+        "Courtyard house · Residential",
+        "Studio 04 · Workplace",
+        "Start a conversation",
+      ],
+    ],
+    [
+      "web",
+      "Product concept",
+      "SaaS landing page",
+      [
+        "Less busywork. More momentum.",
+        "One workspace for your team",
+        "Plan the week",
+        "See the bigger picture",
+        "Build your next chapter",
+      ],
+    ],
   ],
   seo: [
-    ["seo", "Search pulse", "Analytics dashboard", ["Organic search overview", "Search impressions · connect Search Console", "Clicks · review by query and page", "Queries in focus · based on your data", "Pages to refresh · prioritize after audit"]],
-    ["seo", "Site health", "Technical audit", ["A clearer path to discovery", "Indexability · review key pages", "Canonical checks · validate setup", "Internal links · find orphaned pages", "Next review · agree project cadence"]],
-    ["seo", "Topic atlas", "Content planning", ["Build around search intent", "Pillar · Sustainable living", "Cluster · Everyday essentials", "Intent · Compare options", "Next brief · Buying guide"]],
+    [
+      "seo",
+      "Search pulse",
+      "Analytics dashboard",
+      [
+        "Organic search overview",
+        "Search impressions · connect Search Console",
+        "Clicks · review by query and page",
+        "Queries in focus · based on your data",
+        "Pages to refresh · prioritize after audit",
+      ],
+    ],
+    [
+      "seo",
+      "Site health",
+      "Technical audit",
+      [
+        "A clearer path to discovery",
+        "Indexability · review key pages",
+        "Canonical checks · validate setup",
+        "Internal links · find orphaned pages",
+        "Next review · agree project cadence",
+      ],
+    ],
+    [
+      "seo",
+      "Topic atlas",
+      "Content planning",
+      [
+        "Build around search intent",
+        "Pillar · Sustainable living",
+        "Cluster · Everyday essentials",
+        "Intent · Compare options",
+        "Next brief · Buying guide",
+      ],
+    ],
   ],
   branding: [
-    ["brand", "Nova", "Visual identity", ["Stand apart. Stay yourself.", "Signature palette", "Typography · Expressive & clear", "Mark construction · Clear space", "Applications · Print & digital"]],
-    ["brand", "Ember", "Brand guidelines", ["Warm by nature.", "Colour with character", "Voice · Thoughtful, never formal", "Photography · Honest moments", "Packaging · A lighter touch"]],
-    ["brand", "Fieldwork", "Design system", ["Room to grow.", "A connected visual language", "Type scale · Display to detail", "Components · Consistent by design", "Launch kit · Ready to share"]],
+    [
+      "brand",
+      "Nova",
+      "Visual identity",
+      [
+        "Stand apart. Stay yourself.",
+        "Signature palette",
+        "Typography · Expressive & clear",
+        "Mark construction · Clear space",
+        "Applications · Print & digital",
+      ],
+    ],
+    [
+      "brand",
+      "Ember",
+      "Brand guidelines",
+      [
+        "Warm by nature.",
+        "Colour with character",
+        "Voice · Thoughtful, never formal",
+        "Photography · Honest moments",
+        "Packaging · A lighter touch",
+      ],
+    ],
+    [
+      "brand",
+      "Fieldwork",
+      "Design system",
+      [
+        "Room to grow.",
+        "A connected visual language",
+        "Type scale · Display to detail",
+        "Components · Consistent by design",
+        "Launch kit · Ready to share",
+      ],
+    ],
   ],
   marketing: [
-    ["marketing", "Fresh perspective", "Social campaign", ["Your next chapter starts outside.", "Campaign · Weekend reset", "Audience · Curious explorers", "Creative A · Discover more", "Creative B · Take the scenic route"]],
-    ["marketing", "The welcome series", "Lifecycle email", ["Glad you found us.", "Day 01 · A warm welcome", "Day 03 · Meet your favourites", "Day 07 · A little inspiration", "Day 14 · Make it yours"]],
-    ["marketing", "Launch room", "Campaign planner", ["One idea. Many ways to connect.", "Monday · Teaser", "Wednesday · Product story", "Friday · Community spotlight", "Sunday · Weekly recap"]],
+    [
+      "marketing",
+      "Fresh perspective",
+      "Social campaign",
+      [
+        "Your next chapter starts outside.",
+        "Campaign · Weekend reset",
+        "Audience · Curious explorers",
+        "Creative A · Discover more",
+        "Creative B · Take the scenic route",
+      ],
+    ],
+    [
+      "marketing",
+      "The welcome series",
+      "Lifecycle email",
+      [
+        "Glad you found us.",
+        "Day 01 · A warm welcome",
+        "Day 03 · Meet your favourites",
+        "Day 07 · A little inspiration",
+        "Day 14 · Make it yours",
+      ],
+    ],
+    [
+      "marketing",
+      "Launch room",
+      "Campaign planner",
+      [
+        "One idea. Many ways to connect.",
+        "Monday · Teaser",
+        "Wednesday · Product story",
+        "Friday · Community spotlight",
+        "Sunday · Weekly recap",
+      ],
+    ],
   ],
   content: [
-    ["content", "The Sunday edit", "Editorial journal", ["Good stories deserve a little space.", "A considered approach to everyday life", "Start with what matters", "Make room for curiosity", "A new perspective, every Sunday"]],
-    ["content", "Words that work", "Landing page copy", ["A clearer message. A better first impression.", "The problem, simply put", "A solution worth knowing", "Proof that earns attention", "Your next step starts here"]],
-    ["content", "Notes from the studio", "Newsletter", ["A small dose of inspiration.", "This week in the studio", "One idea to try today", "What we are reading", "Until next time, keep creating"]],
+    [
+      "content",
+      "The Sunday edit",
+      "Editorial journal",
+      [
+        "Good stories deserve a little space.",
+        "A considered approach to everyday life",
+        "Start with what matters",
+        "Make room for curiosity",
+        "A new perspective, every Sunday",
+      ],
+    ],
+    [
+      "content",
+      "Words that work",
+      "Landing page copy",
+      [
+        "A clearer message. A better first impression.",
+        "The problem, simply put",
+        "A solution worth knowing",
+        "Proof that earns attention",
+        "Your next step starts here",
+      ],
+    ],
+    [
+      "content",
+      "Notes from the studio",
+      "Newsletter",
+      [
+        "A small dose of inspiration.",
+        "This week in the studio",
+        "One idea to try today",
+        "What we are reading",
+        "Until next time, keep creating",
+      ],
+    ],
   ],
 };
 
 export function getServicePreviewItems(slug: string): ServicePreviewItem[] {
   if (!getServicePage(slug)) return [];
-  return (servicePreviewSeeds[slug] ?? []).map(([kind, title, subtitle, entries], index) => ({
-    id: `${slug}-${index}`,
-    kind,
-    title,
-    subtitle,
-    domain: `${title.toLowerCase().replace(/\s+/g, "-")}.demo`,
-    entries,
-  }));
+  return (servicePreviewSeeds[slug] ?? []).map(
+    ([kind, title, subtitle, entries], index) => ({
+      id: `${slug}-${index}`,
+      kind,
+      title,
+      subtitle,
+      domain: `${title.toLowerCase().replace(/\s+/g, "-")}.demo`,
+      entries,
+    }),
+  );
 }
 
 export type CaseMetric = {
@@ -772,7 +1002,11 @@ export const caseStudies: CaseStudy[] = [
     title: "A fitness app concept built around daily momentum",
     summary:
       "A sample mobile experience exploring approachable progress tracking, clear workout choices, and a calm daily routine. This is a UI concept, not a published app or client result.",
-    services: ["Product UI concept", "Mobile interaction design", "Component system"],
+    services: [
+      "Product UI concept",
+      "Mobile interaction design",
+      "Component system",
+    ],
     metrics: [],
   },
 ];

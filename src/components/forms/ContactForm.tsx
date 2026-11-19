@@ -18,15 +18,17 @@ const inputErrorClasses =
 const labelClasses = "mb-2 block text-sm font-semibold tracking-tight text-foreground";
 
 const errorTextClasses =
-  "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-400";
+  "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-700";
 
 const serviceOptions = [
-  { value: "web-dev", label: "Web Development" },
-  { value: "app-dev", label: "App Development" },
+  { value: "ai-development", label: "AI Development" },
+  { value: "web-dev", label: "Website Development" },
+  { value: "app-dev", label: "Mobile App Development" },
   { value: "seo", label: "SEO" },
-  { value: "marketing", label: "Performance Marketing" },
-  { value: "content", label: "Content & Copywriting" },
-  { value: "branding", label: "Branding & Design" },
+  { value: "marketing", label: "Digital Marketing" },
+  { value: "content", label: "Content Writing" },
+  { value: "branding", label: "Branding & UI/UX Design" },
+  { value: "other", label: "Other" },
 ];
 
 const ease: [number, number, number, number] = [0.21, 0.47, 0.32, 0.98];
@@ -61,12 +63,6 @@ const validateField = (field: FormField, value: string): string | undefined => {
       if (!/^[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(value.trim()))
         return "Enter a valid email address";
       return undefined;
-    case "phone": {
-      if (!value.trim()) return undefined;
-      const digits = value.replace(/\D/g, "");
-      if (digits.length < 7 || digits.length > 15) return "Enter a valid phone number";
-      return undefined;
-    }
     case "service":
       if (!value) return "Please select a service";
       return undefined;
@@ -145,8 +141,8 @@ export default function ContactForm({ className }: { className?: string }) {
         "Message:",
         formData.message.trim(),
       ].join("\n");
-      window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
-        `Project enquiry from ${formData.name.trim()}`,
+      window.location.href = `mailto:${siteConfig.infoEmail}?subject=${encodeURIComponent(
+        `Project inquiry from ${formData.name.trim()}`,
       )}&body=${encodeURIComponent(body)}`;
       setSubmitted(true);
     }
@@ -202,12 +198,12 @@ export default function ContactForm({ className }: { className?: string }) {
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
               Your email app should open with your message ready. Press Send
-              there to complete your enquiry. If it doesn&apos;t open, email{" "}
+              there to complete your inquiry. If it doesn&apos;t open, email{" "}
               <a
-                href={`mailto:${siteConfig.email}`}
+                href={`mailto:${siteConfig.infoEmail}`}
                 className="font-semibold text-primary underline underline-offset-4"
               >
-                {siteConfig.email}
+                {siteConfig.infoEmail}
               </a>
               .
             </p>
@@ -224,7 +220,7 @@ export default function ContactForm({ className }: { className?: string }) {
             className="flex flex-col gap-5 rounded-[1.75rem] border border-border-subtle bg-surface/80 p-5 shadow-[0_24px_70px_-48px_var(--primary-glow-strong)] backdrop-blur-xl sm:p-8"
           >
             <div className="border-b border-border-subtle pb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Project enquiry</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Project inquiry</p>
               <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">Tell us what you’re building.</h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">A few details will help us understand your goals and prepare a useful next step.</p>
             </div>
@@ -241,7 +237,7 @@ export default function ContactForm({ className }: { className?: string }) {
                   value={formData.name}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="Jane Cooper"
+                  placeholder="Your full name"
                   className={fieldClassName("name")}
                   aria-invalid={!!(errors.name && touched.name)}
                   aria-describedby={
@@ -262,7 +258,7 @@ export default function ContactForm({ className }: { className?: string }) {
                   value={formData.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="jane@company.com"
+                  placeholder="name@company.com"
                   className={fieldClassName("email")}
                   aria-invalid={!!(errors.email && touched.email)}
                   aria-describedby={
@@ -275,7 +271,7 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label htmlFor="contact-service" className={labelClasses}>What service do you need?</label>
+                <label htmlFor="contact-service" className={labelClasses}>Which service are you interested in?</label>
                 <div className="relative">
                   <select
                     id="contact-service"
@@ -287,7 +283,7 @@ export default function ContactForm({ className }: { className?: string }) {
                     aria-invalid={!!(errors.service && touched.service)}
                     aria-describedby={errors.service && touched.service ? errorId("service") : undefined}
                   >
-                    <option value="" disabled>Select a service</option>
+                    <option value="" disabled>Choose a service</option>
                     {serviceOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
@@ -305,7 +301,7 @@ export default function ContactForm({ className }: { className?: string }) {
                   value={formData.phone}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  placeholder="+91 98765-43210"
+                  placeholder="Enter your phone number"
                   className={fieldClassName("phone")}
                   aria-invalid={!!(errors.phone && touched.phone)}
                   aria-describedby={errors.phone && touched.phone ? errorId("phone") : undefined}
@@ -327,7 +323,7 @@ export default function ContactForm({ className }: { className?: string }) {
                 value={formData.website}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="https://yourbrand.com"
+                placeholder="https://www.example.com"
                 className={fieldClassName("website")}
                 aria-invalid={!!(errors.website && touched.website)}
                 aria-describedby={
@@ -350,7 +346,7 @@ export default function ContactForm({ className }: { className?: string }) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 rows={5}
-                placeholder="Tell us about your project, goals, and timeline..."
+                placeholder="Share your goals, timeline, and what you would like to build or improve."
                 className={cn(
                   inputBaseClasses,
                   "h-auto min-h-36 rounded-2xl py-3 resize-y",

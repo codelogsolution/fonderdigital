@@ -63,7 +63,7 @@ export default function ServiceDetail({ slug, children }: { slug: string; childr
               {
                 question: "How do you measure progress?",
                 answer:
-                  "We can review Search Console impressions, clicks, queries, and landing pages alongside analytics and the enquiry or purchase actions configured for your site. Search demand, competition, implementation, and search-engine changes affect outcomes, so reports distinguish measured data from forecasts.",
+                  "We can review Search Console impressions, clicks, queries, and landing pages alongside analytics and the inquiry or purchase actions configured for your site. Search demand, competition, implementation, and search-engine changes affect outcomes, so reports distinguish measured data from forecasts.",
               },
             ]
           : service.slug === "marketing"
@@ -139,7 +139,7 @@ export default function ServiceDetail({ slug, children }: { slug: string; childr
     {
       question: "What happens after launch?",
       answer:
-        "The handover, documentation, and any ongoing support are agreed as part of the project scope. If you want continued optimization, we can plan that before launch.",
+        "The handoff, documentation, and any ongoing support are agreed as part of the project scope. If you want continued optimization, we can plan that before launch.",
     },
   ];
 

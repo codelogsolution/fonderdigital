@@ -19,7 +19,7 @@ const sections = [
   },
   {
     title: "Ownership",
-    body: "Ownership, handover, and third-party licences should be agreed in writing for each project. Third-party tools, libraries, fonts, and services remain subject to their own licence terms.",
+    body: "Ownership, handoff, and third-party licenses should be agreed in writing for each project. Third-party tools, libraries, fonts, and services remain subject to their own license terms.",
   },
   {
     title: "Results & content",

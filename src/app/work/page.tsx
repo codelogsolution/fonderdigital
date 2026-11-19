@@ -18,7 +18,7 @@ export default function WorkPage() {
       <PageHeader
         eyebrow="Selected work · studio explorations"
         title="Useful digital work, made with intent."
-        description="A look at our in-house digital experience, original product concepts, and the capabilities we bring to client projects. Work is labelled clearly, with outcomes shared only when verified and approved."
+        description="A look at our in-house digital experience, original product concepts, and the capabilities we bring to client projects. Work is labeled clearly, with outcomes shared only when verified and approved."
       />
       <WorkPortfolio />
       <CallToAction />

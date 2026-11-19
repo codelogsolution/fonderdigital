@@ -70,7 +70,7 @@ export default function LeadAssistant({ initialOpen = false }: { initialOpen?: b
     }
   };
 
-  const digits = siteConfig.phone.replace(/\D/g, "");
+  const digits = siteConfig.whatsappNumber.replace(/\D/g, "");
   const waText = encodeURIComponent(
     "Hi " + siteConfig.name + "! I'm interested in " +
       (service ? service.label : "your services") +

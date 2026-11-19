@@ -16,11 +16,11 @@ npm run build    # production build
 
 | Token          | Value                                             |
 | -------------- | ------------------------------------------------- |
-| Background     | `#FFFFFF`                                         |
-| Foreground     | `#0B1220`                                         |
-| Primary accent | `#0284C7`                                         |
-| Muted text     | `#5B6B81`                                         |
-| Font           | Plus Jakarta Sans (via `next/font`)               |
+| Background     | `#FDFCFA`                                         |
+| Foreground     | `#17130F`                                         |
+| Primary accent | `#B45309` (copper default; azure/noir themes also available) |
+| Muted text     | `#6B6055`                                         |
+| Font           | Outfit (display) + Instrument Sans (body, via `next/font`) |
 | Breakpoints    | sm 640 · md 768 · lg 960 · xl 1280 · 2xl 1536 px |
 
 Design tokens live in `src/app/globals.css` (Tailwind v4 `@theme`).

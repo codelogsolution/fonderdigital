@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/sections/PageHeader";
 import { createPageMetadata } from "@/config/seo";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
@@ -16,19 +17,19 @@ const sections = [
   },
   {
     title: "How we use it",
-    body: "If you email us, we use the information in your message to respond to your enquiry and continue that conversation.",
+    body: "If you email us, we use the information in your message to respond to your inquiry and continue that conversation.",
   },
   {
     title: "Sharing",
-    body: "Email is handled by your email provider and ours. Review those providers' privacy information for details about their processing and storage. Do not include sensitive personal information in a project enquiry.",
+    body: "Email is handled by your email provider and ours. Review those providers' privacy information for details about their processing and storage. Do not include sensitive personal information in a project inquiry.",
   },
   {
     title: "Retention & your rights",
-    body: "Email copies may remain in the mailboxes and backups operated by the email providers involved. Contact us at hello@fonderdigital.com to ask about a message you sent.",
+    body: `Email copies may remain in the mailboxes and backups operated by the email providers involved. Contact us at ${siteConfig.infoEmail} to ask about a message you sent.`,
   },
   {
     title: "Questions",
-    body: "For a privacy question or request, contact us at hello@fonderdigital.com.",
+    body: `For a privacy question or request, contact us at ${siteConfig.infoEmail}.`,
   },
 ];
 

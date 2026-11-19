@@ -32,12 +32,13 @@ export default function Preloader() {
     };
 
     frame = requestAnimationFrame(() => {
-      let seen = false;
-      try {
-        seen = Boolean(sessionStorage.getItem("fd-intro-seen"));
-      } catch {
-        seen = false;
-      }
+      const seen = (() => {
+        try {
+          return Boolean(sessionStorage.getItem("fd-intro-seen"));
+        } catch {
+          return false;
+        }
+      })();
       if (seen) {
         setVisible(false);
         return;

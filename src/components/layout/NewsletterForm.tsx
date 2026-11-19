@@ -15,7 +15,7 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
     event.preventDefault();
     if (!email.trim()) return;
     const body = `Please add this email address to the FonderDigital newsletter: ${email.trim()}`;
-    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(
+    window.location.href = `mailto:${siteConfig.infoEmail}?subject=${encodeURIComponent(
       "Newsletter subscription request",
     )}&body=${encodeURIComponent(body)}`;
     setSubscribed(true);
@@ -37,10 +37,10 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
           Your email app should open with a subscription request. Press Send
           there to request a subscription. If it doesn&apos;t open, email{" "}
           <a
-            href={`mailto:${siteConfig.email}`}
+            href={`mailto:${siteConfig.infoEmail}`}
             className="font-semibold text-primary underline underline-offset-4"
           >
-            {siteConfig.email}
+            {siteConfig.infoEmail}
           </a>
           .
         </p>

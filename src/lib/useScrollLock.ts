@@ -9,6 +9,7 @@ export function useScrollLock(locked: boolean) {
     const { body, documentElement } = document;
     const offset = window.scrollY;
     const previous = {
+      documentOverflow: documentElement.style.overflow,
       overflow: body.style.overflow,
       position: body.style.position,
       top: body.style.top,
@@ -32,7 +33,7 @@ export function useScrollLock(locked: boolean) {
       body.style.left = previous.left;
       body.style.right = previous.right;
       body.style.width = previous.width;
-      documentElement.style.overflow = "";
+      documentElement.style.overflow = previous.documentOverflow;
       window.scrollTo(0, offset);
     };
   }, [locked]);

@@ -69,12 +69,12 @@ const phases: Phase[] = [
     name: "Launch & learn",
     title: "Ship carefully. Decide what comes next.",
     description:
-      "Prepare the handover, confirm launch details, and use the evidence available to shape useful next steps.",
-    deliverable: "A considered handover and next-step list",
+      "Prepare the handoff, confirm launch details, and use the evidence available to shape useful next steps.",
+    deliverable: "A clear handoff and next-step list",
     icon: Rocket,
     checkpoints: [
       "Review launch readiness and key details",
-      "Document the work and agreed handover",
+      "Document the work and agreed handoff",
       "Identify what to maintain, test, or improve next",
     ],
   },
@@ -332,7 +332,7 @@ export default function StickyProcess() {
             </div>
             <p className="max-w-md text-sm leading-relaxed text-muted sm:text-base">
               From discovery and approved scope through iterative delivery,
-              quality checks, and launch handover, each phase has clear
+              quality checks, and launch handoff, each phase has clear
               checkpoints and reviewable outcomes.
             </p>
           </div>

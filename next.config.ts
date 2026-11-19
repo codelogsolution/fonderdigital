@@ -3,6 +3,10 @@ import path from "node:path";
 
 const nextConfig: NextConfig = {
 
+  experimental: {
+    agentUpgrade: "security",
+  },
+
   devIndicators: false,
 
   turbopack: {

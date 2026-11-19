@@ -136,7 +136,7 @@ export default function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[60] cursor-default bg-background lg:hidden"
+            className="fixed inset-0 z-[60] cursor-default bg-black/25 backdrop-blur-[1px] lg:hidden"
           />
         )}
       </AnimatePresence>
@@ -243,7 +243,7 @@ export default function Header() {
               size="sm"
               className="shadow-[0_0_24px_var(--primary-line)]"
             >
-              Book a Call <ArrowUpRight className="h-4 w-4" />
+              Start a Project <ArrowUpRight className="h-4 w-4" />
             </Button>
           </Magnetic>
         </div>
@@ -384,7 +384,7 @@ export default function Header() {
                     href="/contact"
                     className="w-full shadow-[0_0_24px_var(--primary-line)]"
                   >
-                    Book a Call <ArrowUpRight className="h-4 w-4" />
+                    Start a Project <ArrowUpRight className="h-4 w-4" />
                   </Button>
                 </Magnetic>
               </motion.div>

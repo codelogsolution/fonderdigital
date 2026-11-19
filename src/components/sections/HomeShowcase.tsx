@@ -47,7 +47,7 @@ export default function HomeShowcase() {
         <Reveal>
           <div className="flex flex-col gap-6 border-border-subtle pb-4 sm:flex-row sm:items-end sm:justify-between sm:pb-6">
             <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+              <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
                 <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
                 The studio, in motion
               </span>

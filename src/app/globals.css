@@ -101,6 +101,7 @@
 .band-dark {
   --foreground: #f1f5f9;
   --muted: #94a3b8;
+  --silver-gray: #c7c7d0;
   --border-subtle: rgba(255, 255, 255, 0.1);
   --surface: rgba(255, 255, 255, 0.05);
   --surface-2: rgba(255, 255, 255, 0.08);
@@ -291,12 +292,21 @@ h6 {
 }
 
 .testimonial-quote-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-color: var(--primary) transparent;
+  scrollbar-width: thin;
 }
 
 .testimonial-quote-scrollbar::-webkit-scrollbar {
-  display: none;
+  width: 4px;
+}
+
+.testimonial-quote-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 9999px;
+}
+
+.testimonial-quote-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 @utility bg-grid-accent {
@@ -341,7 +351,6 @@ h6 {
 }
 
 @utility glass {
-
   background: color-mix(in srgb, var(--background) 97%, transparent);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -349,7 +358,6 @@ h6 {
 }
 
 @utility glass-premium {
-
   background: linear-gradient(
     160deg,
     color-mix(in srgb, var(--background) 94%, transparent) 0%,
@@ -583,10 +591,7 @@ h6 {
 }
 
 @utility bg-dots {
-  background-image: radial-gradient(
-    var(--border-subtle) 1px,
-    transparent 1px
-  );
+  background-image: radial-gradient(var(--border-subtle) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
@@ -597,7 +602,6 @@ h6 {
       var(--primary-soft),
       transparent 66%
     ),
-
     linear-gradient(
       to bottom,
       transparent 0%,
@@ -801,7 +805,6 @@ h6 {
   .site-section {
     padding-block: 3.25rem;
   }
-
 }
 
 @media (min-width: 1536px) {

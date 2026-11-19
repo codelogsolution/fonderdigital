@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { siteConfig, type SocialLink } from "@/config/site";
 import { InstagramIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import NewsletterForm from "@/components/layout/NewsletterForm";
@@ -19,37 +19,42 @@ export default function Footer() {
     <footer className="band-dark relative text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-13 sm:px-5 lg:px-8 lg:py-16 lg:pb-9">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
-
           <div className="lg:col-span-4">
-            <Link href="/" aria-label="FonderDigital home" className="mb-3 inline-flex items-center gap-2">
+            <Link
+              href="/"
+              aria-label="FonderDigital home"
+              className="mb-3 inline-flex items-center gap-2"
+            >
               <BrandMark className="h-10 w-10 text-foreground" />
               <span className="text-lg font-extrabold tracking-[-0.055em] text-foreground">
                 Fonder<span className="text-primary">Digital</span>
               </span>
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted">
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-silver-gray">
               {siteConfig.description}
             </p>
 
-            {siteConfig.socials.length > 0 && <div className="mt-8 grid max-w-xs grid-cols-2 gap-3">
-              {siteConfig.socials.map((social) => {
-                const Icon = socialIcons[social.icon];
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-2/60 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_24px_var(--primary-soft)]"
-                  >
-                    <Icon className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-primary" />
-                    <span className="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">
-                      {social.label}
-                    </span>
-                  </a>
-                );
-              })}
-            </div>}
+            {siteConfig.socials.length > 0 && (
+              <div className="mt-8 grid max-w-xs grid-cols-2 gap-3">
+                {siteConfig.socials.map((social) => {
+                  const Icon = socialIcons[social.icon];
+                  return (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 rounded-xl border border-border-subtle bg-surface-2/60 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_24px_var(--primary-soft)]"
+                    >
+                      <Icon className="h-5 w-5 shrink-0 text-silver-gray transition-colors duration-300 group-hover:text-primary" />
+                      <span className="text-sm font-semibold transition-colors duration-300 group-hover:text-primary">
+                        {social.label}
+                      </span>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-2">
@@ -61,7 +66,7 @@ export default function Footer() {
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-primary"
+                    className="group inline-flex items-center gap-2 text-sm text-silver-gray transition-colors hover:text-primary"
                   >
                     <span
                       aria-hidden
@@ -83,7 +88,7 @@ export default function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="group inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-primary"
+                    className="group inline-flex items-center gap-2 text-sm text-silver-gray transition-colors hover:text-primary"
                   >
                     <span
                       aria-hidden
@@ -100,44 +105,57 @@ export default function Footer() {
             <p className="text-sm font-bold uppercase tracking-widest text-foreground">
               Newsletter
             </p>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
-              Want occasional notes on design, engineering, and growth? This opens an email draft so you can request updates.
+            <p className="mt-5 max-w-sm text-sm leading-relaxed text-silver-gray">
+              Want occasional notes on design, engineering, and growth? This
+              opens an email draft so you can request updates.
             </p>
             <NewsletterForm className="mt-6 max-w-sm" />
 
-            <ul className="mt-8 space-y-3 text-sm text-muted">
-              <li className="flex items-center gap-2.5">
-                <Mail className="h-4 w-4 shrink-0 text-primary" />
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="transition-colors hover:text-primary"
-                >
-                  {siteConfig.email}
-                </a>
-              </li>
-              {siteConfig.phone && <li className="flex items-center gap-2.5">
-                <Phone className="h-4 w-4 shrink-0 text-primary" />
-                <a href={`tel:${siteConfig.phone}`} className="transition-colors hover:text-primary">
-                  {siteConfig.phoneDisplay}
-                </a>
-              </li>}
-              {siteConfig.location && <li className="flex items-center gap-2.5">
-                <MapPin className="h-4 w-4 shrink-0 text-primary" />
-                {siteConfig.location}
-              </li>}
+            <ul className="mt-8 space-y-3 text-sm text-silver-gray">
+              {[
+                { label: "General inquiries", email: siteConfig.infoEmail },
+                { label: "Support", email: siteConfig.supportEmail },
+              ].map(({ label, email }) => (
+                <li key={email} className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 shrink-0 text-primary" />
+                  <span className="min-w-0">
+                    <span className="mr-2">{label}:</span>
+                    <a
+                      href={`mailto:${email}`}
+                      className="transition-colors hover:text-primary font-bold"
+                    >
+                      {email}
+                    </a>
+                  </span>
+                </li>
+              ))}
+              {siteConfig.location && (
+                <li className="flex items-center gap-2.5">
+                  <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                  {siteConfig.location}
+                </li>
+              )}
             </ul>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border-subtle pt-8 sm:flex-row">
-          <p className="text-sm text-muted text-center">
-            © 2023–{new Date().getFullYear()} &nbsp;&nbsp;<span aria-hidden="true">·&nbsp;</span> {siteConfig.name}. &nbsp;All rights reserved.
+          <p className="text-sm text-silver-gray text-center">
+            © 2023–{new Date().getFullYear()} &nbsp;&nbsp;
+            <span aria-hidden="true">·&nbsp;</span> {siteConfig.name}. &nbsp;All
+            rights reserved.
           </p>
-          <div className="flex gap-6 text-sm text-muted">
-            <Link href="/privacy" className="transition-colors hover:text-primary">
+          <div className="flex gap-6 text-sm text-silver-gray">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-primary"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-primary">
+            <Link
+              href="/terms"
+              className="transition-colors hover:text-primary"
+            >
               Terms of Service
             </Link>
           </div>
