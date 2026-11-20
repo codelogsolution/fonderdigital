@@ -11,7 +11,6 @@ import AssistantLauncher from "@/components/assistant/AssistantLauncher";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import CustomCursor from "@/components/motion/CustomCursor";
 import ThemeProvider from "@/components/theme/ThemeProvider";
-import FloatingCTA from "@/components/booking/FloatingCTA";
 import "./globals.css";
 
 const display = Outfit({
@@ -135,7 +134,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Footer />
             <AssistantLauncher />
             <CustomCursor />
-            <FloatingCTA />
           </SmoothScroll>
         </ThemeProvider>
       </body>
