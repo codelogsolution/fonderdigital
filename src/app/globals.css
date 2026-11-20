@@ -570,6 +570,14 @@ h6 {
   );
 }
 
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility edge-shine {
   position: relative;
 
@@ -694,6 +702,10 @@ h6 {
 @utility animate-card-float {
   animation: card-float 9s ease-in-out infinite;
 }
+
+
+
+
 
 @media (prefers-reduced-motion: reduce) {
   .animate-orb-drift,

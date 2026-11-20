@@ -2,7 +2,15 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertCircle, ArrowUpRight, Check, ChevronDown, Send } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowUpRight,
+  CalendarDays,
+  Check,
+  ChevronDown,
+  Send,
+  Loader2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
 
@@ -15,7 +23,10 @@ const inputIdleClasses =
 const inputErrorClasses =
   "border-2 border-rose-500 focus:border-rose-500 focus:shadow-[0_0_20px_rgba(225,29,72,0.18)]";
 
-const labelClasses = "mb-2 block text-sm font-semibold tracking-tight text-foreground";
+const labelClasses =
+  "mb-2 flex items-center gap-1.5 text-sm font-semibold tracking-tight text-foreground";
+
+const requiredMark = <span aria-hidden="true">*</span>;
 
 const errorTextClasses =
   "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-700";
@@ -72,7 +83,8 @@ const validateField = (field: FormField, value: string): string | undefined => {
         return "Include https:// in the URL";
       return undefined;
     case "message":
-      if (value.trim().length < 10) return "Tell us more — at least 10 characters";
+      if (value.trim().length < 10)
+        return "Tell us more — at least 10 characters";
       return undefined;
     default:
       return undefined;
@@ -80,7 +92,9 @@ const validateField = (field: FormField, value: string): string | undefined => {
 };
 
 export default function ContactForm({ className }: { className?: string }) {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -100,7 +114,9 @@ export default function ContactForm({ className }: { className?: string }) {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     const field = name as FormField;
@@ -109,7 +125,9 @@ export default function ContactForm({ className }: { className?: string }) {
   };
 
   const handleBlur = (
-    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.FocusEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     const field = name as FormField;
@@ -117,35 +135,79 @@ export default function ContactForm({ className }: { className?: string }) {
     setErrors((prev) => ({ ...prev, [field]: validateField(field, value) }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const openEmailClient = () => {
+    const serviceLabel = serviceOptions.find(
+      (option) => option.value === formData.service,
+    )?.label;
+    const body = [
+      `Name: ${formData.name.trim()}`,
+      `Email: ${formData.email.trim()}`,
+      `Phone: ${formData.phone.trim() || "Not provided"}`,
+      `Service: ${serviceLabel ?? formData.service}`,
+      `Website: ${formData.website.trim() || "Not provided"}`,
+      "",
+      "Message:",
+      formData.message.trim(),
+    ].join("\n");
+    window.location.href = `mailto:${siteConfig.infoEmail}?subject=${encodeURIComponent(
+      `Project inquiry from ${formData.name.trim()}`,
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const fields: FormField[] = ["name", "email", "phone", "service", "website", "message"];
+    const fields: FormField[] = [
+      "name",
+      "email",
+      "phone",
+      "service",
+      "website",
+      "message",
+    ];
     const newErrors: FieldErrors = {};
     fields.forEach((field) => {
       const err = validateField(field, formData[field]);
       if (err) newErrors[field] = err;
     });
-    setTouched({ name: true, email: true, phone: true, service: true, website: true, message: true });
+    setTouched({
+      name: true,
+      email: true,
+      phone: true,
+      service: true,
+      website: true,
+      message: true,
+    });
     setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) {
+    if (Object.keys(newErrors).length > 0) return;
+
+    setStatus("submitting");
+    try {
       const serviceLabel = serviceOptions.find(
         (option) => option.value === formData.service,
       )?.label;
-      const body = [
-        `Name: ${formData.name.trim()}`,
-        `Email: ${formData.email.trim()}`,
-        `Phone: ${formData.phone.trim() || "Not provided"}`,
-        `Service: ${serviceLabel ?? formData.service}`,
-        `Website: ${formData.website.trim() || "Not provided"}`,
-        "",
-        "Message:",
-        formData.message.trim(),
-      ].join("\n");
-      window.location.href = `mailto:${siteConfig.infoEmail}?subject=${encodeURIComponent(
-        `Project inquiry from ${formData.name.trim()}`,
-      )}&body=${encodeURIComponent(body)}`;
-      setSubmitted(true);
+
+      const response = await fetch("/api/contact-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || "Not provided",
+          service: serviceLabel ?? formData.service,
+          website: formData.website.trim() || "Not provided",
+          message: formData.message.trim(),
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to submit");
+      setStatus("success");
+    } catch {
+      setStatus("error");
     }
+  };
+
+  const handleRetry = () => {
+    setStatus("idle");
   };
 
   const fieldClassName = (field: FormField, extra = "") =>
@@ -175,7 +237,7 @@ export default function ContactForm({ className }: { className?: string }) {
   return (
     <div className={cn("relative", className)}>
       <AnimatePresence mode="wait">
-        {submitted ? (
+        {status === "success" ? (
           <motion.div
             key="success"
             initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -183,22 +245,73 @@ export default function ContactForm({ className }: { className?: string }) {
             exit={{ opacity: 0, scale: 0.96, y: -12 }}
             transition={{ duration: 0.45, ease }}
             role="status"
-            className="flex min-h-[520px] flex-col items-center justify-center rounded-3xl border border-primary/30 bg-primary/5 px-8 py-20 text-center"
+            className="flex min-h-130 flex-col items-center justify-center rounded-3xl border border-primary/30 bg-primary/5 px-8 py-20 text-center"
           >
             <motion.span
               initial={{ scale: 0, rotate: -30 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 220, damping: 14 }}
+              transition={{
+                delay: 0.2,
+                type: "spring",
+                stiffness: 220,
+                damping: 14,
+              }}
               className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/15 text-primary shadow-[0_0_32px_var(--primary-line)]"
             >
               <Check className="h-8 w-8" />
             </motion.span>
             <h2 className="mt-8 text-2xl font-extrabold tracking-tight">
-              Email draft ready
+              Inquiry Submitted Successfully
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              Your email app should open with your message ready. Press Send
-              there to complete your inquiry. If it doesn&apos;t open, email{" "}
+              Thank you! We've received your project details and will get back
+              to you within 24 hours.
+            </p>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <button
+                onClick={openEmailClient}
+                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-background/70 px-5 py-2.5 text-sm font-semibold text-muted-accessible transition-colors hover:text-primary-accessible hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                <Send className="h-4 w-4" />
+                Also share via email
+              </button>
+              <button
+                onClick={() => setStatus("idle")}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                Submit another inquiry
+              </button>
+            </div>
+          </motion.div>
+        ) : status === "error" ? (
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: -12 }}
+            transition={{ duration: 0.45, ease }}
+            role="alert"
+            className="flex min-h-130 flex-col items-center justify-center rounded-3xl border border-rose-500/30 bg-rose-500/5 px-8 py-20 text-center"
+          >
+            <motion.span
+              initial={{ scale: 0, rotate: -30 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{
+                delay: 0.2,
+                type: "spring",
+                stiffness: 220,
+                damping: 14,
+              }}
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/15 text-rose-500 shadow-[0_0_32px_rgba(225,29,72,0.3)]"
+            >
+              <AlertCircle className="h-8 w-8" />
+            </motion.span>
+            <h2 className="mt-8 text-2xl font-extrabold tracking-tight">
+              Something went wrong
+            </h2>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
+              We couldn't submit your inquiry. Please try again or contact us
+              directly at
               <a
                 href={`mailto:${siteConfig.infoEmail}`}
                 className="font-semibold text-primary underline underline-offset-4"
@@ -207,6 +320,12 @@ export default function ContactForm({ className }: { className?: string }) {
               </a>
               .
             </p>
+            <button
+              onClick={handleRetry}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              Try again
+            </button>
           </motion.div>
         ) : (
           <motion.form
@@ -217,17 +336,24 @@ export default function ContactForm({ className }: { className?: string }) {
             transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             noValidate
-            className="flex flex-col gap-5 rounded-[1.75rem] border border-border-subtle bg-surface/80 p-5 shadow-[0_24px_70px_-48px_var(--primary-glow-strong)] backdrop-blur-xl sm:p-8"
+            className="flex flex-col gap-5 rounded-4xl border border-border-subtle bg-surface p-5 sm:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.08)]"
           >
             <div className="border-b border-border-subtle pb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Project inquiry</p>
-              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">Tell us what you’re building.</h2>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">A few details will help us understand your goals and prepare a useful next step.</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                Project inquiry
+              </p>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+                Tell us what you're building.
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">
+                A few details will help us understand your goals and prepare a
+                useful next step.
+              </p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="contact-name" className={labelClasses}>
-                  Name
+                  Name{requiredMark}
                 </label>
                 <input
                   id="contact-name"
@@ -248,7 +374,7 @@ export default function ContactForm({ className }: { className?: string }) {
               </div>
               <div>
                 <label htmlFor="contact-email" className={labelClasses}>
-                  Email
+                  Email{requiredMark}
                 </label>
                 <input
                   id="contact-email"
@@ -271,7 +397,9 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label htmlFor="contact-service" className={labelClasses}>Which service are you interested in?</label>
+                <label htmlFor="contact-service" className={labelClasses}>
+                  Which service are you interested in?{requiredMark}
+                </label>
                 <div className="relative">
                   <select
                     id="contact-service"
@@ -279,19 +407,38 @@ export default function ContactForm({ className }: { className?: string }) {
                     value={formData.service}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={fieldClassName("service", `appearance-none cursor-pointer pr-12 ${formData.service ? "text-foreground" : "text-muted"}`)}
+                    className={fieldClassName(
+                      "service",
+                      `appearance-none cursor-pointer pr-12 ${formData.service ? "text-foreground" : "text-muted"}`,
+                    )}
                     aria-invalid={!!(errors.service && touched.service)}
-                    aria-describedby={errors.service && touched.service ? errorId("service") : undefined}
+                    aria-describedby={
+                      errors.service && touched.service
+                        ? errorId("service")
+                        : undefined
+                    }
                   >
-                    <option value="" disabled>Choose a service</option>
-                    {serviceOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
+                    <option value="" disabled>
+                      Choose a service
+                    </option>
+                    {serviceOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" aria-hidden="true" />
+                  <ChevronDown
+                    className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+                    aria-hidden="true"
+                  />
                 </div>
                 {renderError("service")}
               </div>
               <div>
-                <label htmlFor="contact-phone" className={labelClasses}>Phone number <span className="font-normal text-muted">(optional)</span></label>
+                <label htmlFor="contact-phone" className={labelClasses}>
+                  Phone number{" "}
+                  <span className="font-normal text-muted">(optional)</span>
+                </label>
                 <input
                   id="contact-phone"
                   name="phone"
@@ -304,7 +451,9 @@ export default function ContactForm({ className }: { className?: string }) {
                   placeholder="Enter your phone number"
                   className={fieldClassName("phone")}
                   aria-invalid={!!(errors.phone && touched.phone)}
-                  aria-describedby={errors.phone && touched.phone ? errorId("phone") : undefined}
+                  aria-describedby={
+                    errors.phone && touched.phone ? errorId("phone") : undefined
+                  }
                 />
                 {renderError("phone")}
               </div>
@@ -337,7 +486,7 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <div>
               <label htmlFor="contact-message" className={labelClasses}>
-                Message
+                Message{requiredMark}
               </label>
               <textarea
                 id="contact-message"
@@ -364,11 +513,62 @@ export default function ContactForm({ className }: { className?: string }) {
               {renderError("message")}
             </div>
 
+            {/* What Happens Next */}
+            <div className="rounded-2xl border border-border-subtle bg-surface/50 p-5">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
+                What happens after you hit send
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {[
+                  {
+                    step: "01",
+                    title: "We review your brief",
+                    desc: "Our team reads every inquiry carefully — no auto-replies.",
+                    icon: Check,
+                  },
+                  {
+                    step: "02",
+                    title: "Quick call booked",
+                    desc: "Within 24 hours, we schedule a free 30-min discovery call.",
+                    icon: CalendarDays,
+                  },
+                  {
+                    step: "03",
+                    title: "Roadmap shared",
+                    desc: "You get a clear scope, timeline, and next steps — zero pressure.",
+                    icon: ArrowUpRight,
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 rounded-xl border border-border-subtle bg-background/50 p-4">
+                    <span className="text-2xl font-black text-primary/25 leading-none">{item.step}</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <item.icon className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <p className="text-sm font-bold text-foreground">{item.title}</p>
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-muted">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <button
               type="submit"
-              className="mt-1 inline-flex h-12 w-full appearance-none items-center justify-center gap-2 rounded-2xl bg-primary px-7 text-sm font-bold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 sm:w-fit sm:min-w-52"
+              disabled={status === "submitting"}
+              className="mt-1 inline-flex h-12 w-full appearance-none items-center justify-center gap-2 rounded-2xl bg-primary px-7 text-sm font-bold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25 disabled:opacity-50 disabled:cursor-not-allowed sm:w-fit sm:min-w-52"
             >
-              Open email draft <Send className="h-4 w-4" /> <ArrowUpRight className="h-4 w-4" />
+              {status === "submitting" ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  Submit inquiry
+                  <ArrowUpRight className="h-4 w-4" />
+                </>
+              )}
             </button>
           </motion.form>
         )}

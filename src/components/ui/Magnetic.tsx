@@ -8,12 +8,14 @@ type MagneticProps = {
   children: ReactNode;
   strength?: number;
   className?: string;
+  enabled?: boolean;
 };
 
 export default function Magnetic({
   children,
   strength = 0.35,
   className,
+  enabled = true,
 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -22,12 +24,13 @@ export default function Magnetic({
   const springY = useSpring(y, { stiffness: 180, damping: 14, mass: 0.25 });
 
   const handleMouseMove = useCallback((event: ReactMouseEvent<HTMLDivElement>) => {
+    if (!enabled) return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     x.set((event.clientX - (rect.left + rect.width / 2)) * strength);
     y.set((event.clientY - (rect.top + rect.height / 2)) * strength);
-  }, [strength, x, y]);
+  }, [strength, x, y, enabled]);
 
   const reset = useCallback(() => {
     x.set(0);

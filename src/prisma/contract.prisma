@@ -1,0 +1,28 @@
+// use prisma-8
+
+model Booking {
+  id        String   @id @onCreate(uuid())
+  name      String
+  email     String
+  phone     String?
+  service   String
+  website   String?
+  message   String?
+
+  bookingDate DateTime
+  duration    Int      // 30, 45, 60, 90
+
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}
+
+model ContactInquiry {
+  id        String   @id @onCreate(uuid())
+  name      String
+  email     String
+  phone     String?
+  service   String
+  website   String?
+  message   String
+  createdAt DateTime @default(now())
+}

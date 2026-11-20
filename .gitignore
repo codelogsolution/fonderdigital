@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -42,3 +43,20 @@ next-env.d.ts
 
 # editor
 .vscode/
+*.swp
+*.swo
+
+# IDE/tooling folders (local only)
+.agents/
+.claude/
+.cursor/
+.devin/
+
+# Prisma
+prisma-8.md
+migrations/
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini

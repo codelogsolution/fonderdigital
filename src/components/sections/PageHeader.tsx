@@ -13,14 +13,12 @@ export default function PageHeader({
   description,
 }: PageHeaderProps) {
   return (
-    <section className="relative isolate overflow-hidden pb-14 pt-32 sm:pb-16 sm:pt-40 lg:pt-44">
+    <section className="relative isolate overflow-hidden pb-14 pt-22 sm:pb-14 sm:pt-26 lg:pt-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-aurora" />
-        <div className="absolute inset-x-0 top-0 h-[420px] bg-grid [mask-image:radial-gradient(70%_60%_at_50%_0%,black,transparent)] opacity-60" />
+        <div className="absolute inset-x-0 top-0 h-105 bg-grid mask-[radial-gradient(70%_60%_at_50%_0%,black,transparent)] opacity-60" />
         <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-multiply" />
-        <div
-          className="absolute -top-32 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-primary/12 blur-[130px]"
-        />
+        <div className="absolute -top-32 left-1/2 h-105 w-180 -translate-x-1/2 rounded-full bg-primary/12 blur-[130px]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,7 +44,7 @@ export default function PageHeader({
         <Reveal delay={0.55}>
           <div
             aria-hidden
-            className="mt-12 h-px w-full bg-gradient-to-r from-transparent via-border-subtle to-transparent"
+            className="mt-12 h-px w-full bg-linear-to-r from-transparent via-border-subtle to-transparent"
           />
         </Reveal>
       </div>
