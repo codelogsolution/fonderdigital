@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/prisma/db';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { siteConfig } from '@/config/site';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Configure Nodemailer transporter
+// Uses SMTP credentials from environment variables
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
+
 const logoUrl = `${siteConfig.url}/images/fonderdigital-logo.svg`;
 
 export async function POST(request: NextRequest) {
@@ -46,7 +56,7 @@ export async function POST(request: NextRequest) {
         timeZone: 'Asia/Kolkata',
         weekday: 'long',
         year: 'numeric',
-        month: 'long',
+        month: 'month',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
@@ -54,8 +64,8 @@ export async function POST(request: NextRequest) {
 
       const durationText = `${duration} minutes`;
 
-      await resend.emails.send({
-        from: 'FonderDigital Sessions <onboarding@resend.dev>',
+      await transporter.sendMail({
+        from: 'FonderDigital Sessions <onboarding@your-domain.com>',
         to: [siteConfig.infoEmail],
         subject: `New Strategic Session Request - ${name}`,
         html: `
@@ -116,14 +126,14 @@ export async function POST(request: NextRequest) {
         timeZone: 'Asia/Kolkata',
         weekday: 'long',
         year: 'numeric',
-        month: 'long',
+        month: 'month',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
       });
 
-      await resend.emails.send({
-        from: 'FonderDigital <onboarding@resend.dev>',
+      await transporter.sendMail({
+        from: 'FonderDigital <onboarding@your-domain.com>',
         to: [email],
         subject: `Strategic Consultation Request Received - FonderDigital`,
         html: `

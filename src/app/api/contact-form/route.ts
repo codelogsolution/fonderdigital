@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/prisma/db';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { siteConfig } from '@/config/site';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-const logoUrl = `${siteConfig.url}/images/fonderdigital-logo.svg`;
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT || '587'),
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,14 +36,14 @@ export async function POST(request: NextRequest) {
 
     console.log('New project inquiry submitted:', inquiry.id);
 
-    await resend.emails.send({
-      from: 'FonderDigital Inquiries <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: 'FonderDigital Inquiries <onboarding@your-domain.com>',
       to: [siteConfig.infoEmail],
       subject: `New Project Inquiry - ${name}`,
       html: `
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
           <img src="${logoUrl}" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-          <h2 style="color: #111;">New Project Inquiry</h2>
+          <h2 style="color: #333;">New Project Inquiry</h2>
 
           <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #333;">Client Details</h3>
@@ -57,7 +64,7 @@ export async function POST(request: NextRequest) {
             <table style="border-collapse: collapse; width: 100%;">
               <tr>
                 <td style="width: 160px; vertical-align: middle;">
-                  <img src="${logoUrl}" alt="FonderDigital" style="width: 140px;" />
+                  <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital" style="width: 140px;" />
                 </td>
                 <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
                   <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
@@ -74,14 +81,14 @@ export async function POST(request: NextRequest) {
       `,
     });
 
-    await resend.emails.send({
-      from: 'FonderDigital <onboarding@resend.dev>',
+    await transporter.sendMail({
+      from: 'FonderDigital <onboarding@your-domain.com>',
       to: [email],
       subject: `We've received your project inquiry - FonderDigital`,
       html: `
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-          <img src="${logoUrl}" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-          <h2 style="color: #111;">Thanks for reaching out!</h2>
+          <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
+          <h2 style="color: #333;">Thanks for reaching out!</h2>
 
           <p>Hi ${name},</p>
 
@@ -100,7 +107,7 @@ export async function POST(request: NextRequest) {
             <table style="border-collapse: collapse; width: 100%;">
               <tr>
                 <td style="width: 160px; vertical-align: middle;">
-                  <img src="${logoUrl}" alt="FonderDigital" style="width: 140px;" />
+                  <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital" style="width: 140px;" />
                 </td>
                 <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
                   <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
