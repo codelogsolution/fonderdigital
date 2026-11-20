@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       subject: `New Project Inquiry - ${name}`,
       html: `
         <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-          <img src="${logoUrl}" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
+          <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
           <h2 style="color: #333;">New Project Inquiry</h2>
 
           <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">

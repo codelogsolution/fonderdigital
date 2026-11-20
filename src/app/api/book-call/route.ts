@@ -4,7 +4,6 @@ import nodemailer from 'nodemailer';
 import { siteConfig } from '@/config/site';
 
 // Configure Nodemailer transporter
-// Uses SMTP credentials from environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT || '587'),
@@ -14,7 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const logoUrl = `${siteConfig.url}/images/fonderdigital-logo.svg`;
+const logoUrl = 'https://fonderdigital.com/images/fonderdigital-logo.svg';
 
 export async function POST(request: NextRequest) {
   try {
@@ -56,7 +55,7 @@ export async function POST(request: NextRequest) {
         timeZone: 'Asia/Kolkata',
         weekday: 'long',
         year: 'numeric',
-        month: 'month',
+        month: 'numeric',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
@@ -126,7 +125,7 @@ export async function POST(request: NextRequest) {
         timeZone: 'Asia/Kolkata',
         weekday: 'long',
         year: 'numeric',
-        month: 'month',
+        month: 'numeric',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
