@@ -4,7 +4,6 @@ import PageHeader from "@/components/sections/PageHeader";
 import ContactForm from "@/components/forms/ContactForm";
 import Reveal from "@/components/motion/Reveal";
 import { ConsultationCTA } from "@/components/booking/ConsultationCTA";
-import ContactFAQ from "@/components/booking/ContactFAQ";
 import { createPageMetadata } from "@/config/seo";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
@@ -82,11 +81,6 @@ export default function ContactPage() {
               </div>
             </Reveal>
           </div>
-
-          {/* FAQ Section */}
-          <Reveal className="mt-8">
-            <ContactFAQ />
-          </Reveal>
         </div>
       </section>
     </>

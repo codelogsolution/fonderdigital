@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   AlertCircle,
   ArrowUpRight,
+  CalendarDays,
   Check,
   ChevronDown,
   Send,
@@ -508,6 +509,46 @@ export default function ContactForm({ className }: { className?: string }) {
                 }
               />
               {renderError("message")}
+            </div>
+
+            {/* What Happens Next */}
+            <div className="rounded-2xl border border-border-subtle bg-surface/50 p-5">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary-accessible">
+                What happens after you hit send
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {[
+                  {
+                    step: "01",
+                    title: "We review your brief",
+                    desc: "Our team reads every inquiry carefully — no auto-replies.",
+                    icon: Check,
+                  },
+                  {
+                    step: "02",
+                    title: "Quick call booked",
+                    desc: "Within 24 hours, we schedule a free 30-min discovery call.",
+                    icon: CalendarDays,
+                  },
+                  {
+                    step: "03",
+                    title: "Roadmap shared",
+                    desc: "You get a clear scope, timeline, and next steps — zero pressure.",
+                    icon: ArrowUpRight,
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 rounded-xl border border-border-subtle bg-background/50 p-4">
+                    <span className="text-2xl font-black text-primary/25 leading-none">{item.step}</span>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 mt-0.5">
+                        <item.icon className="h-3.5 w-3.5 text-primary shrink-0" />
+                        <p className="text-sm font-bold text-foreground">{item.title}</p>
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-muted">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <button
