@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   AnimatePresence,
   motion,
@@ -15,9 +15,9 @@ import BrandMark from "@/components/ui/BrandMark";
 import { servicePages, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/useScrollLock";
-import Button from "@/components/ui/Button";
 import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
 import Magnetic from "@/components/ui/Magnetic";
+import HeaderBookingButton from "@/components/layout/HeaderBookingButton";
 
 const mobileList: Variants = {
   hidden: {},
@@ -91,7 +91,6 @@ function NavLink({
 
 export default function Header() {
   const pathname = usePathname();
-  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -239,13 +238,7 @@ export default function Header() {
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeSwitcher />
           <Magnetic strength={0.4}>
-            <Button
-              href="/contact#quick-call"
-              size="sm"
-              className="shadow-[0_0_24px_var(--primary-line)]"
-            >
-              Book a Discovery Call <ArrowUpRight className="h-4 w-4" />
-            </Button>
+            <HeaderBookingButton size="sm" />
           </Magnetic>
         </div>
 
@@ -381,13 +374,7 @@ export default function Header() {
                   <ThemeSwitcher />
                 </div>
                 <Magnetic className="flex-1">
-                  <Link
-                    onClick={(e) => { e.preventDefault(); setMenuOpen(false); router.push("/contact#quick-call"); }}
-                    href="/contact#quick-call"
-                    className="btn-shine inline-flex h-11 w-full appearance-none items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold tracking-tight text-primary-foreground shadow-[0_0_24px_var(--primary-line)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                  >
-                    Book a Discovery Call <ArrowUpRight className="h-4 w-4" />
-                  </Link>
+                  <HeaderBookingButton size="md" />
                 </Magnetic>
               </motion.div>
             </motion.div>
