@@ -239,11 +239,11 @@ export default function Header() {
           <ThemeSwitcher />
           <Magnetic strength={0.4}>
             <Button
-              href="/contact"
+              href="/contact#book-a-call"
               size="sm"
               className="shadow-[0_0_24px_var(--primary-line)]"
             >
-              Start a Project <ArrowUpRight className="h-4 w-4" />
+              Book a Discovery Call <ArrowUpRight className="h-4 w-4" />
             </Button>
           </Magnetic>
         </div>
@@ -380,12 +380,13 @@ export default function Header() {
                   <ThemeSwitcher />
                 </div>
                 <Magnetic className="flex-1">
-                  <Button
-                    href="/contact"
-                    className="w-full shadow-[0_0_24px_var(--primary-line)]"
+                  <Link
+                    href="/contact#book-a-call"
+                    onClick={() => setMenuOpen(false)}
+                    className="btn-shine inline-flex h-11 w-full appearance-none items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold tracking-tight text-primary-foreground shadow-[0_0_24px_var(--primary-line)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
-                    Start a Project <ArrowUpRight className="h-4 w-4" />
-                  </Button>
+                    Book a Discovery Call <ArrowUpRight className="h-4 w-4" />
+                  </Link>
                 </Magnetic>
               </motion.div>
             </motion.div>

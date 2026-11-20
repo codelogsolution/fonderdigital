@@ -13,7 +13,7 @@ export const metadata: Metadata = createPageMetadata({
 const sections = [
   {
     title: "What we collect",
-    body: "The contact and newsletter forms validate information in your browser and open your email application with a prefilled message. They do not send form data directly to this website. Information is shared with us only if you choose to send that email. This site also stores your selected visual theme in your browser's local storage.",
+    body: "The contact and newsletter forms validate information in your browser and open your email application with a prefilled message. They do not send form data directly to this website. Information is shared with us only if you choose to send that email. If you book a meeting, Google Calendar processes the information you provide on its appointment booking page. This site also stores your selected visual theme in your browser's local storage.",
   },
   {
     title: "How we use it",
@@ -21,7 +21,10 @@ const sections = [
   },
   {
     title: "Sharing",
-    body: "Email is handled by your email provider and ours. Review those providers' privacy information for details about their processing and storage. Do not include sensitive personal information in a project inquiry.",
+    body: "Email is handled by your email provider and ours. Meeting bookings are handled by Google Calendar and added to our connected calendar; Google Meet video-conferencing details are included with the booking. Review Google's privacy information for details about its processing and storage. Do not include sensitive personal information in a project inquiry.",
+    links: [
+      { href: "https://policies.google.com/privacy", label: "Google privacy notice" },
+    ],
   },
   {
     title: "Retention & your rights",
@@ -49,6 +52,22 @@ export default function PrivacyPage() {
                 {section.title}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-muted">{section.body}</p>
+              {section.links && (
+                <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {section.links.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-primary underline underline-offset-4"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>

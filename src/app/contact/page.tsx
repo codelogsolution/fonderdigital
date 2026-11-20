@@ -2,13 +2,14 @@ import { ArrowUpRight, Check, Mail, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import PageHeader from "@/components/sections/PageHeader";
 import ContactForm from "@/components/forms/ContactForm";
+import GoogleCalendarBooking from "@/components/booking/GoogleCalendarBooking";
 import Reveal from "@/components/motion/Reveal";
 import { createPageMetadata } from "@/config/seo";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 
 export const metadata = createPageMetadata({
   title: "Contact Us",
-  description: `Contact FonderDigital to discuss an AI, website, mobile app, SEO, or digital marketing project. Email ${siteConfig.infoEmail} or message us on WhatsApp.`,
+  description: `Book a Google Meet with FonderDigital, email ${siteConfig.infoEmail}, or message us on WhatsApp to discuss an AI, website, app, SEO, branding, or marketing project.`,
   path: "/contact",
 });
 
@@ -28,6 +29,9 @@ export default function ContactPage() {
       <section className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-12 lg:gap-10">
+            <div className="min-w-0 lg:col-span-12">
+              <GoogleCalendarBooking bookingUrl={siteConfig.googleBookingUrl} />
+            </div>
             <Reveal className="min-w-0 lg:col-span-7">
               <ContactForm />
             </Reveal>
