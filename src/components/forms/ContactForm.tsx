@@ -26,7 +26,7 @@ const inputErrorClasses =
 const labelClasses =
   "mb-2 flex items-center gap-1.5 text-sm font-semibold tracking-tight text-foreground";
 
-const requiredMark = <span aria-hidden="true" className="text-primary-accessible">*</span>;
+const requiredMark = <span aria-hidden="true">*</span>;
 
 const errorTextClasses =
   "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-700";
