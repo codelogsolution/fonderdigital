@@ -28,7 +28,7 @@ export default function ContactPage() {
 
       <section className="pb-24 sm:pb-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-12 lg:gap-10">
+          <div className="grid grid-cols-1 items-start gap-7 lg:grid-cols-12 lg:gap-0">
             <Reveal className="min-w-0 lg:col-span-7">
               <ContactForm />
             </Reveal>
