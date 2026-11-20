@@ -37,22 +37,18 @@ export default function HeaderBookingButton() {
           <span className="font-bold">Quick Call</span>
         </span>
 
-        {/* Living arrow — perpetual gentle pulse; freezes and fades when modal opens */}
+        {/* Living arrow — perpetual gentle pulse; snaps to neutral on modal open */}
         <motion.span
           className="relative z-10 ml-1.5 flex shrink-0"
-          animate={
-            isModalOpen
-              ? { scale: 1, rotate: 0, opacity: 0 }
-              : {
-                  scale: [1, 1.12, 1],
-                  rotate: [0, -8, 0],
-                }
-          }
-          transition={
-            isModalOpen
-              ? { duration: 0.35, ease: "easeOut", opacity: { delay: 0.1 } }
-              : { duration: 2.4, repeat: Infinity, ease: "easeInOut" }
-          }
+          key={isModalOpen ? "closed" : "open"}
+          initial={{ scale: 1, rotate: 0, opacity: 1 }}
+          animate={isModalOpen ? { scale: 1, rotate: 0, opacity: 0 } : { scale: [1, 1.12, 1], rotate: [0, -8, 0] }}
+          exit={{ scale: 1, rotate: 0, opacity: 1 }}
+          transition={{
+            ...(isModalOpen
+              ? { duration: 0.25, ease: "easeOut", opacity: { delay: 0.05 } }
+              : { duration: 2.4, repeat: Infinity, ease: "easeInOut", scale: { repeat: Infinity, duration: 2.4 } })
+          }}
         >
           <ArrowUpRight className="h-3.5 w-3.5" />
           {/* Tiny sparkle dot */}
