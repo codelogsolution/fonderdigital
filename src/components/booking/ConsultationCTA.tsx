@@ -8,16 +8,18 @@ import { cn } from "@/lib/utils";
 interface ConsultationCTAProps {
   serviceName?: string;
   className?: string;
+  cardId?: string;
 }
 
 export function ConsultationCTA({
   serviceName = "Strategic Consultation",
   className,
+  cardId,
 }: ConsultationCTAProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className={cn(className)}>
+    <div id={cardId} className={cn(className)}>
       <div className="relative isolate overflow-hidden rounded-4xl border border-border-subtle bg-surface p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.08)]">
         <div
           aria-hidden="true"

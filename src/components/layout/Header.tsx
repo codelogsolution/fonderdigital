@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   AnimatePresence,
   motion,
@@ -91,6 +91,7 @@ function NavLink({
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -239,7 +240,7 @@ export default function Header() {
           <ThemeSwitcher />
           <Magnetic strength={0.4}>
             <Button
-              href="/contact#book-a-call"
+              href="/contact#quick-call"
               size="sm"
               className="shadow-[0_0_24px_var(--primary-line)]"
             >
@@ -381,8 +382,8 @@ export default function Header() {
                 </div>
                 <Magnetic className="flex-1">
                   <Link
-                    href="/contact#book-a-call"
-                    onClick={() => setMenuOpen(false)}
+                    onClick={(e) => { e.preventDefault(); setMenuOpen(false); router.push("/contact#quick-call"); }}
+                    href="/contact#quick-call"
                     className="btn-shine inline-flex h-11 w-full appearance-none items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-semibold tracking-tight text-primary-foreground shadow-[0_0_24px_var(--primary-line)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                   >
                     Book a Discovery Call <ArrowUpRight className="h-4 w-4" />

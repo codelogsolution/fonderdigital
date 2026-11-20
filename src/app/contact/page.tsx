@@ -36,7 +36,7 @@ export default function ContactPage() {
 
               <Reveal delay={0.1} className="min-w-0 lg:col-span-5">
                 <div className="flex flex-col gap-5">
-                  <ConsultationCTA />
+                  <ConsultationCTA cardId="quick-call" />
                   <aside className="band-dark relative isolate overflow-hidden rounded-[1.75rem] border border-white/10 p-6 shadow-[0_28px_80px_-55px_var(--primary-glow-strong)] sm:p-8">
                     <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
                       <div className="absolute -right-28 -top-28 h-72 w-72 rounded-full bg-primary/20 blur-[90px]" />
