@@ -2,50 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CalendarDays, ArrowUpRight } from "lucide-react";
+import { CalendarDays, ArrowUpRight, X } from "lucide-react";
 import { ScheduleMeetingModal } from "@/components/booking/ScheduleMeetingModal";
 
-const STORAGE_KEY = "fonder-floating-cta-dismissed";
+const STORAGE_KEY = "fonder-float-dismissed";
 
 export default function FloatingCTA() {
-  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
-  const [hintSeen, setHintSeen] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const hasShownRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const dismissed = sessionStorage.getItem(STORAGE_KEY);
-    if (dismissed) return;
-    setHintSeen(true);
+    if (sessionStorage.getItem(STORAGE_KEY)) return;
 
+    setMounted(true);
     const t = setTimeout(() => {
-      if (!hasShownRef.current) {
-        hasShownRef.current = true;
-        setShowHint(true);
-      }
+      hasShownRef.current = true;
+      setShowHint(true);
     }, 4000);
-
-    const onScroll = () => {
-      clearTimeout(t);
-      const maxScroll =
-        document.documentElement.scrollHeight - window.innerHeight || 1;
-      setVisible(window.scrollY / maxScroll > 0.25);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      clearTimeout(t);
-    };
+    return () => clearTimeout(t);
   }, []);
 
-  const handleDismissHint = () => {
+  const dismissHint = () => {
     sessionStorage.setItem(STORAGE_KEY, "1");
     setShowHint(false);
   };
 
-  const handleOpen = () => {
+  const handleClick = () => {
     sessionStorage.setItem(STORAGE_KEY, "1");
     setShowHint(false);
     setOpen(true);
@@ -54,56 +39,74 @@ export default function FloatingCTA() {
   return (
     <>
       <AnimatePresence>
-        {/* Gentle hint pill — slides up after 4s on first visit */}
-        {hintSeen && !visible && (
+        {/* Floating hint card — slides in ~4s after page load */}
+        {mounted && !hasShownRef.current && (
           <motion.div
-            initial={{ opacity: 0, y: 16, scale: 0.95 }}
-            animate={showHint ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 8, scale: 0.95 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
-            transition={{ duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="pointer-events-none fixed bottom-24 left-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-background border border-border-subtle shadow-[0_4px_20px_rgba(0,0,0,0.1),0_1px_3px_rgba(0,0,0,0.06)] sm:left-8 lg:hidden"
+            initial={{ opacity: 0, y: 24, scale: 0.92 }}
+            animate={showHint ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 12, scale: 0.92 }}
+            exit={{ opacity: 0, y: 12, scale: 0.92 }}
+            transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="pointer-events-none fixed bottom-28 left-6 z-40 lg:left-8"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-            </span>
-            <span className="text-xs font-semibold text-muted-accessible whitespace-nowrap">
-              Free 30-min call — tap to book
-            </span>
-            <button
-              onClick={handleDismissHint}
-              className="ml-1 rounded-full p-0.5 text-muted hover:text-foreground transition-colors pointer-events-auto"
-              aria-label="Dismiss"
-            >
-              <ArrowUpRight className="h-3 w-3 -rotate-45" />
-            </button>
+            <div className="pointer-events-auto flex items-center gap-3 rounded-2xl border border-border-subtle bg-background px-4 py-3 shadow-[0_8px_32px_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.06)]">
+              {/* Animated accent bar */}
+              <span className="absolute -left-1 top-1/2 h-6 w-1 -translate-y-1/2 rounded-full bg-primary" />
+
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <CalendarDays className="h-4 w-4 text-primary" />
+              </div>
+
+              <div className="flex flex-col">
+                <p className="text-xs font-bold text-foreground leading-none">Book a Discovery Call</p>
+                <p className="mt-1 text-xs text-muted-accessible leading-none">Free · 30 min · No commitment</p>
+              </div>
+
+              <button
+                onClick={dismissHint}
+                className="ml-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface hover:text-foreground"
+                aria-label="Dismiss"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </motion.div>
         )}
 
-        {/* Main floating button — appears after 25% scroll */}
-        {visible && (
+        {/* Main floating button — animates in on mount, gentle bob continuously */}
+        {mounted && (
           <motion.div
-            initial={{ opacity: 0, x: -40, scale: 0.85 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -40, scale: 0.85 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            initial={{ opacity: 0, x: -48, scale: 0.8, y: 0 }}
+            animate={{ opacity: 1, x: 0, scale: 1, y: [0, -4, 0] }}
+            exit={{ opacity: 0, x: -48, scale: 0.8, y: 0 }}
+            transition={{
+              opacity: { duration: 0.35 },
+              x: { type: "spring", stiffness: 340, damping: 26 },
+              scale: { type: "spring", stiffness: 340, damping: 26 },
+              y: { duration: 2.6, repeat: Infinity, ease: "easeInOut" },
+            }}
             className="fixed bottom-6 left-6 z-40 lg:bottom-8 lg:left-8"
           >
             <button
-              onClick={handleOpen}
-              className="group relative flex items-center gap-2.5 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[0_4px_24px_rgba(180,83,9,0.4),0_0_56px_rgba(180,83,9,0.18)] transition-all hover:-translate-y-1 hover:shadow-[0_8px_36px_rgba(180,83,9,0.55),0_0_80px_rgba(180,83,9,0.28)]"
+              onClick={handleClick}
+              className="group relative flex items-center gap-2.5 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[0_4px_24px_rgba(180,83,9,0.4),0_0_56px_rgba(180,83,9,0.18)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_36px_rgba(180,83,9,0.55),0_0_80px_rgba(180,83,9,0.28)]"
             >
-              {/* Shimmer sweep */}
+              {/* Shimmer sweep overlay */}
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 overflow-hidden rounded-full"
               >
                 <span className="absolute top-0 -left-full h-full w-1/2 skew-x-[-20deg] bg-linear-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
               </span>
-              {/* Subtle live-ring pulse */}
-              <span
+
+              {/* Breathing pulse ring — constant subtle animation */}
+              <motion.span
                 aria-hidden="true"
-                className="pointer-events-none absolute -inset-1 rounded-full border-2 border-primary opacity-0 group-hover:opacity-30 transition-opacity duration-500"
+                className="pointer-events-none absolute -inset-2 rounded-full border-2 border-primary/50"
+                animate={{
+                  scale: [1, 1.18, 1],
+                  opacity: [0.2, 0.55, 0.2],
+                }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               />
 
               <CalendarDays className="h-4 w-4 shrink-0" />
