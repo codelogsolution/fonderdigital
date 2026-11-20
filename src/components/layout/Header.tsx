@@ -242,9 +242,7 @@ export default function Header() {
 
           <div className="hidden items-center gap-3 lg:flex">
             <ThemeSwitcher />
-            <Magnetic strength={0.4}>
-              <HeaderBookingButton />
-            </Magnetic>
+            <HeaderBookingButton />
           </div>
 
           <button
