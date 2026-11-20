@@ -24,7 +24,9 @@ const inputErrorClasses =
   "border-2 border-rose-500 focus:border-rose-500 focus:shadow-[0_0_20px_rgba(225,29,72,0.18)]";
 
 const labelClasses =
-  "mb-2 block text-sm font-semibold tracking-tight text-foreground";
+  "mb-2 flex items-center gap-1.5 text-sm font-semibold tracking-tight text-foreground";
+
+const requiredMark = <span aria-hidden="true" className="text-rose-500">*</span>;
 
 const errorTextClasses =
   "mt-1.5 flex items-start gap-1.5 text-xs font-medium text-rose-700";
@@ -351,7 +353,7 @@ export default function ContactForm({ className }: { className?: string }) {
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="contact-name" className={labelClasses}>
-                  Name
+                  Name{requiredMark}
                 </label>
                 <input
                   id="contact-name"
@@ -372,7 +374,7 @@ export default function ContactForm({ className }: { className?: string }) {
               </div>
               <div>
                 <label htmlFor="contact-email" className={labelClasses}>
-                  Email
+                  Email{requiredMark}
                 </label>
                 <input
                   id="contact-email"
@@ -396,7 +398,7 @@ export default function ContactForm({ className }: { className?: string }) {
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
                 <label htmlFor="contact-service" className={labelClasses}>
-                  Which service are you interested in?
+                  Which service are you interested in?{requiredMark}
                 </label>
                 <div className="relative">
                   <select
@@ -484,7 +486,7 @@ export default function ContactForm({ className }: { className?: string }) {
 
             <div>
               <label htmlFor="contact-message" className={labelClasses}>
-                Message
+                Message{requiredMark}
               </label>
               <textarea
                 id="contact-message"
