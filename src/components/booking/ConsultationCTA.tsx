@@ -27,16 +27,15 @@ export function ConsultationCTA({
         <div className="relative">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-primary-accessible">
             <Video aria-hidden="true" className="h-3.5 w-3.5" />
-            {serviceName}
+            Quick Call
           </span>
 
           <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-foreground">
-            Schedule a Strategic Consultation
+            Get Expert Guidance in 30 Minutes
           </h3>
 
           <p className="mt-3 text-sm leading-relaxed text-muted-accessible">
-            Let's discuss your project goals and map out the right strategy.
-            30-minute video call with our strategy team.
+            Book a free discovery call — share your idea and leave with a clear plan. No strings attached.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">

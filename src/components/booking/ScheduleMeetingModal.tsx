@@ -153,15 +153,15 @@ function ModalContent({ isOpen, onClose, serviceName }: ModalContentProps) {
 
   return (
     <div
-      className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-sm transition-all"
+      className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
       <div
-        className="relative w-full sm:w-auto sm:max-w-lg bg-background shadow-2xl flex flex-col overflow-hidden"
-        style={{ maxHeight: "100dvh", ...(typeof window !== "undefined" && window.innerWidth >= 640 ? { borderRadius: "1.5rem" } : {}) }}
+        className="relative w-full max-w-xl bg-background shadow-2xl flex flex-col overflow-hidden"
+        style={{ maxHeight: "85dvh", borderRadius: "1.5rem" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
