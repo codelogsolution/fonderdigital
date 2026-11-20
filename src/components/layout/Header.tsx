@@ -381,9 +381,9 @@ export default function Header() {
                   <div className="lg:hidden">
                     <ThemeSwitcher />
                   </div>
-                  <Magnetic className="flex-1">
+                  <div className="flex-1">
                     <HeaderBookingButton />
-                  </Magnetic>
+                  </div>
                 </motion.div>
               </motion.div>
             </motion.nav>
