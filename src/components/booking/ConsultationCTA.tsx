@@ -18,7 +18,7 @@ export function ConsultationCTA({
 
   return (
     <div className={cn(className)}>
-      <div className="relative isolate overflow-hidden rounded-[1.75rem] border border-border-subtle bg-surface/80 p-6 shadow-[0_24px_70px_-48px_var(--primary-glow-strong)]">
+      <div className="relative isolate overflow-hidden rounded-4xl border border-border-subtle bg-surface p-6 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.08)]">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/10 blur-[90px]"

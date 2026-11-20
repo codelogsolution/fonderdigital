@@ -334,7 +334,7 @@ export default function ContactForm({ className }: { className?: string }) {
             transition={{ duration: 0.3 }}
             onSubmit={handleSubmit}
             noValidate
-            className="flex flex-col gap-5 rounded-[1.75rem] border border-border-subtle bg-surface/80 p-5 shadow-[0_24px_70px_-48px_var(--primary-glow-strong)] backdrop-blur-xl sm:p-8"
+            className="flex flex-col gap-5 rounded-4xl border border-border-subtle bg-surface p-5 sm:p-8 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_24px_rgba(0,0,0,0.08)]"
           >
             <div className="border-b border-border-subtle pb-5">
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
