@@ -703,23 +703,9 @@ h6 {
   animation: card-float 9s ease-in-out infinite;
 }
 
-@keyframes shimmer-sweep {
-  0%   { transform: translateX(-150%) skewX(-20deg); }
-  100% { transform: translateX(250%) skewX(-20deg); }
-}
 
-@keyframes ring-pulse-glow {
-  0%, 100% { opacity: 0; transform: scale(1); }
-  50%       { opacity: 0.4; transform: scale(1.15); }
-}
 
-@utility animate-shimmer {
-  animation: shimmer-sweep 2.6s ease-in-out infinite;
-}
 
-@utility animate-ring-pulse-glow {
-  animation: ring-pulse-glow 2.8s ease-in-out infinite;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .animate-orb-drift,
