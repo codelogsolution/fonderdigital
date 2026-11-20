@@ -28,7 +28,6 @@ export default function HeaderBookingButton() {
 
         <CalendarDays className="relative z-10 mr-1.5 h-3.5 w-3.5 shrink-0 opacity-80 transition-opacity duration-300 group-hover:opacity-100" />
         <span className="relative z-10 flex items-baseline gap-0 whitespace-nowrap">
-          <span>Book </span>
           <span className="font-bold">Quick Call</span>
         </span>
 
