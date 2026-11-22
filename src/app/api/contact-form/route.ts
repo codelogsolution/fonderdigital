@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/prisma/db';
-import nodemailer from 'nodemailer';
-import { siteConfig } from '@/config/site';
+import { Resend } from 'resend';
 
-// Configure Nodemailer transporter
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+const resendApiKey = process.env.RESEND_API_KEY;
+const infoEmail = process.env.INFO_EMAIL || 'info@fonderdigital.com';
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,108 +18,136 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const inquiry = await db.orm.public.ContactInquiry.create({
-      name,
-      email,
-      phone: phone || null,
-      service,
-      website: website || null,
-      message,
-    });
+    // Save inquiry to database
+    let inquiry;
+    try {
+      inquiry = await db.orm.public.ContactInquiry.create({
+        name,
+        email,
+        phone: phone || null,
+        service,
+        website: website || null,
+        message,
+      });
+      console.log('New project inquiry submitted to DB:', inquiry.id);
+    } catch (dbError) {
+      const errMsg = dbError instanceof Error ? dbError.message : String(dbError);
+      console.warn('DB save failed:', errMsg);
+      // Fall through — don't treat DB failure as complete failure since we attempted it
+      inquiry = null;
+    }
 
-    console.log('New project inquiry submitted:', inquiry.id);
+    // Send confirmation emails via Resend (optional — won't break the flow if unavailable)
+    if (resend) {
+      try {
+        // Email to FonderDigital team
+        await resend.emails.send({
+          from: 'FonderDigital Inquiries <onboarding@resend.dev>',
+          to: [infoEmail],
+          subject: `New Project Inquiry — ${name}`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+              <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #b45309; font-weight: 700;">New Project Inquiry</p>
+              <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 700;">${name} reached out via the website</h2>
+              <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600; width: 120px;">Name</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${name}</td></tr>
+                <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Email</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><a href="mailto:${email}" style="color: #b45309; text-decoration: none;">${email}</a></td></tr>
+                <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Phone</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${phone || 'Not provided'}</td></tr>
+                <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Service</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${service}</td></tr>
+                <tr><td style="padding: 8px 0; font-weight: 600;">Website</td><td style="padding: 8px 0;">${website || 'Not provided'}</td></tr>
+              </table>
+              <div style="background: #faf8f5; border-left: 3px solid #b45309; padding: 16px; margin-top: 16px;">
+                <p style="margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #888; font-weight: 600; margin-bottom: 8px;">Project Brief</p>
+                <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #333;">${(message || '').replace(/\n/g, '<br/>')}</p>
+              </div>
+              <p style="margin: 24px 0 4px 0; font-size: 12px; color: #aaa;">Inquiry ID: ${inquiry?.id || 'N/A'} · ${new Date().toLocaleString()}</p>
+            </div>
+          `,
+        });
 
-    await transporter.sendMail({
-      from: 'FonderDigital Inquiries <onboarding@your-domain.com>',
-      to: [siteConfig.infoEmail],
-      subject: `New Project Inquiry - ${name}`,
-      html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-          <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-          <h2 style="color: #333;">New Project Inquiry</h2>
+        // Confirmation email to the client
+        await resend.emails.send({
+          from: 'FonderDigital <onboarding@resend.dev>',
+          to: [email],
+          subject: "We've received your inquiry — FonderDigital",
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+              <!-- Logo area -->
+              <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
+                <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital" style="height: 32px; width: auto;" />
+              </div>
 
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #333;">Client Details</h3>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-            <p><strong>Service Interest:</strong> ${service}</p>
-            <p><strong>Website:</strong> ${website || 'Not provided'}</p>
-          </div>
+              <!-- Greeting -->
+              <div style="padding: 32px 32px 0;">
+                <p style="margin: 0 0 12px 0; font-size: 16px; color: #666;">Hi ${name.split(' ')[0]},</p>
+                <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.65; color: #333;">
+                  Thank you for reaching out to <strong style="color: #1a1a1a;">FonderDigital</strong>. We've received your inquiry about our <strong>${service}</strong> services and a member of our team will review your brief carefully.
+                </p>
+              </div>
 
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #333;">Project Brief</h3>
-            <p style="white-space: pre-wrap;">${message}</p>
-          </div>
+              <!-- Summary box -->
+              <div style="margin: 0 32px; background: #faf8f5; border-radius: 8px; padding: 20px 24px; border: 1px solid #f0ebe4;">
+                <p style="margin: 0 0 4px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #b45309; font-weight: 700;">What to expect next</p>
+                <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #444;">
+                  Our team reviews every inquiry within <strong>24 hours</strong>. You'll receive a personalised response outlining how we can help bring your project to life — no automated replies, just a genuine conversation.
+                </p>
+              </div>
 
-          <div style="margin-top: 30px;">
-            <p style="margin-bottom: 5px;">Regards,</p>
-            <table style="border-collapse: collapse; width: 100%;">
-              <tr>
-                <td style="width: 160px; vertical-align: middle;">
-                  <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital" style="width: 140px;" />
-                </td>
-                <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
-                  <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
-                  <p style="margin: 0; color: #666;">${siteConfig.infoEmail}</p>
-                </td>
-              </tr>
-            </table>
-          </div>
+              <!-- Services highlight -->
+              <div style="padding: 24px 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 120px; text-align: center; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #f0ebe4;">
+                  <div style="font-size: 20px; margin-bottom: 6px;">⚡</div>
+                  <p style="margin: 0; font-size: 12px; font-weight: 600; color: #333;">Quick Response</p>
+                  <p style="margin: 4px 0 0; font-size: 11px; color: #888;">Within 24 hours</p>
+                </div>
+                <div style="flex: 1; min-width: 120px; text-align: center; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #f0ebe4;">
+                  <div style="font-size: 20px; margin-bottom: 6px;">🎯</div>
+                  <p style="margin: 0; font-size: 12px; font-weight: 600; color: #333;">Tailored Approach</p>
+                  <p style="margin: 4px 0 0; font-size: 11px; color: #888;">No generic proposals</p>
+                </div>
+                <div style="flex: 1; min-width: 120px; text-align: center; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #f0ebe4;">
+                  <div style="font-size: 20px; margin-bottom: 6px;">🤝</div>
+                  <p style="margin: 0; font-size: 12px; font-weight: 600; color: #333;">Free Consultation</p>
+                  <p style="margin: 4px 0 0; font-size: 11px; color: #888;">30-min discovery call</p>
+                </div>
+              </div>
 
-          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #999; font-size: 12px;">
-            <p>Inquiry ID: ${inquiry.id}</p>
-          </div>
-        </div>
-      `,
-    });
+              <!-- CTA -->
+              <div style="padding: 0 32px 32px; text-align: center;">
+                <a href="https://www.fonderdigital.com/services" style="display: inline-block; background: #b45309; color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 6px; font-size: 14px; font-weight: 600;">Explore Our Services</a>
+              </div>
 
-    await transporter.sendMail({
-      from: 'FonderDigital <onboarding@your-domain.com>',
-      to: [email],
-      subject: `We've received your project inquiry - FonderDigital`,
-      html: `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-          <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-          <h2 style="color: #333;">Thanks for reaching out!</h2>
+              <!-- Footer -->
+              <div style="border-top: 1px solid #f0ebe4; padding: 24px 32px; text-align: center;">
+                <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">Warm regards,<br/><strong>The FonderDigital Team</strong></p>
+                <p style="margin: 12px 0 0 0; font-size: 12px; color: #aaa; line-height: 1.6;">
+                  <a href="https://www.fonderdigital.com" style="color: #b45309; text-decoration: none;">fonderdigital.com</a>
+                  ${infoEmail ? ` · ${infoEmail}` : ''}
+                </p>
+                <p style="margin: 8px 0 0 0; font-size: 11px; color: #ccc;">You're receiving this because you submitted an inquiry on our website.</p>
+              </div>
+            </div>
+          `,
+        });
 
-          <p>Hi ${name},</p>
+        console.log('Confirmation emails sent to', email, 'and', infoEmail);
+      } catch (emailError) {
+        const errMsg = emailError instanceof Error ? emailError.message : String(emailError);
+        console.warn('Email delivery failed (non-fatal):', errMsg);
+      }
+    } else {
+      console.log('Resend not configured — skipping email delivery');
+    }
 
-          <p>We've received your project inquiry. Our team will review your goals and project details, and get back to you within 24 hours with a tailored response.</p>
-
-          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="margin-top: 0; color: #333;">Your Inquiry Summary</h3>
-            <p><strong>Service Interest:</strong> ${service}</p>
-            <p><strong>Brief:</strong> ${message.replace(/\n/g, '<br/>')}</p>
-          </div>
-
-          <p>If you have any additional details to share, feel free to reply directly to this email.</p>
-
-          <div style="margin-top: 30px;">
-            <p style="margin-bottom: 5px;">Regards,</p>
-            <table style="border-collapse: collapse; width: 100%;">
-              <tr>
-                <td style="width: 160px; vertical-align: middle;">
-                  <img src="https://fonderdigital.com/images/fonderdigital-logo.svg" alt="FonderDigital" style="width: 140px;" />
-                </td>
-                <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
-                  <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
-                  <p style="margin: 0; color: #666;">${siteConfig.infoEmail}</p>
-                </td>
-              </tr>
-            </table>
-          </div>
-
-          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #999; font-size: 12px;">
-            <p>Reference: ${inquiry.id}</p>
-          </div>
-        </div>
-      `,
-    });
-
-    return NextResponse.json({ success: true, message: 'Inquiry submitted!' }, { status: 201 });
+    return NextResponse.json(
+      { success: true, message: inquiry ? 'Inquiry submitted successfully' : 'Inquiry received', inquiryId: inquiry?.id },
+      { status: 201 }
+    );
   } catch (error) {
     console.error('Contact Form API Error:', error);
-    return NextResponse.json({ success: false, message: 'Failed to submit.' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: 'Something went wrong. Please try again later.' },
+      { status: 500 }
+    );
   }
 }

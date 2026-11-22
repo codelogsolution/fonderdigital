@@ -261,11 +261,13 @@ export default function ContactForm({ className }: { className?: string }) {
               <Check className="h-8 w-8" />
             </motion.span>
             <h2 className="mt-8 text-2xl font-extrabold tracking-tight">
-              Inquiry Submitted Successfully
+              Thank you for choosing FonderDigital!
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              Thank you! We've received your project details and will get back
-              to you within 24 hours.
+              We've received your project brief and our team will review it
+              personally. You'll hear from us within 24 hours with a tailored
+              response — no auto-replies, just a genuine conversation about
+              bringing your vision to life.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <button
@@ -310,15 +312,15 @@ export default function ContactForm({ className }: { className?: string }) {
               Something went wrong
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              We couldn't submit your inquiry. Please try again or contact us
-              directly at
+              We couldn't submit your inquiry due to a technical issue. Please
+              try again in a moment, or reach us directly at
               <a
                 href={`mailto:${siteConfig.infoEmail}`}
                 className="font-semibold text-primary underline underline-offset-4"
               >
                 {siteConfig.infoEmail}
               </a>
-              .
+              . We'll make sure your project details don't get lost.
             </p>
             <button
               onClick={handleRetry}

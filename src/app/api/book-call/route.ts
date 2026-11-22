@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/prisma/db';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { siteConfig } from '@/config/site';
 
-// Configure Nodemailer transporter
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
+const resendApiKey = process.env.RESEND_API_KEY;
+const infoEmail = process.env.INFO_EMAIL || 'info@fonderdigital.com';
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 const logoUrl = 'https://fonderdigital.com/images/fonderdigital-logo.svg';
 
@@ -50,133 +44,108 @@ export async function POST(request: NextRequest) {
 
     console.log('New strategy session scheduled:', booking);
 
-    try {
-      const formattedDate = new Date(bookingDate).toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        weekday: 'long',
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+    if (resend) {
+      try {
+        const formattedDate = new Date(bookingDate).toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          weekday: 'long',
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
 
-      const durationText = `${duration} minutes`;
+        const durationText = `${duration} minutes`;
 
-      await transporter.sendMail({
-        from: 'FonderDigital Sessions <onboarding@your-domain.com>',
-        to: [siteConfig.infoEmail],
-        subject: `New Strategic Session Request - ${name}`,
-        html: `
-          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-            <img src="${logoUrl}" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-            <h2 style="color: #111;">New Strategic Consultation Request</h2>
+        // Email to FonderDigital team
+        await resend.emails.send({
+          from: 'FonderDigital Sessions <onboarding@resend.dev>',
+          to: [infoEmail],
+          subject: `New Strategic Session Request — ${name}`,
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+              <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
+                <img src="${logoUrl}" alt="FonderDigital" style="height: 32px; width: auto;" />
+              </div>
 
-            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #333;">Client Details</h3>
-              <p><strong>Name:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-              <p><strong>Service Focus:</strong> ${service}</p>
-              <p><strong>Website:</strong> ${website || 'Not provided'}</p>
+              <div style="padding: 32px;">
+                <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #b45309; font-weight: 700;">New Strategic Session Request</p>
+                <h2 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 700;">${name} booked a ${duration}-minute session</h2>
+
+                <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600; width: 140px;">Name</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${name}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Email</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><a href="mailto:${email}" style="color: #b45309; text-decoration: none;">${email}</a></td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Phone</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${phone || 'Not provided'}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Service</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${service}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Website</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${website || 'Not provided'}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Preferred Time</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${formattedDate} (IST)</td></tr>
+                  <tr><td style="padding: 8px 0; font-weight: 600;">Duration</td><td style="padding: 8px 0;">${durationText}</td></tr>
+                </table>
+
+                ${message ? `
+                <div style="background: #faf8f5; border-left: 3px solid #b45309; padding: 16px; margin-top: 16px;">
+                  <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #888; font-weight: 600;">Notes</p>
+                  <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #333;">${message.replace(/\n/g, '<br/>')}</p>
+                </div>
+                ` : ''}
+
+                <p style="margin: 24px 0 4px 0; font-size: 12px; color: #aaa;">Booking ID: ${booking.id} · ${new Date().toLocaleString()}</p>
+              </div>
+
+              <div style="border-top: 1px solid #f0ebe4; padding: 16px 32px; text-align: center; font-size: 12px; color: #999;">
+                FonderDigital · ${infoEmail}
+              </div>
             </div>
+          `,
+        });
 
-            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #333;">Session Details</h3>
-              <p><strong>Preferred Date & Time:</strong> ${formattedDate} (IST)</p>
-              <p><strong>Duration:</strong> ${durationText}</p>
+        // Confirmation email to client
+        await resend.emails.send({
+          from: 'FonderDigital <onboarding@resend.dev>',
+          to: [email],
+          subject: 'Strategic Consultation Request Received — FonderDigital',
+          html: `
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
+              <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
+                <img src="${logoUrl}" alt="FonderDigital" style="height: 32px; width: auto;" />
+              </div>
+
+              <div style="padding: 32px;">
+                <p style="margin: 0 0 12px 0; font-size: 16px; color: #666;">Hi ${name.split(' ')[0]},</p>
+                <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.65; color: #333;">
+                  Thanks for booking a <strong>${duration}-minute strategic consultation</strong> with FonderDigital. We've received your request for <strong>${formattedDate} (IST)</strong> focusing on <strong>${service}</strong>.
+                </p>
+
+                <div style="background: #faf8f5; border-radius: 8px; padding: 20px 24px; margin: 20px 0; border: 1px solid #f0ebe4;">
+                  <p style="margin: 0 0 4px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #b45309; font-weight: 700;">What happens next</p>
+                  <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #444;">
+                    Our team will review your request and follow up within <strong>24 hours</strong> with a confirmed Google Meet link and calendar invitation.
+                  </p>
+                </div>
+
+                <div style="margin: 24px 0; padding-top: 16px; border-top: 1px solid #f0ebe4;">
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">Warm regards,<br/><strong>The FonderDigital Team</strong></p>
+                  <p style="margin: 0; font-size: 12px; color: #aaa;">
+                    <a href="https://www.fonderdigital.com" style="color: #b45309; text-decoration: none;">fonderdigital.com</a> · ${infoEmail}
+                  </p>
+                </div>
+              </div>
+
+              <div style="border-top: 1px solid #f0ebe4; padding: 16px 32px; text-align: center; font-size: 11px; color: #ccc;">
+                Reference: ${booking.id}
+              </div>
             </div>
+          `,
+        });
 
-            ${message ? `
-            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #333;">Notes / Message</h3>
-              <p style="white-space: pre-wrap;">${message}</p>
-            </div>
-            ` : ''}
-
-            <div style="margin-top: 30px;">
-              <p style="margin-bottom: 5px;">Regards,</p>
-              <table style="border-collapse: collapse; width: 100%;">
-                <tr>
-                  <td style="width: 160px; vertical-align: middle;">
-                    <img src="${logoUrl}" alt="FonderDigital" style="width: 140px;" />
-                  </td>
-                  <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
-                    <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
-                    <p style="margin: 0; color: #666;">${siteConfig.infoEmail}</p>
-                  </td>
-                </tr>
-              </table>
-            </div>
-
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #999; font-size: 12px;">
-              <p>Session ID: ${booking.id}</p>
-            </div>
-          </div>
-        `,
-      });
-      console.log('Session email sent to info@fonderdigital.com');
-    } catch (emailError) {
-      console.error('Failed to send session email:', emailError);
-    }
-
-    try {
-      const formattedDate = new Date(bookingDate).toLocaleString('en-IN', {
-        timeZone: 'Asia/Kolkata',
-        weekday: 'long',
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-
-      await transporter.sendMail({
-        from: 'FonderDigital <onboarding@your-domain.com>',
-        to: [email],
-        subject: `Strategic Consultation Request Received - FonderDigital`,
-        html: `
-          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">
-            <img src="${logoUrl}" alt="FonderDigital Logo" style="width: 150px; margin-bottom: 20px;" />
-            <h2 style="color: #111;">Consultation Request Received</h2>
-
-            <p>Hi ${name},</p>
-
-            <p>Thank you for requesting a strategic consultation session with FonderDigital. We're excited to learn more about your project goals.</p>
-
-            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-              <h3 style="margin-top: 0; color: #333;">Requested Session Details</h3>
-              <p><strong>Preferred Time:</strong> ${formattedDate} (IST)</p>
-              <p><strong>Duration:</strong> ${duration} minutes</p>
-              <p><strong>Focus Area:</strong> ${service}</p>
-            </div>
-
-            <p>Our team is reviewing your request and will follow up with a confirmed Google Meet link and calendar invitation shortly.</p>
-
-            <div style="margin-top: 30px;">
-              <p style="margin-bottom: 5px;">Regards,</p>
-              <table style="border-collapse: collapse; width: 100%;">
-                <tr>
-                  <td style="width: 160px; vertical-align: middle;">
-                    <img src="${logoUrl}" alt="FonderDigital" style="width: 140px;" />
-                  </td>
-                  <td style="vertical-align: middle; border-left: 1px solid #ddd; padding-left: 15px;">
-                    <p style="margin: 0; font-weight: bold; font-size: 16px;">Co-Founder</p>
-                    <p style="margin: 0; color: #666;">${siteConfig.infoEmail}</p>
-                  </td>
-                </tr>
-              </table>
-            </div>
-
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #999; font-size: 12px;">
-              <p>Reference: ${booking.id}</p>
-            </div>
-          </div>
-        `,
-      });
-      console.log('Confirmation email sent to client:', email);
-    } catch (emailError) {
-      console.error('Failed to send confirmation to client:', emailError);
+        console.log('Session emails sent to', infoEmail, 'and', email);
+      } catch (emailError) {
+        const errMsg = emailError instanceof Error ? emailError.message : String(emailError);
+        console.warn('Session email delivery failed (non-fatal):', errMsg);
+      }
+    } else {
+      console.log('Resend not configured — skipping session emails');
     }
 
     return NextResponse.json(
