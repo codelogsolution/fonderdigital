@@ -1,13 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/prisma/db';
-import { Resend } from 'resend';
-import { siteConfig } from '@/config/site';
+import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/prisma/db";
+import { Resend } from "resend";
 
 const resendApiKey = process.env.RESEND_API_KEY;
-const infoEmail = process.env.INFO_EMAIL || 'info@fonderdigital.com';
+const infoEmail = process.env.INFO_EMAIL || "info@fonderdigital.com";
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-const logoUrl = 'https://fonderdigital.com/images/fonderdigital-logo.svg';
+const logoUrl = "https://fonderdigital.com/images/fonderdigital-logo.svg";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,13 +19,13 @@ export async function POST(request: NextRequest) {
       website,
       message,
       bookingDate,
-      duration
+      duration,
     } = body;
 
     if (!name || !email || !service || !bookingDate || !duration) {
       return NextResponse.json(
-        { success: false, message: 'Missing required fields' },
-        { status: 400 }
+        { success: false, message: "Missing required fields" },
+        { status: 400 },
       );
     }
 
@@ -39,28 +38,28 @@ export async function POST(request: NextRequest) {
       message: message || null,
       bookingDate: new Date(bookingDate),
       duration: parseInt(duration),
-      status: 'pending',
+      status: "pending",
     });
 
-    console.log('New strategy session scheduled:', booking);
+    console.log("New strategy session scheduled:", booking);
 
     if (resend) {
       try {
-        const formattedDate = new Date(bookingDate).toLocaleString('en-IN', {
-          timeZone: 'Asia/Kolkata',
-          weekday: 'long',
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
+        const formattedDate = new Date(bookingDate).toLocaleString("en-IN", {
+          timeZone: "Asia/Kolkata",
+          weekday: "long",
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
         });
 
         const durationText = `${duration} minutes`;
 
         // Email to FonderDigital team
         await resend.emails.send({
-          from: 'FonderDigital Sessions <onboarding@resend.dev>',
+          from: "FonderDigital <info@fonderdigital.com>",
           to: [infoEmail],
           subject: `New Strategic Session Request — ${name}`,
           html: `
@@ -76,19 +75,23 @@ export async function POST(request: NextRequest) {
                 <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
                   <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600; width: 140px;">Name</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${name}</td></tr>
                   <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Email</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><a href="mailto:${email}" style="color: #b45309; text-decoration: none;">${email}</a></td></tr>
-                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Phone</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${phone || 'Not provided'}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Phone</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${phone || "Not provided"}</td></tr>
                   <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Service</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${service}</td></tr>
-                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Website</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${website || 'Not provided'}</td></tr>
+                  <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Website</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${website || "Not provided"}</td></tr>
                   <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee; font-weight: 600;">Preferred Time</td><td style="padding: 8px 0; border-bottom: 1px solid #eee;">${formattedDate} (IST)</td></tr>
                   <tr><td style="padding: 8px 0; font-weight: 600;">Duration</td><td style="padding: 8px 0;">${durationText}</td></tr>
                 </table>
 
-                ${message ? `
+                ${
+                  message
+                    ? `
                 <div style="background: #faf8f5; border-left: 3px solid #b45309; padding: 16px; margin-top: 16px;">
                   <p style="margin: 0 0 8px 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #888; font-weight: 600;">Notes</p>
-                  <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #333;">${message.replace(/\n/g, '<br/>')}</p>
+                  <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #333;">${message.replace(/\n/g, "<br/>")}</p>
                 </div>
-                ` : ''}
+                `
+                    : ""
+                }
 
                 <p style="margin: 24px 0 4px 0; font-size: 12px; color: #aaa;">Booking ID: ${booking.id} · ${new Date().toLocaleString()}</p>
               </div>
@@ -102,9 +105,9 @@ export async function POST(request: NextRequest) {
 
         // Confirmation email to client
         await resend.emails.send({
-          from: 'FonderDigital <onboarding@resend.dev>',
+          from: "FonderDigital <info@fonderdigital.com>",
           to: [email],
-          subject: 'Strategic Consultation Request Received — FonderDigital',
+          subject: "Strategic Consultation Request Received — FonderDigital",
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
               <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
@@ -112,7 +115,7 @@ export async function POST(request: NextRequest) {
               </div>
 
               <div style="padding: 32px;">
-                <p style="margin: 0 0 12px 0; font-size: 16px; color: #666;">Hi ${name.split(' ')[0]},</p>
+                <p style="margin: 0 0 12px 0; font-size: 16px; color: #666;">Hi ${name.split(" ")[0]},</p>
                 <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.65; color: #333;">
                   Thanks for booking a <strong>${duration}-minute strategic consultation</strong> with FonderDigital. We've received your request for <strong>${formattedDate} (IST)</strong> focusing on <strong>${service}</strong>.
                 </p>
@@ -139,28 +142,33 @@ export async function POST(request: NextRequest) {
           `,
         });
 
-        console.log('Session emails sent to', infoEmail, 'and', email);
+        console.log("Session emails sent to", infoEmail, "and", email);
       } catch (emailError) {
-        const errMsg = emailError instanceof Error ? emailError.message : String(emailError);
-        console.warn('Session email delivery failed (non-fatal):', errMsg);
+        const errMsg =
+          emailError instanceof Error ? emailError.message : String(emailError);
+        console.error("CRITICAL: Session email delivery FAILED:", errMsg);
       }
     } else {
-      console.log('Resend not configured — skipping session emails');
+      console.log("Resend not configured — skipping session emails");
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Strategic session request received. We will contact you shortly.',
-        bookingId: booking.id
+        message:
+          "Strategic session request received. We will contact you shortly.",
+        bookingId: booking.id,
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
-    console.error('Session Scheduling Error:', error);
+    console.error("Session Scheduling Error:", error);
     return NextResponse.json(
-      { success: false, message: 'Failed to schedule session. Please try again.' },
-      { status: 500 }
+      {
+        success: false,
+        message: "Failed to schedule session. Please try again.",
+      },
+      { status: 500 },
     );
   }
 }

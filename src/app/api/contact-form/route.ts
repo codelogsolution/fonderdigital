@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       try {
         // Email to FonderDigital team
         await resend.emails.send({
-          from: 'FonderDigital Inquiries <onboarding@resend.dev>',
+          from: 'FonderDigital <info@fonderdigital.com>',
           to: [infoEmail],
           subject: `New Project Inquiry — ${name}`,
           html: `
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 
         // Confirmation email to the client
         await resend.emails.send({
-          from: 'FonderDigital <onboarding@resend.dev>',
+          from: 'FonderDigital <info@fonderdigital.com>',
           to: [email],
           subject: "We've received your inquiry — FonderDigital",
           html: `
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
         console.log('Confirmation emails sent to', email, 'and', infoEmail);
       } catch (emailError) {
         const errMsg = emailError instanceof Error ? emailError.message : String(emailError);
-        console.warn('Email delivery failed (non-fatal):', errMsg);
+        console.error('CRITICAL: Email delivery FAILED:', errMsg);
       }
     } else {
       console.log('Resend not configured — skipping email delivery');

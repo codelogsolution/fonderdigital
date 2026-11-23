@@ -94,7 +94,7 @@ export async function PATCH(request: NextRequest) {
 `;
 
         await resend.emails.send({
-          from: 'FonderDigital Newsletter <onboarding@resend.dev>',
+          from: 'FonderDigital <onboarding@resend.dev>',
           to: [email],
           subject: `${subscribed ? 'Welcome' : 'Goodbye'} — FonderDigital Newsletter`,
           html: emailContent,
