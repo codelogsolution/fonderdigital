@@ -102,7 +102,7 @@ function RotatingText({
         {isComplete ? currentFull : phase === "waiting" ? "" : text || " "}
       </span>
       {(phase === "typing" || phase === "deleting") && (
-        <span className="inline-block align-middle ml-px h-[0.95em] w-0.5 bg-[#9e4400] animate-pulse mb-1.5" />
+        <span className="inline-block align-middle ml-px h-[0.95em] w-0.5 bg-primary animate-pulse mb-1.5" />
       )}
     </span>
   );
