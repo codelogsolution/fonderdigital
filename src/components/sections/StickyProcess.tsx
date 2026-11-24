@@ -2,7 +2,13 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -107,7 +113,7 @@ function PhasePanel({ phase, index }: { phase: Phase; index: number }) {
       <h3 className="mt-5 line-clamp-2 max-w-2xl text-balance text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
         {phase.title}
       </h3>
-      <p className="mt-3 line-clamp-3 min-h-[4.5rem] max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+      <p className="mt-3 line-clamp-3 min-h-18 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
         {phase.description}
       </p>
 
@@ -115,9 +121,12 @@ function PhasePanel({ phase, index }: { phase: Phase; index: number }) {
         {phase.checkpoints.map((checkpoint) => (
           <li
             key={checkpoint}
-            className="flex min-h-[4.25rem] items-start gap-2.5 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5 text-xs leading-relaxed text-foreground/85 sm:text-sm"
+            className="flex min-h-17 items-start gap-2.5 rounded-xl border border-white/8 bg-white/[0.035] px-3.5 py-2.5 text-xs leading-relaxed text-foreground/85 sm:text-sm"
           >
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+            <Check
+              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+              aria-hidden="true"
+            />
             <span>{checkpoint}</span>
           </li>
         ))}
@@ -147,6 +156,7 @@ function PhasePanel({ phase, index }: { phase: Phase; index: number }) {
 function ScrollJourney() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [panelHovered, setPanelHovered] = useState(false);
   const reduced = useReducedMotionSafe();
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -178,24 +188,34 @@ function ScrollJourney() {
   };
 
   return (
-    <div ref={trackRef} className="process-scroll-story relative hidden h-[220svh] lg:block motion-reduce:hidden">
+    <div
+      ref={trackRef}
+      className="process-scroll-story relative hidden h-[220svh] lg:block motion-reduce:hidden"
+    >
       <div className="sticky top-16 flex min-h-[calc(100svh-4rem)] flex-col justify-center py-5">
         <div className="mb-4 flex shrink-0 items-end justify-between gap-4 border-b border-border-subtle/70 pb-3 sm:mb-5">
           <div>
-            <p aria-hidden="true" className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+            <p
+              aria-hidden="true"
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary"
+            >
               Delivery framework
             </p>
-            <p aria-hidden="true" className="mt-1 text-base font-semibold tracking-tight text-foreground sm:text-lg">
+            <p
+              aria-hidden="true"
+              className="mt-1 text-base font-semibold tracking-tight text-foreground sm:text-lg"
+            >
               Discover · Plan · Create · Launch
             </p>
           </div>
           <span className="shrink-0 font-mono text-[10px] font-semibold tracking-[0.16em] text-muted">
-            0{activeIndex + 1} <span aria-hidden="true">/</span> 0{phases.length}
+            0{activeIndex + 1} <span aria-hidden="true">/</span> 0
+            {phases.length}
           </span>
         </div>
         <div className="grid w-full grid-cols-[minmax(14rem,0.72fr)_3rem_minmax(0,1.28fr)] grid-rows-[auto_auto] items-center gap-x-6 gap-y-4">
           <div className="col-start-1 row-start-1 self-start">
-            <div className="relative h-[19.5rem] space-y-2">
+            <div className="relative h-78 space-y-2">
               {phases.map((phase, index) => {
                 const Icon = phase.icon;
                 const active = index === activeIndex;
@@ -247,12 +267,15 @@ function ScrollJourney() {
             </div>
           </div>
 
-          <div aria-hidden="true" className="relative col-start-2 row-start-1 h-[19.5rem] self-start">
+          <div
+            aria-hidden="true"
+            className="relative col-start-2 row-start-1 h-78 self-start"
+          >
             <div className="absolute inset-x-0 inset-y-9">
               <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 rounded-full bg-primary/20" />
               <motion.span
                 style={{ scaleY: phasePosition }}
-                className="absolute inset-y-0 left-1/2 w-px origin-top -translate-x-1/2 rounded-full bg-gradient-to-b from-primary via-primary to-primary/45"
+                className="absolute inset-y-0 left-1/2 w-px origin-top -translate-x-1/2 rounded-full bg-linear-to-b from-primary via-primary to-primary/45"
               />
               {phases.map((phase, index) => (
                 <span
@@ -279,17 +302,50 @@ function ScrollJourney() {
             id="process-story-panel"
             className="process-story-panel band-dark relative col-start-3 row-span-2 row-start-1 self-center overflow-hidden rounded-[1.75rem] border border-white/10 p-6 shadow-[0_32px_90px_-52px_var(--primary-glow-strong)] sm:p-7 lg:p-9"
             aria-live="off"
+            onPointerMove={(e) => {
+              const bounds = e.currentTarget.getBoundingClientRect();
+              e.currentTarget.style.setProperty(
+                "--spotlight-x",
+                `${e.clientX - bounds.left}px`,
+              );
+              e.currentTarget.style.setProperty(
+                "--spotlight-y",
+                `${e.clientY - bounds.top}px`,
+              );
+            }}
+            onPointerEnter={() => setPanelHovered(true)}
+            onPointerLeave={() => setPanelHovered(false)}
           >
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            {/* Mouse-tracking spotlight — driven by React state */}
+            {!reduced && (
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  opacity: panelHovered ? 1 : 0,
+                  background:
+                    "radial-gradient(320px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 68%)",
+                  transition: "opacity 300ms",
+                }}
+              />
+            )}
+
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0"
+            >
               <div className="absolute inset-0 bg-grid opacity-25" />
               <div className="absolute -right-24 -top-28 h-80 w-80 rounded-full bg-primary/20 blur-[90px]" />
-              <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-primary/55 to-transparent" />
+              <div className="absolute bottom-0 left-0 h-px w-full bg-linear-to-r from-transparent via-primary/55 to-transparent" />
             </div>
             <motion.div
               key={activeIndex}
               initial={reduced ? false : { y: 7 }}
               animate={{ y: 0 }}
-              transition={{ duration: reduced ? 0 : 0.22, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: reduced ? 0 : 0.22,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="relative h-full"
             >
               <PhasePanel phase={phases[activeIndex]} index={activeIndex} />
@@ -308,10 +364,13 @@ export default function StickyProcess() {
       aria-labelledby="process-heading"
       className="relative isolate overflow-x-clip border-y border-border-subtle py-6 sm:py-8 lg:py-10"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+      >
         <div className="absolute inset-0 bg-mesh opacity-80" />
-        <div className="absolute -left-48 top-1/3 h-[30rem] w-[30rem] rounded-full bg-primary/[0.08] blur-[100px]" />
-        <div className="absolute -right-48 bottom-0 h-[26rem] w-[26rem] rounded-full bg-primary/[0.07] blur-[100px]" />
+        <div className="absolute -left-48 top-1/3 h-120 w-120 rounded-full bg-primary/8 blur-[100px]" />
+        <div className="absolute -right-48 bottom-0 h-104 w-104 rounded-full bg-primary/[0.07] blur-[100px]" />
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -319,8 +378,8 @@ export default function StickyProcess() {
           <div className="flex flex-col gap-6 border-border-subtle pb-1 sm:flex-row sm:items-end sm:justify-between sm:pb-4">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.2em] text-primary">
-                <span aria-hidden="true" className="h-px w-7 bg-primary/55" />
-                A clear way to work
+                <span aria-hidden="true" className="h-px w-7 bg-primary/55" />A
+                clear way to work
               </span>
               <h2
                 id="process-heading"
@@ -353,11 +412,17 @@ export default function StickyProcess() {
                       <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
                         Step 0{index + 1}
                       </p>
-                      <h3 className="text-sm font-bold text-foreground">{phase.name}</h3>
+                      <h3 className="text-sm font-bold text-foreground">
+                        {phase.name}
+                      </h3>
                     </div>
                   </div>
-                  <p className="mt-4 font-semibold text-foreground">{phase.title}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{phase.description}</p>
+                  <p className="mt-4 font-semibold text-foreground">
+                    {phase.title}
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                    {phase.description}
+                  </p>
                 </article>
               </Reveal>
             ))}
@@ -367,8 +432,9 @@ export default function StickyProcess() {
         <Reveal delay={0.12}>
           <div className="mt-7 hidden flex-wrap items-center justify-between gap-x-8 gap-y-3 border-border-subtle pt-5 sm:flex">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted">
-              Strategy <span className="px-2 text-primary">→</span> Design &amp; build{" "}
-              <span className="px-2 text-primary">→</span> Launch &amp; learn
+              Strategy <span className="px-2 text-primary">→</span> Design &amp;
+              build <span className="px-2 text-primary">→</span> Launch &amp;
+              learn
             </p>
             <p className="text-xs text-muted">
               Clear checkpoints. Thoughtful delivery. No mystery handoffs.

@@ -20,16 +20,12 @@ function RotatingText({
   typeSpeed = 95,
   deleteSpeed = 70,
   holdPause = 1800,
-  initialHoldPause = holdPause,
+  initialHoldPause = 1200,
   delay = 0,
   className,
   onWordChange,
 }: RotatingTextProps) {
   const reduced = useReducedMotionSafe();
-  const widestWord = words.reduce(
-    (widest, word) => (word.length > widest.length ? word : widest),
-    "",
-  );
   const [wordIndex, setWordIndex] = useState(0);
   const [text, setText] = useState(words[0] ?? "");
   const [phase, setPhase] = useState<"waiting" | "typing" | "deleting">(
@@ -93,19 +89,21 @@ function RotatingText({
     reduced,
   ]);
 
-  return (
-    <span className={cn("relative inline-grid align-baseline whitespace-nowrap", className)}>
-      <span className="sr-only">{words[wordIndex] ?? ""}</span>
-      <span aria-hidden="true" className="invisible col-start-1 row-start-1">
-        {widestWord}
-      </span>
-      <span aria-hidden="true" className="col-start-1 row-start-1 justify-self-start whitespace-nowrap">
-        {reduced ? words[wordIndex] ?? "" : text}
+  const currentFull = words[wordIndex] ?? "";
+  const isComplete = !reduced && text === currentFull && phase === "typing";
 
-        {!reduced && (
-          <span className="ml-0.5 inline-block h-[0.85em] w-[2px] translate-y-[0.08em] animate-pulse bg-current" />
-        )}
+  return (
+    <span className={cn("relative inline-block whitespace-nowrap", className)}>
+      <span className="sr-only">{currentFull}</span>
+      <span
+        aria-hidden="true"
+        className="font-bold bg-linear-to-r from-primary via-primary to-primary bg-clip-text text-transparent"
+      >
+        {isComplete ? currentFull : phase === "waiting" ? "" : text || " "}
       </span>
+      {(phase === "typing" || phase === "deleting") && (
+        <span className="inline-block align-middle ml-px h-[0.95em] w-0.5 bg-[#9e4400] animate-pulse mb-1.5" />
+      )}
     </span>
   );
 }

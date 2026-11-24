@@ -16,7 +16,15 @@ const socialIcons: Record<
 
 export default function Footer() {
   return (
-    <footer className="band-dark relative text-slate-300">
+    <footer className="band-dark relative text-muted group/spark">
+      {/* Section-wide mouse-tracking spotlight */}
+      <span
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-50 opacity-0 transition-opacity duration-500 group-hover/spark:opacity-100"
+        style={{
+          background: "radial-gradient(600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 60%)",
+        }}
+      />
       <div className="mx-auto max-w-7xl px-4 py-13 sm:px-5 lg:px-8 lg:py-16 lg:pb-9">
         <div className="grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">

@@ -20,8 +20,7 @@ const pillars: Pillar[] = [
     subtitle: "Robust & Scalable Infrastructure",
     description:
       "Plan the data, APIs, integrations, and deployment approach around the product's needs and expected usage.",
-    image:
-      "/images/photo-1558494949.webp",
+    image: "/images/photo-1558494949.webp",
     imageAlt: "Server racks in a modern data center",
     points: [
       "Type-safe APIs & resilient data layers",
@@ -35,8 +34,7 @@ const pillars: Pillar[] = [
     subtitle: "Premium User Experiences",
     description:
       "Shape clear interfaces and purposeful motion, with reusable design systems and accessibility considered throughout the work.",
-    image:
-      "/images/photo-1587620962725.webp",
+    image: "/images/photo-1587620962725.webp",
     imageAlt: "Frontend code on a laptop screen",
     points: [
       "Motion tuned to the interaction",
@@ -50,8 +48,7 @@ const pillars: Pillar[] = [
     subtitle: "High-Converting Copy & Strategy",
     description:
       "Connect messaging, campaign planning, and reporting to the goals agreed for your business and audience.",
-    image:
-      "/images/photo-1557804506.webp",
+    image: "/images/photo-1557804506.webp",
     imageAlt: "Growth team reviewing campaign performance together",
     points: [
       "Direct-response copywriting",
@@ -72,12 +69,11 @@ export default function AboutPillars() {
               key={pillar.index}
               className="grid items-center gap-12 lg:grid-cols-2"
             >
-
               <Reveal
                 direction={reversed ? "right" : "left"}
                 className={cn("group", reversed && "lg:order-2")}
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-border-subtle shadow-[0_24px_64px_var(--primary-soft)]">
+                <div className="relative aspect-4/3 overflow-hidden rounded-3xl border border-border-subtle shadow-[0_24px_64px_var(--primary-soft)]">
                   <Image
                     src={pillar.image}
                     alt={pillar.imageAlt}
@@ -87,7 +83,7 @@ export default function AboutPillars() {
                   />
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent"
+                    className="absolute inset-0 bg-linear-to-t from-background/70 via-transparent to-transparent"
                   />
                   <span className="text-gradient absolute bottom-6 left-6 text-6xl font-extrabold tracking-tight sm:text-7xl">
                     {pillar.index}

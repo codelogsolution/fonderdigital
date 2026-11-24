@@ -39,15 +39,15 @@ export const metadata: Metadata = {
 const HomeShowcase = dynamic(() => import("@/components/sections/HomeShowcase"));
 const StickyProcess = dynamic(() => import("@/components/sections/StickyProcess"));
 const AIHomeStory = dynamic(() => import("@/components/sections/AIHomeStory"));
-const TrustMetrics = dynamic(() => import("@/components/sections/TrustMetrics"));
 const DeliveryShowcase = dynamic(() => import("@/components/sections/DeliveryShowcase"));
 const Testimonials = dynamic(() => import("@/components/sections/Testimonials"));
+const ProvenResults = dynamic(() => import("@/components/sections/ProvenResults"));
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <TrustMetrics />
+      <ProvenResults />
       <AIHomeStory />
       <MarqueeStrip />
       <HomeShowcase />

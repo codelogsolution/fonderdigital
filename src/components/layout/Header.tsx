@@ -16,7 +16,6 @@ import { servicePages, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/useScrollLock";
 import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
-import Magnetic from "@/components/ui/Magnetic";
 import HeaderBookingButton from "@/components/layout/HeaderBookingButton";
 
 const mobileList: Variants = {

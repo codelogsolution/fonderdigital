@@ -24,19 +24,22 @@ const metrics: {
     icon: Target,
     step: "01",
     label: "Start with clarity",
-    detail: "Understand the audience, business goal, and constraints before choosing a direction.",
+    detail:
+      "Understand the audience, business goal, and constraints before choosing a direction.",
   },
   {
     icon: Users,
     step: "02",
     label: "Build with focus",
-    detail: "Bring design, engineering, and growth work around a clear scope and shared priorities.",
+    detail:
+      "Bring design, engineering, and growth work around a clear scope and shared priorities.",
   },
   {
     icon: Medal,
     step: "03",
     label: "Improve with evidence",
-    detail: "Review the signals available after launch and use them to guide the next decisions.",
+    detail:
+      "Review the signals available after launch and use them to guide the next decisions.",
   },
 ];
 
@@ -70,13 +73,11 @@ function StatCard({
     calm.set(reduced ? 1 : 0);
   }, [calm, reduced]);
 
-  const cardY = useTransform(
-    [enter, calm],
-    ([e, c]: number[]) => (c > 0.5 ? 0 : 34 * (1 - e)),
+  const cardY = useTransform([enter, calm], ([e, c]: number[]) =>
+    c > 0.5 ? 0 : 34 * (1 - e),
   );
-  const cardOpacity = useTransform(
-    [enter, calm],
-    ([e, c]: number[]) => (c > 0.5 ? 1 : Math.min(1, e / 0.6)),
+  const cardOpacity = useTransform([enter, calm], ([e, c]: number[]) =>
+    c > 0.5 ? 1 : Math.min(1, e / 0.6),
   );
 
   const trackPointer = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -91,7 +92,7 @@ function StatCard({
       ref={cardRef}
       onPointerMove={trackPointer}
       style={{ y: cardY, opacity: cardOpacity }}
-      className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-7 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:bg-white/[0.075] hover:shadow-[0_30px_60px_-30px_var(--primary-glow)] sm:p-8"
+      className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/4.5 p-7 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:bg-white/7.5 hover:shadow-[0_30px_60px_-30px_var(--primary-glow)] sm:p-8"
     >
       {!reduced && (
         <motion.div
@@ -110,7 +111,7 @@ function StatCard({
         </span>
       </div>
 
-      <p className="relative mt-7 bg-gradient-to-br from-white via-primary to-accent-2 bg-clip-text font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-transparent">
+      <p className="relative mt-7 bg-linear-to-br from-white via-primary to-accent-2 bg-clip-text font-display text-[3.25rem] font-extrabold leading-none tracking-tight text-transparent">
         {step}
       </p>
 
@@ -134,9 +135,29 @@ export default function TrustMetrics() {
   return (
     <section
       ref={sectionRef}
+      onPointerMove={(e) => {
+        const bounds = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty(
+          "--spotlight-x",
+          `${e.clientX - bounds.left}px`,
+        );
+        e.currentTarget.style.setProperty(
+          "--spotlight-y",
+          `${e.clientY - bounds.top}px`,
+        );
+      }}
       aria-label="How we work"
-      className="band-dark relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24"
+      className="band-dark relative isolate overflow-x-clip py-16 sm:py-20 lg:py-24 group/spark"
     >
+      {/* Section-wide mouse-tracking spotlight */}
+      <span
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-50 opacity-0 transition-opacity duration-500 group-hover/spark:opacity-100"
+        style={{
+          background:
+            "radial-gradient(600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 60%)",
+        }}
+      />
 
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div
@@ -153,8 +174,8 @@ export default function TrustMetrics() {
               "radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 100%)",
           }}
         />
-        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-background/70 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-linear-to-b from-background/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-background/70 to-transparent" />
       </div>
 
       <div
@@ -176,7 +197,11 @@ export default function TrustMetrics() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-5 sm:gap-6 lg:grid-cols-3">
           {metrics.map((metric) => (
-            <StatCard key={metric.label} {...metric} progress={scrollYProgress} />
+            <StatCard
+              key={metric.label}
+              {...metric}
+              progress={scrollYProgress}
+            />
           ))}
         </div>
       </div>

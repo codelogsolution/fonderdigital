@@ -2,6 +2,7 @@ import PageHeader from "@/components/sections/PageHeader";
 import AboutPillars from "@/components/sections/AboutPillars";
 import Story from "@/components/sections/Story";
 import CallToAction from "@/components/sections/CallToAction";
+import TrustMetrics from "@/components/sections/TrustMetrics";
 import { createPageMetadata } from "@/config/seo";
 import { serviceAreas } from "@/config/site";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
@@ -23,6 +24,7 @@ export default function AboutPage() {
         description="FonderDigital brings strategy, design, engineering, and marketing together around the problem your business needs to solve."
       />
       <AboutPillars />
+      <TrustMetrics />
       <Story />
       <section aria-labelledby="service-areas-title" className="border-t border-border-subtle py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

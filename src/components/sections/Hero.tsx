@@ -13,14 +13,14 @@ import { heroServices, heroSlides } from "@/config/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const heroWords = [
-  "AI products.",
-  "websites.",
-  "apps.",
-  "SEO.",
-  "campaigns.",
-  "branding.",
-  "design.",
-  "content.",
+  "AI products",
+  "websites",
+  "apps",
+  "SEO",
+  "campaigns",
+  "branding",
+  "design",
+  "content",
 ];
 
 export default function Hero() {
@@ -31,16 +31,18 @@ export default function Hero() {
   const fade = (delay: number) => ({
     initial: false,
     animate: { opacity: 1, y: 0 },
-    transition: { duration: reduced ? 0 : 0.55, delay: reduced ? 0 : delay, ease: EASE },
+    transition: {
+      duration: reduced ? 0 : 0.55,
+      delay: reduced ? 0 : delay,
+      ease: EASE,
+    },
   });
 
   return (
-
     <section
       id="home"
-      className="home-hero relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-[100svh]"
+      className="home-hero relative isolate flex min-h-0 flex-col overflow-hidden bg-background lg:min-h-svh"
     >
-
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-mesh" />
         <div
@@ -50,19 +52,18 @@ export default function Hero() {
               "radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%)",
           }}
         />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/75 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-background/75 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-linear-to-t from-background to-transparent" />
       </div>
 
       <div className="hero-grid mx-auto flex w-full max-w-7xl flex-1 flex-col items-center gap-10 px-4 pb-8 pt-24 sm:px-6 lg:grid lg:grid-cols-[1.02fr_0.98fr] lg:gap-8 lg:px-8 lg:pb-6 lg:pt-28">
-
         <div className="relative">
           <motion.div
             {...fade(0.05)}
             className="flex flex-wrap items-center gap-2.5 pt-4"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-background/70 py-1 pl-1 pr-3.5 text-xs font-semibold backdrop-blur-sm">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary text-white">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-linear-to-br from-primary to-primary text-white">
                 <Sparkles className="h-3.5 w-3.5" />
               </span>
               AI + Digital Products
@@ -79,20 +80,19 @@ export default function Hero() {
             <span className="block whitespace-nowrap">
               <SplitText text="business with" className="block" />
             </span>
-            <span className="block whitespace-nowrap">
+            <span className="block whitespace-nowrap mt-2">
               <RotatingText
                 words={heroWords}
-                initialHoldPause={6500}
-                className="bg-gradient-to-r from-primary via-primary to-primary bg-clip-text text-transparent"
+                typeSpeed={140}
+                deleteSpeed={100}
+                initialHoldPause={1800}
+                className="font-bold transition-colors duration-200"
                 onWordChange={setActiveSlide}
               />
-              <span aria-hidden="true" className="animate-pulse text-primary">
-                |
-              </span>
             </span>
           </h1>
 
-          <div className="hero-tagline mt-6 min-h-[4rem] max-w-xl sm:min-h-[3.5rem]">
+          <div className="hero-tagline mt-6 min-h-16 max-w-xl sm:min-h-14">
             <AnimatePresence mode="wait">
               <motion.p
                 key={slide.word}
@@ -107,18 +107,24 @@ export default function Hero() {
             </AnimatePresence>
           </div>
 
-          <motion.p {...fade(0.2)} className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted">
-            FonderDigital plans and builds AI-enabled products, websites, mobile
-            apps, and marketing systems to help growing businesses serve
+          <motion.p
+            {...fade(0.2)}
+            className="hero-lede mt-4 max-w-xl text-base leading-relaxed text-muted"
+          >
+            Fonder Digital plans and builds AI-enabled products, websites,
+            mobile apps, and marketing systems to help growing businesses serve
             customers and work more effectively.
           </motion.p>
-          <motion.div {...fade(0.28)} className="hero-cta mt-9 flex flex-wrap items-center gap-3">
+          <motion.div
+            {...fade(0.28)}
+            className="hero-cta mt-9 flex flex-wrap items-center gap-3"
+          >
             <Button href="/contact" size="lg" className="btn-shine">
-              Get Free Growth Plan
+              Discuss Your Project
               <ArrowRight className="h-4 w-4" />
             </Button>
             <Button href="/services" variant="outline" size="lg">
-              Explore Services
+              What We Build
             </Button>
           </motion.div>
 
@@ -131,21 +137,25 @@ export default function Hero() {
                 <Sparkles className="h-4 w-4" />
               </span>
               <div>
-                <p className="text-sm font-bold tracking-tight">One connected team</p>
+                <p className="text-sm font-bold tracking-tight">
+                  One connected team
+                </p>
                 <p className="text-xs text-muted">Strategy through delivery</p>
               </div>
             </div>
 
             <div>
               <p className="mt-1 text-xs text-muted">
-                Clear project rhythm <span className="px-1.5 text-primary">·</span> Visible milestones
+                Clear project rhythm{" "}
+                <span className="px-1.5 text-primary">·</span> Visible
+                milestones
               </p>
             </div>
           </motion.div>
         </div>
 
         <HeroStage
-          className="hero-stage mx-auto w-full max-w-[288px] sm:max-w-[420px] lg:max-w-[500px]"
+          className="hero-stage mx-auto w-full max-w-[288px] sm:max-w-105 lg:max-w-125"
           activeSlide={activeSlide}
         />
       </div>
@@ -171,7 +181,6 @@ export default function Hero() {
               </motion.li>
             ))}
           </ul>
-
         </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/prisma/db';
 import { Resend } from 'resend';
 
 const resendApiKey = process.env.RESEND_API_KEY;

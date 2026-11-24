@@ -703,10 +703,6 @@ h6 {
   animation: card-float 9s ease-in-out infinite;
 }
 
-
-
-
-
 @media (prefers-reduced-motion: reduce) {
   .animate-orb-drift,
   .animate-orb-breathe,
@@ -723,7 +719,7 @@ h6 {
   }
 
   .hero-grid {
-    padding-top: 6rem;
+    padding-top: 7rem;
     padding-bottom: 0.5rem;
   }
 
@@ -783,7 +779,7 @@ h6 {
   }
 
   .hero-grid {
-    padding-top: 6rem;
+    padding-top: 7rem;
   }
 
   .hero-title {

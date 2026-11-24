@@ -35,7 +35,7 @@ export default function HeaderBookingButton() {
               isModalOpen ? "text-primary-foreground/70" : ""
             }`}
           >
-            <span className="font-bold">Quick Call</span>
+            <span className="font-bold">Book a Call</span>
           </span>
 
           {/* Living arrow — perpetual gentle pulse; snaps to neutral on modal open */}
@@ -66,7 +66,7 @@ export default function HeaderBookingButton() {
       <ScheduleMeetingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        serviceName="Quick Call"
+        serviceName="Book a Call"
       />
     </>
   );

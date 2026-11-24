@@ -33,11 +33,11 @@ export function ConsultationCTA({
           </span>
 
           <h3 className="mt-4 text-2xl font-extrabold tracking-tight text-foreground">
-            Get Expert Guidance in 30 Minutes
+            Book a Free 30-Minute Discovery Call
           </h3>
 
           <p className="mt-3 text-sm leading-relaxed text-muted-accessible">
-            Book a free discovery call — share your idea and leave with a clear plan. No strings attached.
+            Share your idea and leave with a clear plan. No strings attached.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
@@ -68,7 +68,7 @@ export function ConsultationCTA({
             onClick={() => setIsModalOpen(true)}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_var(--primary-glow)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/25"
           >
-            Schedule Your Consultation
+            Reserve Your Slot
             <ArrowRight className="h-4 w-4" />
           </button>
 
