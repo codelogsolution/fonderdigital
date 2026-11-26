@@ -14,7 +14,7 @@ export default function NewsletterForm({ className }: NewsletterFormProps) {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email.trim()) return;
-    const body = `Please add this email address to the FonderDigital newsletter: ${email.trim()}`;
+    const body = `Please add this email address to the Fonder Digital newsletter: ${email.trim()}`;
     window.location.href = `mailto:${siteConfig.infoEmail}?subject=${encodeURIComponent(
       "Newsletter subscription request",
     )}&body=${encodeURIComponent(body)}`;

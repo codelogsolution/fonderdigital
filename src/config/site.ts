@@ -23,10 +23,10 @@ export const serviceAreas = [
 ] as const;
 
 export const siteConfig = {
-  name: "FonderDigital",
+  name: "Fonder Digital",
   tagline: "AI, Web & App Development, SEO & Digital Marketing",
   description:
-    "FonderDigital provides AI assistant development, website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
+    "Fonder Digital provides AI assistant development, website and app development, SEO, digital marketing, branding, and UI/UX design for businesses in the US and UK.",
   url: "https://www.fonderdigital.com",
   infoEmail: "info@fonderdigital.com",
   supportEmail: "support@fonderdigital.com",
@@ -95,7 +95,7 @@ export const heroSlides: HeroSlide[] = [
     stat: "Custom-built",
     caption: "for your goals",
     blurb:
-      "FonderDigital builds fast, conversion-focused websites designed to help visitors understand your offer and take a clear next step.",
+      "Fonder Digital builds fast, conversion-focused websites designed to help visitors understand your offer and take a clear next step.",
     label: "Websites",
     icon: Code2,
   },
@@ -666,7 +666,7 @@ const servicePreviewCopy: Record<string, ServicePreviewCopy> = {
     heading: "Where growth",
     accent: "compounds",
     description:
-      "Illustrative views of technical checks, search performance, and content planning. These are interface concepts, not FonderDigital client results. Hover a card to pause it.",
+      "Illustrative views of technical checks, search performance, and content planning. These are interface concepts, not Fonder Digital client results. Hover a card to pause it.",
     cardNote: "Illustrative concept · no client data",
   },
   branding: {

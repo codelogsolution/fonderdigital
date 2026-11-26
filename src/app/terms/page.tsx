@@ -4,7 +4,8 @@ import { createPageMetadata } from "@/config/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Terms of Service",
-  description: "The terms that apply to FonderDigital's services and the use of this website.",
+  description:
+    "The terms that apply to Fonder Digital's services and the use of this website.",
   path: "/terms",
 });
 
@@ -46,7 +47,9 @@ export default function TermsPage() {
               <h2 className="text-lg font-bold tracking-tight text-foreground">
                 {section.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{section.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {section.body}
+              </p>
             </div>
           ))}
         </div>

@@ -7,14 +7,19 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 export const metadata = createPageMetadata({
   title: "Selected Work & Studio Explorations",
   description:
-    "Explore FonderDigital’s in-house website project, original interface concepts, and capabilities across AI engineering, web and app development, and digital growth.",
+    "Explore Fonder Digital’s in-house website project, original interface concepts, and capabilities across AI engineering, web and app development, and digital growth.",
   path: "/work",
 });
 
 export default function WorkPage() {
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Work", path: "/work" }]} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Work", path: "/work" },
+        ]}
+      />
       <PageHeader
         eyebrow="Selected work · studio explorations"
         title="Useful digital work, made with intent."

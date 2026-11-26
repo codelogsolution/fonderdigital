@@ -261,7 +261,7 @@ export default function ContactForm({ className }: { className?: string }) {
               <Check className="h-8 w-8" />
             </motion.span>
             <h2 className="mt-8 text-2xl font-extrabold tracking-tight">
-              Thank you for choosing FonderDigital!
+              Thank you for choosing Fonder Digital!
             </h2>
             <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
               We've received your project brief and our team will review it
@@ -541,14 +541,23 @@ export default function ContactForm({ className }: { className?: string }) {
                     icon: ArrowUpRight,
                   },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 rounded-xl border border-border-subtle bg-background/50 p-4">
-                    <span className="text-2xl font-black text-primary/25 leading-none">{item.step}</span>
+                  <div
+                    key={i}
+                    className="flex items-start gap-3 rounded-xl border border-border-subtle bg-background/50 p-4"
+                  >
+                    <span className="text-2xl font-black text-primary/25 leading-none">
+                      {item.step}
+                    </span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5 mt-0.5">
                         <item.icon className="h-3.5 w-3.5 text-primary shrink-0" />
-                        <p className="text-sm font-bold text-foreground">{item.title}</p>
+                        <p className="text-sm font-bold text-foreground">
+                          {item.title}
+                        </p>
                       </div>
-                      <p className="mt-1 text-xs leading-relaxed text-muted">{item.desc}</p>
+                      <p className="mt-1 text-xs leading-relaxed text-muted">
+                        {item.desc}
+                      </p>
                     </div>
                   </div>
                 ))}

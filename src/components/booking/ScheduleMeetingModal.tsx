@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo, Fragment } from "react";
-import { createPortal } from "react-dom";
+import { useState, useMemo, Fragment } from "react";
 import { CalendarDays, Loader2, X, Clock, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useScrollLock } from "@/lib/useScrollLock";
+import Modal from "@/components/ui/Modal";
 
 const DURATION_OPTIONS = [
   { value: "30", label: "30 min" },
@@ -57,17 +56,6 @@ function ModalContent({ isOpen, onClose, serviceName }: ModalContentProps) {
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const [step, setStep] = useState(1);
-
-  useScrollLock(isOpen);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [isOpen, onClose]);
 
   const formattedDate = useMemo(() => {
     if (!bookingData.date) return null;
@@ -163,48 +151,42 @@ function ModalContent({ isOpen, onClose, serviceName }: ModalContentProps) {
   });
 
   return (
-    <div
-      className="fixed inset-0 z-9999 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-all"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      labelledBy="modal-title"
+      panelClassName="max-w-xl"
     >
-      <div
-        className="relative w-full max-w-xl bg-background shadow-2xl flex flex-col overflow-hidden"
-        style={{ maxHeight: "85dvh", borderRadius: "1.5rem" }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border-subtle shrink-0 bg-background">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accessible">
-              FonderDigital
-            </p>
-            <h2
-              id="modal-title"
-              className="text-base font-bold text-foreground mt-0.5"
-            >
-              {serviceName}
-            </h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:bg-surface hover:text-foreground"
-            aria-label="Close modal"
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border-subtle shrink-0 bg-background/80 backdrop-blur-md z-10">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary-accessible">
+            Fonder Digital
+          </p>
+          <h2
+            id="modal-title"
+            className="text-base font-bold text-foreground mt-0.5"
           >
-            <X className="h-4 w-4" />
-          </button>
+            {serviceName}
+          </h2>
         </div>
+        <button
+          onClick={onClose}
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-border-subtle text-muted transition-colors hover:bg-surface hover:text-foreground active:scale-95"
+          aria-label="Close modal"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
 
-        {/* Content */}
+        {/* Content - Fixed Scrollable Container */}
         <div
-          className="overflow-y-auto overscroll-contain"
-          style={{ flex: "1 1 auto", minHeight: 0 }}
+          className="flex-1 overflow-y-auto overscroll-contain"
+          style={{ minHeight: 0 }}
         >
           {view === "confirmed" ? (
             <div className="flex flex-col items-center px-8 pt-10 pb-12 text-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mb-5 animate-in zoom-in duration-300">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mb-5 animate-pulse-glow">
                 <Check className="h-9 w-9 text-primary" />
               </div>
               <h3 className="text-xl font-extrabold text-foreground">
@@ -592,8 +574,7 @@ function ModalContent({ isOpen, onClose, serviceName }: ModalContentProps) {
             </form>
           )}
         </div>
-      </div>
-    </div>
+      </Modal>
   );
 }
 
@@ -606,13 +587,14 @@ export function ScheduleMeetingModal({
   onClose: () => void;
   serviceName?: string;
 }) {
+  // Unmount on close so the booking form starts fresh each time it opens
+  // (the reusable <Modal> handles portal, scroll-lock, Lenis, and Escape).
   if (!isOpen) return null;
-  return createPortal(
+  return (
     <ModalContent
       isOpen={isOpen}
       onClose={onClose}
       serviceName={serviceName}
-    />,
-    document.body,
+    />
   );
 }

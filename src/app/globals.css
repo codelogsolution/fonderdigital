@@ -13,6 +13,7 @@
   --primary-accessible: #8a3a05;
   --primary-foreground: #ffffff;
   --muted: #6b6055;
+  --light-muted: #b5c4da;
   --muted-accessible: #554b41;
 
   --primary-soft: rgba(180, 83, 9, 0.08);
@@ -45,6 +46,7 @@
   --primary-accessible: #8a3a05;
   --primary-foreground: #ffffff;
   --muted: #6b6055;
+  --light-muted: #b5c4da;
   --muted-accessible: #554b41;
   --primary-soft: rgba(180, 83, 9, 0.08);
   --primary-line: rgba(180, 83, 9, 0.22);
@@ -67,6 +69,7 @@
   --primary-deep: #0a6399;
   --primary-foreground: #ffffff;
   --muted: #46586b;
+  --light-muted: #b5c4da;
   --muted-accessible: #34485d;
   --primary-soft: rgba(2, 132, 199, 0.09);
   --primary-line: rgba(2, 132, 199, 0.22);
@@ -88,6 +91,7 @@
   --primary-accessible: #c4b5fd;
   --primary-foreground: #180c2e;
   --muted: #a2a2b4;
+  --light-muted: #b5c4da;
   --muted-accessible: #b4b4c6;
   --primary-soft: rgba(167, 139, 250, 0.16);
   --primary-line: rgba(167, 139, 250, 0.36);
@@ -101,6 +105,7 @@
 .band-dark {
   --foreground: #f1f5f9;
   --muted: #94a3b8;
+  --light-muted: #b5c4da;
   --silver-gray: #c7c7d0;
   --border-subtle: rgba(255, 255, 255, 0.1);
   --surface: rgba(255, 255, 255, 0.05);
@@ -127,6 +132,7 @@
 
 [data-theme="noir"] .band-dark {
   --muted: #b4b4c6;
+  --light-muted: #b5c4da;
   --primary: #c4b5fd;
   --primary-foreground: #1c1036;
   --primary-accessible: #c4b5fd;
@@ -158,6 +164,62 @@ html.theme-ready footer {
   }
 }
 
+/* Gentle pendulum sway for elements "hanging" on a wire/rope */
+@keyframes hang-sway {
+  0%,
+  100% {
+    transform: rotate(var(--sway-from, -0.7deg));
+  }
+  50% {
+    transform: rotate(var(--sway-to, 0.7deg));
+  }
+}
+
+.hang-sway {
+  animation: hang-sway var(--sway-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--sway-delay, 0s);
+  transform-origin: top center;
+}
+
+/* Freeze a tag's sway while the user is interacting with it */
+.hang-item:hover .hang-sway {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hang-sway {
+    animation: none;
+  }
+}
+
+.modal-backdrop-in {
+  animation: modal-fade-in 0.25s ease-out both;
+}
+
+.modal-panel-in {
+  animation: modal-panel-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .home-showcase-progress {
     animation: none;
@@ -180,6 +242,7 @@ html.theme-ready footer {
   --color-primary-glow: var(--primary-glow);
   --color-primary-glow-strong: var(--primary-glow-strong);
   --color-muted: var(--muted);
+  --color-light-muted: var(--light-muted);
   --color-muted-accessible: var(--muted-accessible);
   --color-accent-2: var(--accent-2);
   --color-accent-2-soft: var(--accent-2-soft);

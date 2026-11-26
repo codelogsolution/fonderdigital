@@ -6,7 +6,7 @@ import { siteConfig } from "@/config/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
   description:
-    "How FonderDigital collects, uses, and protects the information you share through this website.",
+    "How Fonder Digital collects, uses, and protects the information you share through this website.",
   path: "/privacy",
 });
 
@@ -23,7 +23,10 @@ const sections = [
     title: "Sharing",
     body: "Email is handled by your email provider and ours. Meeting bookings are handled by Google Calendar and added to our connected calendar; Google Meet video-conferencing details are included with the booking. Review Google's privacy information for details about its processing and storage. Do not include sensitive personal information in a project inquiry.",
     links: [
-      { href: "https://policies.google.com/privacy", label: "Google privacy notice" },
+      {
+        href: "https://policies.google.com/privacy",
+        label: "Google privacy notice",
+      },
     ],
   },
   {
@@ -51,7 +54,9 @@ export default function PrivacyPage() {
               <h2 className="text-lg font-bold tracking-tight text-foreground">
                 {section.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{section.body}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {section.body}
+              </p>
               {section.links && (
                 <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
                   {section.links.map((link) => (

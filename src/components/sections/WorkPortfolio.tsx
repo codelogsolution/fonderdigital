@@ -66,7 +66,7 @@ export default function WorkPortfolio() {
               className="mt-5 max-w-xl text-3xl font-extrabold leading-[1.08] tracking-tight sm:text-4xl lg:text-5xl"
             >
               A digital home for{" "}
-              <span className="text-gradient">FonderDigital.</span>
+              <span className="text-gradient">Fonder Digital.</span>
             </h2>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
               Our own website brings the studio’s AI engineering, web and app
@@ -339,7 +339,7 @@ export default function WorkPortfolio() {
               </h2>
             </div>
             <p className="max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-              Explore the services FonderDigital offers. Each engagement is
+              Explore the services Fonder Digital offers. Each engagement is
               scoped to the business goal, the people using it, and the work
               required.
             </p>

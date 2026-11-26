@@ -156,7 +156,7 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-20 lg:px-8">
           <Link
             href="/"
-            aria-label="FonderDigital home"
+            aria-label="Fonder Digital home"
             className="group flex items-center gap-2"
           >
             <BrandMark className="h-10 w-10 text-foreground transition-transform duration-300 group-hover:-rotate-3" />

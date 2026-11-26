@@ -35,6 +35,10 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
           wheelMultiplier: 1,
           touchMultiplier: 1,
           syncTouch: false,
+          // Let native wheel/touch scrolling win inside nested scrollable
+          // elements (e.g. the booking modal's inner content, long quote
+          // panels) instead of hijacking the wheel globally.
+          allowNestedScroll: true,
         });
 
         const raf = (time: number) => {

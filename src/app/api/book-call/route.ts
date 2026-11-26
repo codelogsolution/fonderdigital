@@ -57,15 +57,15 @@ export async function POST(request: NextRequest) {
 
         const durationText = `${duration} minutes`;
 
-        // Email to FonderDigital team
+        // Email to Fonder Digital team
         await resend.emails.send({
-          from: "FonderDigital <info@fonderdigital.com>",
+          from: "Fonder Digital <info@fonderdigital.com>",
           to: [infoEmail],
           subject: `New Strategic Session Request — ${name}`,
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
               <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
-                <img src="${logoUrl}" alt="FonderDigital" style="height: 32px; width: auto;" />
+                <img src="${logoUrl}" alt="Fonder Digital" style="height: 32px; width: auto;" />
               </div>
 
               <div style="padding: 32px;">
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
               </div>
 
               <div style="border-top: 1px solid #f0ebe4; padding: 16px 32px; text-align: center; font-size: 12px; color: #999;">
-                FonderDigital · ${infoEmail}
+                Fonder Digital · ${infoEmail}
               </div>
             </div>
           `,
@@ -105,19 +105,19 @@ export async function POST(request: NextRequest) {
 
         // Confirmation email to client
         await resend.emails.send({
-          from: "FonderDigital <info@fonderdigital.com>",
+          from: "Fonder Digital <info@fonderdigital.com>",
           to: [email],
-          subject: "Strategic Consultation Request Received — FonderDigital",
+          subject: "Strategic Consultation Request Received — Fonder Digital",
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; color: #1a1a1a;">
               <div style="text-align: center; padding: 24px 0 20px; border-bottom: 1px solid #f0ebe4;">
-                <img src="${logoUrl}" alt="FonderDigital" style="height: 32px; width: auto;" />
+                <img src="${logoUrl}" alt="Fonder Digital" style="height: 32px; width: auto;" />
               </div>
 
               <div style="padding: 32px;">
                 <p style="margin: 0 0 12px 0; font-size: 16px; color: #666;">Hi ${name.split(" ")[0]},</p>
                 <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.65; color: #333;">
-                  Thanks for booking a <strong>${duration}-minute strategic consultation</strong> with FonderDigital. We've received your request for <strong>${formattedDate} (IST)</strong> focusing on <strong>${service}</strong>.
+                  Thanks for booking a <strong>${duration}-minute strategic consultation</strong> with Fonder Digital. We've received your request for <strong>${formattedDate} (IST)</strong> focusing on <strong>${service}</strong>.
                 </p>
 
                 <div style="background: #faf8f5; border-radius: 8px; padding: 20px 24px; margin: 20px 0; border: 1px solid #f0ebe4;">
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
                 </div>
 
                 <div style="margin: 24px 0; padding-top: 16px; border-top: 1px solid #f0ebe4;">
-                  <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">Warm regards,<br/><strong>The FonderDigital Team</strong></p>
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">Warm regards,<br/><strong>The Fonder Digital Team</strong></p>
                   <p style="margin: 0; font-size: 12px; color: #aaa;">
                     <a href="https://www.fonderdigital.com" style="color: #b45309; text-decoration: none;">fonderdigital.com</a> · ${infoEmail}
                   </p>

@@ -22,7 +22,8 @@ export default function Footer() {
         aria-hidden
         className="pointer-events-none fixed inset-0 z-50 opacity-0 transition-opacity duration-500 group-hover/spark:opacity-100"
         style={{
-          background: "radial-gradient(600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 60%)",
+          background:
+            "radial-gradient(600px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), var(--primary-soft), transparent 60%)",
         }}
       />
       <div className="mx-auto max-w-7xl px-4 py-13 sm:px-5 lg:px-8 lg:py-16 lg:pb-9">
@@ -30,7 +31,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <Link
               href="/"
-              aria-label="FonderDigital home"
+              aria-label="Fonder Digital home"
               className="mb-3 inline-flex items-center gap-2"
             >
               <BrandMark className="h-10 w-10 text-foreground" />
