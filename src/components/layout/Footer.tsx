@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import Link from "next/link";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { siteConfig, type SocialLink } from "@/config/site";
 import { InstagramIcon, LinkedInIcon } from "@/components/ui/BrandIcons";
 import NewsletterForm from "@/components/layout/NewsletterForm";
@@ -15,6 +15,9 @@ const socialIcons: Record<
 };
 
 export default function Footer() {
+  const phoneDisplay = "+91 99000 14600";
+  const phoneTel = `tel:${siteConfig.whatsappNumber.replace(/\D/g, "")}`;
+
   return (
     <footer className="band-dark relative text-muted group/spark">
       {/* Section-wide mouse-tracking spotlight */}
@@ -144,6 +147,18 @@ export default function Footer() {
                   {siteConfig.location}
                 </li>
               )}
+              <li className="flex items-center gap-2.5">
+                <Phone className="h-4 w-4 shrink-0 text-primary" />
+                <span className="min-w-0">
+                  <span className="mr-2">Phone:</span>
+                  <a
+                    href={phoneTel}
+                    className="transition-colors hover:text-primary font-bold"
+                  >
+                    {phoneDisplay}
+                  </a>
+                </span>
+              </li>
             </ul>
           </div>
         </div>

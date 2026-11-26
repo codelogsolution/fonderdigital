@@ -30,7 +30,7 @@ export const siteConfig = {
   url: "https://www.fonderdigital.com",
   infoEmail: "info@fonderdigital.com",
   supportEmail: "support@fonderdigital.com",
-  whatsappNumber: "+917042620665",
+  whatsappNumber: "+919900014600",
   googleBookingUrl:
     "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3sDDmjbjrOSkXDFtdxbTRwZRFvNgWpwosiysG4rIj5Hhu-StJsDe6f_nrzGX8wWSLhp1hBw6bn",
   location: "",
