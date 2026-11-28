@@ -17,11 +17,12 @@ import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/useScrollLock";
 import ThemeSwitcher from "@/components/theme/ThemeSwitcher";
 import HeaderBookingButton from "@/components/layout/HeaderBookingButton";
+import { useLenis } from "@/components/motion/SmoothScroll";
 
 const mobileList: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
-  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
+  exit: {},
 };
 
 const mobileItem: Variants = {
@@ -31,7 +32,7 @@ const mobileItem: Variants = {
     x: 0,
     transition: { duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] },
   },
-  exit: { opacity: 0, x: -12, transition: { duration: 0.18 } },
+  exit: { opacity: 0, x: -12, transition: { duration: 0 } },
 };
 
 function NavLink({
@@ -94,8 +95,17 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { stop, start } = useLenis();
 
   useScrollLock(menuOpen);
+
+  useEffect(() => {
+    if (menuOpen) {
+      stop();
+    } else {
+      start();
+    }
+  }, [menuOpen, stop, start]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -275,8 +285,8 @@ export default function Header() {
             <motion.nav
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              exit={{ height: 0, opacity: 1 }}
+              transition={{ duration: 0, ease: "easeInOut" }}
               className="max-h-[calc(100dvh-4rem)] overflow-x-hidden overflow-y-auto overscroll-contain border-t border-border-subtle bg-background shadow-[0_16px_32px_rgba(2,6,23,0.08)] lg:hidden"
               aria-label="Mobile"
             >
