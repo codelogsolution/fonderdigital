@@ -22,7 +22,7 @@ import { useLenis } from "@/components/motion/SmoothScroll";
 const mobileList: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
-  exit: {},
+  exit: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
 
 const mobileItem: Variants = {
@@ -32,7 +32,7 @@ const mobileItem: Variants = {
     x: 0,
     transition: { duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] },
   },
-  exit: { opacity: 0, x: -12, transition: { duration: 0 } },
+  exit: { opacity: 0, x: -12, transition: { duration: 0.2 } },
 };
 
 function NavLink({
@@ -283,18 +283,19 @@ export default function Header() {
         <AnimatePresence>
           {menuOpen && (
             <motion.nav
+              key="mobile-nav"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 1 }}
-              transition={{ duration: 0, ease: "easeInOut" }}
-              className="max-h-[calc(100dvh-4rem)] overflow-x-hidden overflow-y-auto overscroll-contain border-t border-border-subtle bg-background shadow-[0_16px_32px_rgba(2,6,23,0.08)] lg:hidden"
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="max-h-[calc(100dvh-4rem)] overflow-x-hidden overflow-y-auto overscroll-contain border-t-[0.5px] border-border-subtle bg-background shadow-[0_16px_32px_rgba(2,6,23,0.08)] lg:hidden"
               aria-label="Mobile"
             >
               <motion.div
+                key={pathname}
                 variants={mobileList}
                 initial="hidden"
                 animate="show"
-                exit="exit"
                 className="flex flex-col gap-1 px-4 py-4"
               >
                 {siteConfig.nav.map((item) => {
